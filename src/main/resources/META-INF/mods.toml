@@ -42,12 +42,7 @@ authors="Jasaurus rex" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-This is a long form description of the mod. You can write whatever you want here
-
-Have some lorem ipsum.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed sagittis luctus odio eu tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque volutpat ligula eget lacus auctor sagittis. In hac habitasse platea dictumst. Nunc gravida elit vitae sem vehicula efficitur. Donec mattis ipsum et arcu lobortis, eleifend sagittis sem rutrum. Cras pharetra quam eget posuere fermentum. Sed id tincidunt justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-'''
+This mod currently adds in hedgehogs and a method to tame and breed them. They spawn in forests and plains biomes and can be tamed by feeding them mealworms. Mealworms are found in a new grass block, weeds, which spawn everywhere. Cat treats can be made with one raw chicken in the center of the grid and one wheat on each side. I hope to add more mobs and potentially add a new ore, but for now, this is just hedgehogs.'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.rexcraft]] #optional
     # the modid of the dependency
