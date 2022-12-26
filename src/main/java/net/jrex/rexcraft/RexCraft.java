@@ -2,6 +2,7 @@ package net.jrex.rexcraft;
 
 import com.mojang.logging.LogUtils;
 import net.jrex.rexcraft.item.ModItems;
+import net.jrex.rexcraft.painting.ModPaintings;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,6 +24,8 @@ public class RexCraft
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
+
+        ModPaintings.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
