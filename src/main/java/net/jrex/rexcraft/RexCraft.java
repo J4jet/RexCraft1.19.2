@@ -1,6 +1,7 @@
 package net.jrex.rexcraft;
 
 import com.mojang.logging.LogUtils;
+import net.jrex.rexcraft.block.ModBlocks;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.painting.ModPaintings;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,6 +25,7 @@ public class RexCraft
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
         ModPaintings.register(modEventBus);
 

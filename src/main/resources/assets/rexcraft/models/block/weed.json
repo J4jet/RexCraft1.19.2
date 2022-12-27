@@ -1,0 +1,7 @@
+{
+  "parent" : "minecraft:block/cross",
+  "textures": {
+    "cross": "rexcraft:block/weed"
+  },
+  "render_type": "cutout"
+}
