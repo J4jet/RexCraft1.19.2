@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import net.jrex.rexcraft.block.ModBlocks;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.painting.ModPaintings;
+import net.jrex.rexcraft.world.feature.ModConfiguredFeatures;
+import net.jrex.rexcraft.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,6 +30,9 @@ public class RexCraft
         ModBlocks.register(modEventBus);
 
         ModPaintings.register(modEventBus);
+
+        ModConfiguredFeatures.regester(modEventBus);
+        ModPlacedFeatures.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
