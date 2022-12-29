@@ -1,6 +1,21 @@
 {
   "type": "forge:add_features",
-  "biomes": "#forge:is_plains",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:snowy_plains",
+    "minecraft:meadow",
+    "minecraft:sunflower_plains",
+    "minecraft:savanna_plateau",
+    "minecraft:savanna",
+    "minecraft:wooded_badlands",
+    "minecraft:forest",
+    "minecraft:birch_forest",
+    "minecraft:grove",
+    "minecraft:old_growth_birch_forest",
+    "minecraft:dark_forest",
+    "minecraft:flower_forest",
+    "minecraft:meadow"
+  ],
   "features": "rexcraft:weed_placed",
   "step": "vegetal_decoration"
 }
