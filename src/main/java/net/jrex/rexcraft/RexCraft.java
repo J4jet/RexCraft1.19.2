@@ -2,10 +2,18 @@ package net.jrex.rexcraft;
 
 import com.mojang.logging.LogUtils;
 import net.jrex.rexcraft.block.ModBlocks;
+import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.client.GeckoRenderer;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.painting.ModPaintings;
 import net.jrex.rexcraft.world.feature.ModConfiguredFeatures;
 import net.jrex.rexcraft.world.feature.ModPlacedFeatures;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ambient.AmbientCreature;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,6 +22,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(RexCraft.MOD_ID)
@@ -34,6 +43,10 @@ public class RexCraft
         ModConfiguredFeatures.regester(modEventBus);
         ModPlacedFeatures.register(modEventBus);
 
+        ModEntityTypes.register(modEventBus);
+
+        GeckoLib.initialize();
+
         modEventBus.addListener(this::commonSetup);
 
 
@@ -41,6 +54,10 @@ public class RexCraft
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            SpawnPlacements.register(ModEntityTypes.GECKO.get(),
+                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
+        });
     }
 
 
@@ -49,6 +66,8 @@ public class RexCraft
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+
+            EntityRenderers.register(ModEntityTypes.GECKO.get(), GeckoRenderer::new);
 
         }
     }
