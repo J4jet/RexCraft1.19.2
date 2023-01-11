@@ -17,7 +17,8 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<GeckoEntity>> GECKO =
             ENTITY_TYPES.register("gecko",
                     () -> EntityType.Builder.of(GeckoEntity::new, MobCategory.CREATURE)
-                            .sized(0.2f, 0.2f)
+                            //Hitbox Size!
+                            .sized(0.4f, 0.3f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "gecko").toString()));
 
     public static void register(IEventBus eventBus) {
