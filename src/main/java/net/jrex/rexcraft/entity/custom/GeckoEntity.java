@@ -1,5 +1,6 @@
 package net.jrex.rexcraft.entity.custom;
 
+import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.Team;
@@ -72,10 +74,13 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new PanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.5D, 2.5D));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Silverfish.class, false));
@@ -108,6 +113,17 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         }
 
         return PlayState.CONTINUE;
+    }
+
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
+
+        return ModEntityTypes.GECKO.get().create(pLevel);
+    }
+
+    @Override
+    public boolean isFood(ItemStack pStack){
+        return pStack.getItem() == ModItems.DUBIA.get();
     }
 
 
@@ -145,6 +161,10 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         Item item = itemstack.getItem();
 
         Item itemForTaming = ModItems.WORM.get();
+
+        if(isFood(itemstack)){
+            return super.mobInteract(player, hand);
+        }
 
         if (item == itemForTaming && !isTame()) {
             if (this.level.isClientSide) {
@@ -197,10 +217,6 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         tag.putBoolean("isSitting", this.isSitting());
     }
 
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-        return null;
-    }
 
     @Override
     protected void defineSynchedData() {

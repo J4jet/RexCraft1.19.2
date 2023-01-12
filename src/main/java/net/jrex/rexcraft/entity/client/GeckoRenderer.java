@@ -29,7 +29,11 @@ public class GeckoRenderer extends GeoEntityRenderer<GeckoEntity> {
                                     @Nullable VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
         //Entity Size!
-        stack.scale(0.15f, 0.15f, 0.15f);
+        if(animatable.isBaby()) {
+            stack.scale(0.05F, 0.05F, 0.05F);
+        } else {
+            stack.scale(0.15f, 0.15f, 0.15f);
+        }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }
