@@ -16,7 +16,7 @@ public class GeckoModel  extends AnimatedGeoModel<GeckoEntity> {
 
     @Override
     public ResourceLocation getTextureResource(GeckoEntity object) {
-        return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/nova.png");
+        return GeckoRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
     }
 
     @Override

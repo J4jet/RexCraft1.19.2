@@ -1,7 +1,9 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.variant.GeckoVariant;
 import net.jrex.rexcraft.item.ModItems;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,12 +12,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -32,6 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -49,6 +51,9 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
 
     private static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(GeckoEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+            SynchedEntityData.defineId(GeckoEntity.class, EntityDataSerializers.INT);
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -116,14 +121,21 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
     }
 
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-
-        return ModEntityTypes.GECKO.get().create(pLevel);
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
+        GeckoEntity baby = ModEntityTypes.GECKO.get().create(serverLevel);
+        GeckoVariant variant = Util.getRandom(GeckoVariant.values(), this.random);
+        baby.setVariant(variant);
+        return baby;
     }
 
     @Override
     public boolean isFood(ItemStack pStack){
         return pStack.getItem() == ModItems.DUBIA.get();
+    }
+
+    //DATA_ID_TYPE_VARIANT
+    public int getGeckoType() {
+        return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
 
@@ -209,12 +221,14 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setSitting(tag.getBoolean("isSitting"));
+        this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("isSitting", this.isSitting());
+        tag.putInt("Variant",this.getTypeVariant());
     }
 
 
@@ -222,6 +236,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
+        this.entityData.define(DATA_ID_TYPE_VARIANT,0);
     }
 
     public void setSitting(boolean sitting) {
@@ -256,5 +271,26 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.16f);
         }
+    }
+
+    /* VARIANTS */
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
+                                        MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
+                                        @Nullable CompoundTag p_146750_) {
+        GeckoVariant variant = Util.getRandom(GeckoVariant.values(), this.random);
+        setVariant(variant);
+        return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
+    }
+
+    public GeckoVariant getVariant() {
+        return GeckoVariant.byId(this.getTypeVariant() & 255);
+    }
+
+    private int getTypeVariant() {
+        return this.entityData.get(DATA_ID_TYPE_VARIANT);
+    }
+
+    private void setVariant(GeckoVariant variant) {
+        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 }

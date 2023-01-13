@@ -1,9 +1,13 @@
 package net.jrex.rexcraft.entity.client;
 
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.entity.custom.GeckoEntity;
+import net.jrex.rexcraft.entity.variant.GeckoVariant;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -12,15 +16,34 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
+import java.util.Map;
+
+
 public class GeckoRenderer extends GeoEntityRenderer<GeckoEntity> {
+
+    public static final Map<GeckoVariant, ResourceLocation> LOCATION_BY_VARIANT =
+            Util.make(Maps.newEnumMap(GeckoVariant.class), (p_114874_) -> {
+                p_114874_.put(GeckoVariant.DOTTED,
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/dotted.png"));
+                p_114874_.put(GeckoVariant.DOTLESS,
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/dotless.png"));
+
+            });
     public GeckoRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new GeckoModel());
         this.shadowRadius = 0.1f;
     }
 
+
     @Override
     public ResourceLocation getTextureLocation(GeckoEntity instance) {
-        return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/nova.png");
+        String s = ChatFormatting.stripFormatting(instance.getName().getString());
+        if (s != null && "Nova".equals(s)) {
+            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/nova.png");
+        } else {
+            return LOCATION_BY_VARIANT.get(instance.getVariant());
+        }
+
     }
 
     @Override
