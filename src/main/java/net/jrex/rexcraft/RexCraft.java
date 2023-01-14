@@ -60,6 +60,8 @@ public class RexCraft
         event.enqueueWork(() -> {
             SpawnPlacements.register(ModEntityTypes.GECKO.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
+            SpawnPlacements.register(ModEntityTypes.HEDGY.get(),
+                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
         });
     }
 
