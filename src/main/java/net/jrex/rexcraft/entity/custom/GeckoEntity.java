@@ -3,6 +3,7 @@ package net.jrex.rexcraft.entity.custom;
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.variant.GeckoVariant;
 import net.jrex.rexcraft.item.ModItems;
+import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -155,17 +156,30 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
 
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 0.15F, 1.0F);
+        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 1.0F);
     }
 
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.AXOLOTL_HURT;
+        return ModSounds.GECKO_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.AXOLOTL_DEATH;
+        return ModSounds.GECKO_DEATH.get();
     }
+
+    protected SoundEvent getSwimSound() {
+        return SoundEvents.GENERIC_SWIM;
+    }
+
+    protected SoundEvent getSwimSplashSound() {
+        return SoundEvents.GENERIC_SPLASH;
+    }
+
+    protected float getSoundVolume() {
+        return 0.8F;
+    }
+
 
     /* TAMEABLE */
     @Override
@@ -211,11 +225,6 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         }
 
         return super.mobInteract(player, hand);
-    }
-
-
-    protected float getSoundVolume() {
-        return 0.2F;
     }
 
     @Override

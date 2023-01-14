@@ -17,5 +17,19 @@
     "sounds": [
       "rexcraft:hedgy_death"
     ]
+  },
+
+  "gecko_death": {
+    "subtitle": "sounds.rexcraft.gecko_death",
+    "sounds": [
+      "rexcraft:gecko_death"
+    ]
+  },
+
+  "gecko_hurt": {
+    "subtitle": "sounds.rexcraft.gecko_hurt",
+    "sounds": [
+      "rexcraft:gecko_hurt"
+    ]
   }
 }

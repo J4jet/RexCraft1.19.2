@@ -22,6 +22,12 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> HEDGY_DEATH =
             registerSoundEvent("hedgy_death");
 
+    public static final RegistryObject<SoundEvent> GECKO_DEATH =
+            registerSoundEvent("gecko_death");
+
+    public static final RegistryObject<SoundEvent> GECKO_HURT =
+            registerSoundEvent("gecko_hurt");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

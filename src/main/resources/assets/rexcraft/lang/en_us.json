@@ -10,5 +10,8 @@
   "sounds.rexcraft.hedgy_idle": "Hedgehog Hiss",
   "sounds.rexcraft.hedgy_pain": "Hedgehog in Pain",
   "sounds.rexcraft.hedgy_death": "Hedgehog Dying",
+  "sounds.rexcraft.gecko_death": "Leopard Gecko Screaming",
+  "sounds.rexcraft.gecko_hurt": "Leopard Gecko Chirping",
+
   "block.rexcraft.weed": "Weeds"
 }
