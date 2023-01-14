@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "rexcraft:cat_treat"
+    },
+    "title": "Emotional Support",
+    "description": "Tame a hedgehog",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+
+  },
+  "parent": "rexcraft:meal_worm_found",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:hedgy"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

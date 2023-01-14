@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "rexcraft:dubia"
+    },
+    "title": "What a Goober",
+    "description": "Tame a leopard gecko",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+
+  },
+  "parent": "rexcraft:meal_worm_found",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:gecko"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
