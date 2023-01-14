@@ -1,0 +1,21 @@
+{
+  "hedgy_idle": {
+    "subtitle": "sounds.rexcraft.hedgy_idle",
+    "sounds": [
+      "rexcraft:hedgy_idle"
+    ]
+  },
+
+  "hedgy_pain": {
+    "subtitle": "sounds.rexcraft.hedgy_pain",
+    "sounds": [
+      "rexcraft:hedgy_pain"
+    ]
+  },
+  "hedgy_death": {
+    "subtitle": "sounds.rexcraft.hedgy_death",
+    "sounds": [
+      "rexcraft:hedgy_death"
+    ]
+  }
+}

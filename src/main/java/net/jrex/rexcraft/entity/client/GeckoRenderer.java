@@ -27,6 +27,12 @@ public class GeckoRenderer extends GeoEntityRenderer<GeckoEntity> {
                         new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/dotted.png"));
                 p_114874_.put(GeckoVariant.DOTLESS,
                         new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/dotless.png"));
+                p_114874_.put(GeckoVariant.TANGE,
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/tange.png"));
+                p_114874_.put(GeckoVariant.TANGE_2,
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/tange_2.png"));
+                p_114874_.put(GeckoVariant.INF,
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/inferno.png"));
 
             });
     public GeckoRenderer(EntityRendererProvider.Context renderManager) {

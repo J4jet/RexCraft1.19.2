@@ -26,6 +26,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> GECKO_SPAWN_EGG = ITEMS.register("gecko_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.GECKO, 0xFFD133, 0x25241F,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> HEDGY_SPAWN_EGG = ITEMS.register("hedgy_spawn_egg",
+                () -> new ForgeSpawnEggItem(ModEntityTypes.HEDGY, 0x502e22, 0xffede6,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static void register(IEventBus eventBus) {
             ITEMS.register(eventBus);

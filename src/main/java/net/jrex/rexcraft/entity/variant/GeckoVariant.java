@@ -6,7 +6,10 @@ import java.util.Comparator;
 public enum GeckoVariant {
 
     DOTTED(0),
-    DOTLESS(1);
+    DOTLESS(1),
+    TANGE(2),
+    INF(3),
+    TANGE_2(4);
 
     private static final GeckoVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
             comparingInt(GeckoVariant::getId)).toArray(GeckoVariant[]::new);

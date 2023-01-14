@@ -1,8 +1,9 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
-import net.jrex.rexcraft.entity.variant.GeckoVariant;
+import net.jrex.rexcraft.entity.variant.HedgyVariant;
 import net.jrex.rexcraft.item.ModItems;
+import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -20,25 +21,21 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Endermite;
-
 import net.minecraft.world.entity.monster.Silverfish;
-
-
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -47,24 +44,28 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class GeckoEntity extends TamableAnimal implements IAnimatable {
+import java.util.function.Predicate;
 
-    private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(GeckoEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(GeckoEntity.class, EntityDataSerializers.INT);
+public class HedgyEntity extends TamableAnimal implements IAnimatable {
 
     private AnimationFactory factory = new AnimationFactory(this);
 
+    private static final EntityDataAccessor<Boolean> SITTING =
+            SynchedEntityData.defineId(HedgyEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+            SynchedEntityData.defineId(HedgyEntity.class, EntityDataSerializers.INT);
 
 
-    public GeckoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public HedgyEntity(EntityType<? extends TamableAnimal> p_21803_, Level p_21804_) {
+        super(p_21803_, p_21804_);
     }
 
-    @Nullable
-
+    public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
+        EntityType<?> entitytype = p_30437_.getType();
+        return entitytype == EntityType.SILVERFISH || entitytype == EntityType.ENDERMITE;
+    };
 
     public static AttributeSupplier setAttributes() {
         return TamableAnimal.createMobAttributes()
@@ -74,7 +75,6 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
                 .add(Attributes.MOVEMENT_SPEED, 0.15f).build();
     }
 
-    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
@@ -82,6 +82,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.2F));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.5D, 2.5D));
@@ -91,81 +92,80 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Silverfish.class, false));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Endermite.class, false));
-
     }
 
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.walk", true));
-            return PlayState.CONTINUE;
-        }
 
-        if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
-            return PlayState.CONTINUE;
-        }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.idle", true));
-        return PlayState.CONTINUE;
-    }
-
-    private PlayState attackPredicate(AnimationEvent event) {
-
-        if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
-            event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.attack", false));
-            this.swinging = false;
-        }
-
-        return PlayState.CONTINUE;
-    }
-
+    @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
-        GeckoEntity baby = ModEntityTypes.GECKO.get().create(serverLevel);
-        GeckoVariant variant = Util.getRandom(GeckoVariant.values(), this.random);
+        HedgyEntity baby = ModEntityTypes.HEDGY.get().create(serverLevel);
+        HedgyVariant variant = Util.getRandom(HedgyVariant.values(), this.random);
         baby.setVariant(variant);
         return baby;
     }
 
     @Override
-    public boolean isFood(ItemStack pStack){
-        return pStack.getItem() == ModItems.DUBIA.get();
+    public boolean isFood(ItemStack pStack) {
+        return pStack.getItem() == ModItems.CAT_TREAT.get();
     }
+    
 
-    //DATA_ID_TYPE_VARIANT
-    public int getGeckoType() {
-        return this.entityData.get(DATA_ID_TYPE_VARIANT);
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+            return PlayState.CONTINUE;
+        }
+
+        if (this.isSitting()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
+            return PlayState.CONTINUE;
+        }
+
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+        return PlayState.CONTINUE;
     }
-
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this,"controller",0,this::predicate));
-        data.addAnimationController(new AnimationController(this,"attackController",0,this::attackPredicate));
-
+        data.addAnimationController(new AnimationController(this, "controller",
+                0, this::predicate));
     }
-
 
     @Override
     public AnimationFactory getFactory() {
-        return factory;
+        return this.factory;
     }
-
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 0.15F, 1.0F);
+        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 1.0F);
     }
 
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.HEDGY_IDLE.get();
+    }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.AXOLOTL_HURT;
+        return ModSounds.HEDGY_PAIN.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.AXOLOTL_DEATH;
+        return ModSounds.HEDGY_DEATH.get();
     }
+
+    protected SoundEvent getSwimSound() {
+        return SoundEvents.GENERIC_SWIM;
+    }
+
+    protected SoundEvent getSwimSplashSound() {
+        return SoundEvents.GENERIC_SPLASH;
+    }
+
+    protected float getSoundVolume() {
+        return 0.2F;
+    }
+
 
     /* TAMEABLE */
     @Override
@@ -214,30 +214,25 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
     }
 
 
-    protected float getSoundVolume() {
-        return 0.2F;
-    }
-
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setSitting(tag.getBoolean("isSitting"));
-        this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
+        this.entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("isSitting", this.isSitting());
-        tag.putInt("Variant",this.getTypeVariant());
+        tag.putInt("Variant", this.getTypeVariant());
     }
-
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
-        this.entityData.define(DATA_ID_TYPE_VARIANT,0);
+        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     public void setSitting(boolean sitting) {
@@ -256,6 +251,15 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
 
     public boolean canBeLeashed(Player player) {
         return true;
+    }
+
+    public boolean doHurtTarget(Entity pEntity) {
+        boolean flag = pEntity.hurt(DamageSource.mobAttack(this), (float)((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+        if (flag) {
+            this.doEnchantDamageEffects(this, pEntity);
+        }
+
+        return flag;
     }
 
     @Override
@@ -278,20 +282,23 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
                                         MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
                                         @Nullable CompoundTag p_146750_) {
-        GeckoVariant variant = Util.getRandom(GeckoVariant.values(), this.random);
+        HedgyVariant variant = Util.getRandom(HedgyVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
     }
 
-    public GeckoVariant getVariant() {
-        return GeckoVariant.byId(this.getTypeVariant() & 255);
+    public HedgyVariant getVariant() {
+        return HedgyVariant.byId(this.getTypeVariant() & 255);
     }
 
     private int getTypeVariant() {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
-    private void setVariant(GeckoVariant variant) {
+    private void setVariant(HedgyVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 }
+
+
+

@@ -4,8 +4,11 @@
   "item.rexcraft.allo": "Allosaurus Skull",
   "item.rexcraft.cat_treat": "Cat Treats",
   "item.rexcraft.gecko_spawn_egg": "Leopard Gecko Spawn Egg",
+  "item.rexcraft.hedgy_spawn_egg": "Hedgehog Spawn Egg",
 
   "itemGroup.rexcrafttab": "RexCraft",
-
+  "sounds.rexcraft.hedgy_idle": "Hedgehog Hiss",
+  "sounds.rexcraft.hedgy_pain": "Hedgehog in Pain",
+  "sounds.rexcraft.hedgy_death": "Hedgehog Dying",
   "block.rexcraft.weed": "Weeds"
 }

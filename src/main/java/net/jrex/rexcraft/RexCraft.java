@@ -4,8 +4,10 @@ import com.mojang.logging.LogUtils;
 import net.jrex.rexcraft.block.ModBlocks;
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.client.GeckoRenderer;
+import net.jrex.rexcraft.entity.client.HedgyRenderer;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.painting.ModPaintings;
+import net.jrex.rexcraft.sound.ModSounds;
 import net.jrex.rexcraft.world.feature.ModConfiguredFeatures;
 import net.jrex.rexcraft.world.feature.ModPlacedFeatures;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -44,6 +46,7 @@ public class RexCraft
         ModPlacedFeatures.register(modEventBus);
 
         ModEntityTypes.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         GeckoLib.initialize();
 
@@ -68,6 +71,7 @@ public class RexCraft
         public static void onClientSetup(FMLClientSetupEvent event) {
 
             EntityRenderers.register(ModEntityTypes.GECKO.get(), GeckoRenderer::new);
+            EntityRenderers.register(ModEntityTypes.HEDGY.get(), HedgyRenderer::new);
 
         }
     }
