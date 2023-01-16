@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,6 +28,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> WEED = registerBlock("weed",
             () -> new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 1,
                     BlockBehaviour.Properties.copy(Blocks.DANDELION)), ModCreativeModeTab.REXCRAFT_TAB);
+
+    public static final RegistryObject<Block> STEEL_BLOCK = registerBlock("steel_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).strength(7f,10f).requiresCorrectToolForDrops()), ModCreativeModeTab.REXCRAFT_TAB);
+
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
