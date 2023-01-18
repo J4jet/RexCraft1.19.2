@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:longsword_blade"
+    },
+    "$": {
+      "item": "rexcraft:longsword_guard"
+    },
+    "%": {
+      "item": "rexcraft:longsword_pommel"
+    }
+  },
+  "pattern": [
+    "  #",
+    " $ ",
+    "%  "
+  ],
+  "result": {
+    "item": "rexcraft:longsword",
+    "count": 1
+  }
+}

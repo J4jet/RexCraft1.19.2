@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "  #",
+    " # ",
+    "#  "
+  ],
+  "result": {
+    "item": "rexcraft:poleaxe_shaft",
+    "count": 1
+  }
+}

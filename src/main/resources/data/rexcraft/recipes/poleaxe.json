@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:poleaxe_head"
+    },
+    "$": {
+      "item": "rexcraft:poleaxe_shaft"
+    },
+    "%": {
+      "item": "rexcraft:poleaxe_pommel"
+    }
+  },
+  "pattern": [
+    "  #",
+    " $ ",
+    "%  "
+  ],
+  "result": {
+    "item": "rexcraft:poleaxe",
+    "count": 1
+  }
+}
