@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:poleaxe"
+    },
+    "$": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    " $ ",
+    "$#$",
+    " $ "
+  ],
+  "result": {
+    "item": "rexcraft:diamond_poleaxe",
+    "count": 1
+  }
+}

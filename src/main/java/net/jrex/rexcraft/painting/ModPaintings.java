@@ -90,6 +90,13 @@ public class ModPaintings {
     public static final RegistryObject<PaintingVariant> WILBUR_6 = PAINTING_VARIANTS.register("wilbur_6",
             () -> new PaintingVariant(32,16));
 
+    public static final RegistryObject<PaintingVariant> LILY_1 = PAINTING_VARIANTS.register("lily_1",
+            () -> new PaintingVariant(32,16));
+    public static final RegistryObject<PaintingVariant> LILY_2 = PAINTING_VARIANTS.register("lily_2",
+            () -> new PaintingVariant(16,32));
+    public static final RegistryObject<PaintingVariant> LILY_3 = PAINTING_VARIANTS.register("lily_3",
+            () -> new PaintingVariant(48,32));
+
 
 
 

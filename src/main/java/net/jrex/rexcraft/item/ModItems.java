@@ -5,6 +5,7 @@ import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -35,11 +36,24 @@ import net.minecraftforge.registries.RegistryObject;
 
         public static final RegistryObject<Item> POLEAXE = ITEMS.register("poleaxe",
                 () -> new SwordItem(ModTiers.STEEL, 7, -2.9f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DIAMOND_POLEAXE = ITEMS.register("diamond_poleaxe",
+                () -> new SwordItem(Tiers.DIAMOND, 8, -2.9f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> NETHERITE_POLEAXE = ITEMS.register("netherite_poleaxe",
+                () -> new SwordItem(Tiers.NETHERITE, 9, -2.9f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword",
-                () -> new SwordItem(ModTiers.STEEL, 4, -2f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new SwordItem(ModTiers.STEEL, 4, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DIAMOND_LONGSWORD = ITEMS.register("diamond_longsword",
+                () -> new SwordItem(Tiers.DIAMOND, 5, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> NETHERITE_LONGSWORD = ITEMS.register("netherite_longsword",
+                () -> new SwordItem(Tiers.NETHERITE, 6, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static final RegistryObject<Item> FLAIL = ITEMS.register("flail",
                 () -> new SwordItem(ModTiers.STEEL, 9, -3.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DIAMOND_FLAIL = ITEMS.register("diamond_flail",
+                () -> new SwordItem(Tiers.DIAMOND, 10, -3.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> NETHERITE_FLAIL = ITEMS.register("netherite_flail",
+                () -> new SwordItem(Tiers.NETHERITE, 11, -3.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static final RegistryObject<Item> POLEAXE_HEAD = ITEMS.register("poleaxe_head",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
