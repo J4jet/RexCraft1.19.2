@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:flail_head"
+    },
+    "$": {
+      "item": "rexcraft:flail_chain"
+    },
+    "%": {
+      "item": "rexcraft:flail_handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    " $ ",
+    "%  "
+  ],
+  "result": {
+    "item": "rexcraft:flail",
+    "count": 1
+  }
+}

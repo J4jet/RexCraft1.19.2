@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:steel_ingot"
+    },
+
+    "$": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " # ",
+    " $ ",
+    " # "
+  ],
+  "result": {
+    "item": "rexcraft:flail_handle",
+    "count": 1
+  }
+}

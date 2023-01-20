@@ -38,6 +38,8 @@ import net.minecraftforge.registries.RegistryObject;
 
         public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword",
                 () -> new SwordItem(ModTiers.STEEL, 4, -2f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> FLAIL = ITEMS.register("flail",
+                () -> new SwordItem(ModTiers.STEEL, 9, -3.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static final RegistryObject<Item> POLEAXE_HEAD = ITEMS.register("poleaxe_head",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
@@ -50,6 +52,12 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> LONGSWORD_GUARD = ITEMS.register("longsword_guard",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> LONGSWORD_POMMEL = ITEMS.register("longsword_pommel",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> FLAIL_HEAD = ITEMS.register("flail_head",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> FLAIL_CHAIN = ITEMS.register("flail_chain",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> FLAIL_HANDLE = ITEMS.register("flail_handle",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static void register(IEventBus eventBus) {

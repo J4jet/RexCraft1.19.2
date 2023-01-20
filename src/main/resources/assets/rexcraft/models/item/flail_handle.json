@@ -2,6 +2,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rexcraft:item/longsword_pommel"
+    "layer0": "rexcraft:item/flail_handle"
   }
 }

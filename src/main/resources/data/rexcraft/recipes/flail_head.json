@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:steel_ingot"
+    }
+  },
+  "pattern": [
+    " ##",
+    "###",
+    "## "
+  ],
+  "result": {
+    "item": "rexcraft:flail_head",
+    "count": 1
+  }
+}
