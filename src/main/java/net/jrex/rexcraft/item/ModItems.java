@@ -2,6 +2,7 @@ package net.jrex.rexcraft.item;
 
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.item.custom.BleedSwordItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
@@ -42,11 +43,13 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new SwordItem(Tiers.NETHERITE, 9, -2.9f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static final RegistryObject<Item> LONGSWORD = ITEMS.register("longsword",
-                () -> new SwordItem(ModTiers.STEEL, 4, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new BleedSwordItem(ModTiers.STEEL, 3, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> DIAMOND_LONGSWORD = ITEMS.register("diamond_longsword",
-                () -> new SwordItem(Tiers.DIAMOND, 5, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new BleedSwordItem(Tiers.DIAMOND, 4, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> NETHERITE_LONGSWORD = ITEMS.register("netherite_longsword",
-                () -> new SwordItem(Tiers.NETHERITE, 6, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new BleedSwordItem(Tiers.NETHERITE, 5, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> TRAINING_SWORD = ITEMS.register("training_sword",
+                () -> new SwordItem(ModTiers.STEEL, -3, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static final RegistryObject<Item> FLAIL = ITEMS.register("flail",
                 () -> new SwordItem(ModTiers.STEEL, 9, -3.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));

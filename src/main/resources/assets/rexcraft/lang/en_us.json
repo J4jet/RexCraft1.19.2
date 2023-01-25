@@ -24,6 +24,7 @@
   "item.rexcraft.longsword_blade": "Longsword Blade",
   "item.rexcraft.longsword_guard": "Longsword Guard",
   "item.rexcraft.longsword_pommel": "Longsword Pommel",
+  "item.rexcraft.training_sword": "Training Sword",
   "block.rexcraft.steel_block": "Block of Steel",
 
   "itemGroup.rexcrafttab": "RexCraft",
@@ -32,6 +33,7 @@
   "sounds.rexcraft.hedgy_death": "Hedgehog Dying",
   "sounds.rexcraft.gecko_death": "Leopard Gecko Screaming",
   "sounds.rexcraft.gecko_hurt": "Leopard Gecko Chirping",
+  "effect.rexcraft.bleed": "Bleeding",
 
   "block.rexcraft.weed": "Weeds"
 }

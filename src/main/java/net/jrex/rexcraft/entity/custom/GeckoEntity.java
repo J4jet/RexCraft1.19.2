@@ -1,12 +1,15 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.client.GeckoRenderer;
 import net.jrex.rexcraft.entity.variant.GeckoVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -64,10 +67,24 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         super(pEntityType, pLevel);
     }
 
+
     @Nullable
 
 
+    public boolean getGeckoName(Entity GeckoEntity){
+        String s = ChatFormatting.stripFormatting(GeckoEntity.getName().getString());
+        if (s != null && "Nova".equals(s)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
     public static AttributeSupplier setAttributes() {
+
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
@@ -94,6 +111,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Endermite.class, false));
 
     }
+
 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {

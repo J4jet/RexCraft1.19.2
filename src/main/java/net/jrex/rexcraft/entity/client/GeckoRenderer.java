@@ -41,6 +41,7 @@ public class GeckoRenderer extends GeoEntityRenderer<GeckoEntity> {
     }
 
 
+
     @Override
     public ResourceLocation getTextureLocation(GeckoEntity instance) {
         String s = ChatFormatting.stripFormatting(instance.getName().getString());

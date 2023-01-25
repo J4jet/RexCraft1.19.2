@@ -2,6 +2,7 @@ package net.jrex.rexcraft;
 
 import com.mojang.logging.LogUtils;
 import net.jrex.rexcraft.block.ModBlocks;
+import net.jrex.rexcraft.effect.ModEffects;
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.client.GeckoRenderer;
 import net.jrex.rexcraft.entity.client.HedgyRenderer;
@@ -47,6 +48,7 @@ public class RexCraft
 
         ModEntityTypes.register(modEventBus);
         ModSounds.register(modEventBus);
+        ModEffects.register(modEventBus);
 
         GeckoLib.initialize();
 
