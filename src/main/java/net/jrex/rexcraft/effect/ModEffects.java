@@ -15,7 +15,7 @@ public class ModEffects {
             = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, RexCraft.MOD_ID);
 
     public static final RegistryObject<MobEffect> BLEED = MOB_EFFECTS.register("bleed",
-            () -> new BleedEffect(MobEffectCategory.HARMFUL, 1381414));
+            () -> new BleedEffect(MobEffectCategory.HARMFUL, 9643043));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

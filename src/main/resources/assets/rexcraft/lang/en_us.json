@@ -26,6 +26,14 @@
   "item.rexcraft.longsword_pommel": "Longsword Pommel",
   "item.rexcraft.training_sword": "Training Sword",
   "block.rexcraft.steel_block": "Block of Steel",
+  "item.rexcraft.steel_helmet": "Steel Helmet",
+  "item.rexcraft.steel_chestplate": "Steel Chestplate",
+  "item.rexcraft.steel_leggings": "Steel Leggings",
+  "item.rexcraft.steel_boots": "Steel Boots",
+  "item.rexcraft.dagger": "Dagger",
+  "item.rexcraft.diamond_dagger": "Diamond Dagger",
+  "item.rexcraft.netherite_dagger": "Netherite Dagger",
+
 
   "itemGroup.rexcrafttab": "RexCraft",
   "sounds.rexcraft.hedgy_idle": "Hedgehog Hiss",
