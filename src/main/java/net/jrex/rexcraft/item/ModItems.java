@@ -2,7 +2,9 @@ package net.jrex.rexcraft.item;
 
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.item.custom.BleedAxeItem;
 import net.jrex.rexcraft.item.custom.BleedSwordItem;
+import net.jrex.rexcraft.item.custom.ModArmorItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -76,16 +78,21 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static final RegistryObject<Item> DAGGER = ITEMS.register("dagger",
-                () -> new BleedSwordItem(ModTiers.STEEL, 0, -1f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new BleedSwordItem(ModTiers.STEEL, -3, -1.8f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DAGGER_BLADE = ITEMS.register("dagger_blade",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DAGGER_POMMEL = ITEMS.register("dagger_pommel",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static final RegistryObject<Item> DIAMOND_DAGGER = ITEMS.register("diamond_dagger",
-                () -> new BleedSwordItem(Tiers.DIAMOND, 0, -1f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new BleedSwordItem(Tiers.DIAMOND, -2, -1.8f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> NETHERITE_DAGGER = ITEMS.register("netherite_dagger",
-                () -> new BleedSwordItem(Tiers.NETHERITE, 0, -1f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new BleedSwordItem(Tiers.NETHERITE, -1, -1.8f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
 
 
         public static final RegistryObject<Item> STEEL_HELMET = ITEMS.register("steel_helmet",
-                () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.HEAD,
+                () -> new ModArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.HEAD,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> STEEL_CHESTPLATE = ITEMS.register("steel_chestplate",
                 () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.CHEST,

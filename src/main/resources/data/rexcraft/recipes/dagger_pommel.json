@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:steel_ingot"
+    },
+    "$": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "   ",
+    " $ ",
+    "  #"
+  ],
+  "result": {
+    "item": "rexcraft:dagger_pommel",
+    "count": 1
+  }
+}

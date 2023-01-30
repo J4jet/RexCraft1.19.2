@@ -20,6 +20,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -69,17 +70,6 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
 
 
     @Nullable
-
-
-    public boolean getGeckoName(Entity GeckoEntity){
-        String s = ChatFormatting.stripFormatting(GeckoEntity.getName().getString());
-        if (s != null && "Nova".equals(s)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 
 
 

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:dagger_blade"
+    },
+    "$": {
+      "item": "rexcraft:dagger_pommel"
+    }
+  },
+  "pattern": [
+    " # ",
+    " $ ",
+    "   "
+  ],
+  "result": {
+    "item": "rexcraft:dagger",
+    "count": 1
+  }
+}
