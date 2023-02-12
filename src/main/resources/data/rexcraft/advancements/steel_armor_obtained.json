@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "rexcraft:steel_helmet"
+    },
+    "title": "Steel Yourself",
+    "description": "Adorn some plate armor",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+
+  },
+  "parent": "rexcraft:steel_obtained",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rexcraft:steel_chestplate"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

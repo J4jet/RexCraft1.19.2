@@ -1,11 +1,12 @@
 package net.jrex.rexcraft.entity.client.armor;
 
+import net.jrex.rexcraft.item.custom.GreatHelmItem;
 import net.jrex.rexcraft.item.custom.SteelArmorItem;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
-public class SteelArmorRenderer extends GeoArmorRenderer<SteelArmorItem> {
-    public SteelArmorRenderer() {
-        super(new SteelArmorModel());
+public class GreatHelmRenderer extends GeoArmorRenderer<GreatHelmItem> {
+    public GreatHelmRenderer() {
+        super(new GreatHelmModel());
 
         this.headBone = "armorHead";
         this.bodyBone = "armorBody";

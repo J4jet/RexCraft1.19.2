@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "rexcraft:great_helm"
+    },
+    "title": "Deus Vult!",
+    "description": "Get a great helm",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+
+  },
+  "parent": "rexcraft:steel_armor_obtained",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rexcraft:great_helm"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

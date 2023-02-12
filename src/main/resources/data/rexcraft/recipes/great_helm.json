@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:steel_helmet"
+    },
+    "$": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    " $ ",
+    "$#$",
+    " $ "
+  ],
+  "result": {
+    "item": "rexcraft:great_helm",
+    "count": 1
+  }
+}

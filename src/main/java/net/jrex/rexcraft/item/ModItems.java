@@ -2,9 +2,7 @@ package net.jrex.rexcraft.item;
 
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.entity.ModEntityTypes;
-import net.jrex.rexcraft.item.custom.BleedAxeItem;
-import net.jrex.rexcraft.item.custom.BleedSwordItem;
-import net.jrex.rexcraft.item.custom.ModArmorItem;
+import net.jrex.rexcraft.item.custom.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -92,16 +90,19 @@ import net.minecraftforge.registries.RegistryObject;
 
 
         public static final RegistryObject<Item> STEEL_HELMET = ITEMS.register("steel_helmet",
-                () -> new ModArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.HEAD,
+                () -> new SteelArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.HEAD,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> STEEL_CHESTPLATE = ITEMS.register("steel_chestplate",
-                () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.CHEST,
+                () -> new SteelArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.CHEST,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> STEEL_LEGGING = ITEMS.register("steel_leggings",
-                () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.LEGS,
+                () -> new SteelArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.LEGS,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> STEEL_BOOTS = ITEMS.register("steel_boots",
-                () -> new ArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.FEET,
+                () -> new SteelArmorItem(ModArmorMaterials.STEEL, EquipmentSlot.FEET,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> GREAT_HELM = ITEMS.register("great_helm",
+                () -> new GreatHelmItem(ModArmorMaterials.STEEL, EquipmentSlot.HEAD,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static void register(IEventBus eventBus) {
