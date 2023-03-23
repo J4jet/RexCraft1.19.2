@@ -26,7 +26,7 @@ public class SteelArmorItem extends GeoArmorItem implements IAnimatable {
 
     private static final Map<ArmorMaterial, MobEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, MobEffectInstance>())
-                    .put(ModArmorMaterials.STEEL, new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1)).build();
+                    .put(ModArmorMaterials.STEEL, new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 0)).build();
 
     public SteelArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties settings) {
         super(material, slot, settings);

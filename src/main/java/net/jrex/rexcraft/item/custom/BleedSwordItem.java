@@ -15,7 +15,7 @@ public class BleedSwordItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
-        pTarget.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 60), pAttacker);
+        pTarget.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 40), pAttacker);
         return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
 }
