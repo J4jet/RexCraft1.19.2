@@ -105,6 +105,19 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new GreatHelmItem(ModArmorMaterials.STEEL, EquipmentSlot.HEAD,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
+        public static final RegistryObject<Item> STEEL_DIAMOND_HELMET = ITEMS.register("steel_diamond_helmet",
+                () -> new Steel_DiamondArmorItem(ModArmorMaterials.STEEL_DIAMOND, EquipmentSlot.HEAD,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> STEEL_DIAMOND_CHESTPLATE = ITEMS.register("steel_diamond_chestplate",
+                () -> new Steel_DiamondArmorItem(ModArmorMaterials.STEEL_DIAMOND, EquipmentSlot.CHEST,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> STEEL_DIAMOND_LEGGING = ITEMS.register("steel_diamond_leggings",
+                () -> new Steel_DiamondArmorItem(ModArmorMaterials.STEEL_DIAMOND, EquipmentSlot.LEGS,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> STEEL_DIAMOND_BOOTS = ITEMS.register("steel_diamond_boots",
+                () -> new Steel_DiamondArmorItem(ModArmorMaterials.STEEL_DIAMOND, EquipmentSlot.FEET,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static void register(IEventBus eventBus) {
             ITEMS.register(eventBus);
         }

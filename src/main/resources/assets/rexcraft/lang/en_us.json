@@ -37,6 +37,11 @@
   "item.rexcraft.netherite_dagger": "Netherite Dagger",
   "item.rexcraft.great_helm": "Great Helm",
 
+  "item.rexcraft.steel_diamond_helmet": "Diamond Plate Helmet",
+  "item.rexcraft.steel_diamond_chestplate": "Diamond Plate Chestplate",
+  "item.rexcraft.steel_diamond_leggings": "Diamond Plate Leggings",
+  "item.rexcraft.steel_diamond_boots": "Diamond Plate Boots",
+
 
   "itemGroup.rexcrafttab": "RexCraft",
   "sounds.rexcraft.hedgy_idle": "Hedgehog Hiss",

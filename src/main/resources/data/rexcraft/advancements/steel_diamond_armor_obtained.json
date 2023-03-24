@@ -1,13 +1,13 @@
 {
   "display": {
     "icon": {
-      "item": "rexcraft:great_helm"
+      "item": "rexcraft:steel_diamond_helmet"
     },
-    "title": "Deus Vult!",
-    "description": "One step closer to reclaiming the Holy Land...",
+    "title": "Glamour Shot",
+    "description": "Huh, pretty AND protective!",
     "frame": "task",
     "show_toast": true,
-    "announce_to_chat": false
+    "announce_to_chat": true
 
   },
   "parent": "rexcraft:steel_armor_obtained",
@@ -18,7 +18,7 @@
         "items": [
           {
             "items": [
-              "rexcraft:great_helm"
+              "rexcraft:steel_diamond_chestplate"
             ]
           }
         ]
