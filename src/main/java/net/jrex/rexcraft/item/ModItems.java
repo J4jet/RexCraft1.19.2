@@ -33,6 +33,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
+        public static final RegistryObject<Item> WITHER_ES = ITEMS.register("wither_es",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static final RegistryObject<Item> POLEAXE = ITEMS.register("poleaxe",
                 () -> new SwordItem(ModTiers.STEEL, 7, -2.9f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> DIAMOND_POLEAXE = ITEMS.register("diamond_poleaxe",
@@ -46,6 +49,8 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new BleedSwordItem(Tiers.DIAMOND, 4, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> NETHERITE_LONGSWORD = ITEMS.register("netherite_longsword",
                 () -> new BleedSwordItem(Tiers.NETHERITE, 5, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> WITHER_LONGSWORD = ITEMS.register("wither_longsword",
+                () -> new WitherSwordItem(Tiers.NETHERITE, 5, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> TRAINING_SWORD = ITEMS.register("training_sword",
                 () -> new SwordItem(ModTiers.STEEL, -3, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 

@@ -1,15 +1,16 @@
 {
   "display": {
     "icon": {
-      "item": "rexcraft:worm"
+      "item": "rexcraft:wither_es"
     },
-    "title": "A Tasty Snack",
-    "description": "Find a mealworm in the weeds.",
+    "title": "Blade of the Great Destroyer",
+    "description": "an unholy relic...",
     "frame": "task",
     "show_toast": true,
-    "announce_to_chat": false
+    "announce_to_chat": true
+
   },
-  "parent": "rexcraft:rexcraft",
+  "parent": "rexcraft:longsword_obtained",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -17,7 +18,7 @@
         "items": [
           {
             "items": [
-              "rexcraft:worm"
+              "rexcraft:wither_longsword"
             ]
           }
         ]

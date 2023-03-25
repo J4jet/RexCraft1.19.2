@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "rexcraft:wither_es"
+  },
+  "base": {
+    "item": "rexcraft:netherite_longsword"
+  },
+  "result": {
+    "item": "rexcraft:wither_longsword"
+  }
+}
