@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "item": "rexcraft:steel_diamond_chestplate"
+  },
+  "result": {
+    "item": "rexcraft:neth_steel_chestplate"
+  }
+}
