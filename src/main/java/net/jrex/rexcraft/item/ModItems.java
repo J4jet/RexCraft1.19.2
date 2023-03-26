@@ -123,6 +123,19 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new Steel_DiamondArmorItem(ModArmorMaterials.STEEL_DIAMOND, EquipmentSlot.FEET,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
+        public static final RegistryObject<Item> NETH_STEEL_HELMET = ITEMS.register("neth_steel_helmet",
+                () -> new Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.HEAD,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> NETH_STEEL_CHESTPLATE = ITEMS.register("neth_steel_chestplate",
+                () -> new Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.CHEST,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> NETH_STEEL_LEGGING = ITEMS.register("neth_steel_leggings",
+                () -> new Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.LEGS,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> NETH_STEEL_BOOTS = ITEMS.register("neth_steel_boots",
+                () -> new Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.FEET,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static void register(IEventBus eventBus) {
             ITEMS.register(eventBus);
         }

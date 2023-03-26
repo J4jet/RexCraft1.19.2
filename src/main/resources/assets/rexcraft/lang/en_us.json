@@ -44,6 +44,11 @@
   "item.rexcraft.steel_diamond_leggings": "Diamond Plate Leggings",
   "item.rexcraft.steel_diamond_boots": "Diamond Plate Boots",
 
+  "item.rexcraft.neth_steel_helmet": "Netherite Plate Helmet",
+  "item.rexcraft.neth_steel_chestplate": "Netherite Plate Chestplate",
+  "item.rexcraft.neth_steel_leggings": "Netherite Plate Leggings",
+  "item.rexcraft.neth_steel_boots": "Netherite Plate Boots",
+
 
   "itemGroup.rexcrafttab": "RexCraft",
   "sounds.rexcraft.hedgy_idle": "Hedgehog Hiss",
