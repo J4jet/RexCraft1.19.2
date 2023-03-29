@@ -21,6 +21,12 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> ALLO = ITEMS.register("allo",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> GECKO_TAIL = ITEMS.register("gecko_tail",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> HEDGEHOG_QUILL = ITEMS.register("hedgehog_quill",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> CAT_TREAT = ITEMS.register("cat_treat",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
