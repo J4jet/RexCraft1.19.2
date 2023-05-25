@@ -17,11 +17,11 @@ public enum ModArmorMaterials implements ArmorMaterial {
         return Ingredient.of(ModItems.STEEL_INGOT.get());
     }),
 
-    STEEL_DIAMOND("steel_diamond", 38, new int[]{4, 5, 7, 3}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 2.0F, 2.0F, () -> {
+    STEEL_DIAMOND("steel_diamond", 45, new int[]{5, 6, 8, 4}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 2.0F, 2.0F, () -> {
         return Ingredient.of(ModItems.STEEL_INGOT.get());
     }),
 
-    STEEL_NETHER("steel_nether", 45, new int[]{5, 7, 9, 5}, 20, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 3.0F, () -> {
+    STEEL_NETHER("steel_nether", 55, new int[]{6, 10, 9, 6}, 20, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 3.0F, () -> {
         return Ingredient.of(ModItems.STEEL_INGOT.get());
     });
 

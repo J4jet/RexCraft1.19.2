@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:iron_ingot"
+  },
+  "base": {
+    "item": "rexcraft:neth_steel_helmet"
+  },
+  "result": {
+    "item": "rexcraft:steel_neth_steel_helmet"
+  }
+}

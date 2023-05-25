@@ -39,6 +39,9 @@
   "item.rexcraft.netherite_dagger": "Netherite Dagger",
   "item.rexcraft.great_helm": "Great Helm",
 
+  "item.rexcraft.gecko_tail": "Gecko Tail",
+  "item.rexcraft.hedgehog_quill": "Hedgehog Quill",
+
   "item.rexcraft.steel_diamond_helmet": "Diamond Plate Helmet",
   "item.rexcraft.steel_diamond_chestplate": "Diamond Plate Chestplate",
   "item.rexcraft.steel_diamond_leggings": "Diamond Plate Leggings",
@@ -49,6 +52,22 @@
   "item.rexcraft.neth_steel_leggings": "Netherite Plate Leggings",
   "item.rexcraft.neth_steel_boots": "Netherite Plate Boots",
 
+  "item.rexcraft.gold_neth_steel_helmet": "Netherite Plate Helmet",
+  "item.rexcraft.gold_neth_steel_chestplate": "Netherite Plate Chestplate",
+  "item.rexcraft.gold_neth_steel_leggings": "Netherite Plate Leggings",
+  "item.rexcraft.gold_neth_steel_boots": "Netherite Plate Boots",
+
+  "item.rexcraft.diamond_neth_steel_helmet": "Netherite Plate Helmet",
+  "item.rexcraft.diamond_neth_steel_chestplate": "Netherite Plate Chestplate",
+  "item.rexcraft.diamond_neth_steel_leggings": "Netherite Plate Leggings",
+  "item.rexcraft.diamond_neth_steel_boots": "Netherite Plate Boots",
+
+  "item.rexcraft.steel_neth_steel_helmet": "Netherite Plate Helmet",
+  "item.rexcraft.steel_neth_steel_chestplate": "Netherite Plate Chestplate",
+  "item.rexcraft.steel_neth_steel_leggings": "Netherite Plate Leggings",
+  "item.rexcraft.steel_neth_steel_boots": "Netherite Plate Boots",
+
+  "item.rexcraft.diamond_shard": "Diamond Shard",
 
   "itemGroup.rexcrafttab": "RexCraft",
   "sounds.rexcraft.hedgy_idle": "Hedgehog Hiss",

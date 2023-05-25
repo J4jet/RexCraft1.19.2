@@ -1,14 +1,8 @@
 package net.jrex.rexcraft.event;
 
 import net.jrex.rexcraft.RexCraft;
-import net.jrex.rexcraft.entity.client.armor.GreatHelmRenderer;
-import net.jrex.rexcraft.entity.client.armor.Neth_Steel_ArmorRenderer;
-import net.jrex.rexcraft.entity.client.armor.SteelArmorRenderer;
-import net.jrex.rexcraft.entity.client.armor.Steel_DiamondArmorRenderer;
-import net.jrex.rexcraft.item.custom.GreatHelmItem;
-import net.jrex.rexcraft.item.custom.Neth_Steel_ArmorItem;
-import net.jrex.rexcraft.item.custom.SteelArmorItem;
-import net.jrex.rexcraft.item.custom.Steel_DiamondArmorItem;
+import net.jrex.rexcraft.entity.client.armor.*;
+import net.jrex.rexcraft.item.custom.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,6 +17,9 @@ public class ModEventClientBusEvents {
         GeoArmorRenderer.registerArmorRenderer(GreatHelmItem.class, new GreatHelmRenderer());
         GeoArmorRenderer.registerArmorRenderer(Steel_DiamondArmorItem.class, new Steel_DiamondArmorRenderer());
         GeoArmorRenderer.registerArmorRenderer(Neth_Steel_ArmorItem.class, new Neth_Steel_ArmorRenderer());
+        GeoArmorRenderer.registerArmorRenderer(Gold_Neth_Steel_ArmorItem.class, new Gold_Neth_Steel_ArmorRenderer());
+        GeoArmorRenderer.registerArmorRenderer(Diamond_Neth_Steel_ArmorItem.class, new Diamond_Neth_Steel_ArmorRenderer());
+        GeoArmorRenderer.registerArmorRenderer(Steel_Neth_Steel_ArmorItem.class, new Steel_Neth_Steel_ArmorRenderer());
     }
 
 }

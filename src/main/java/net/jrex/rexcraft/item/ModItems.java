@@ -39,6 +39,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
+        public static final RegistryObject<Item> DIAMOND_SHARD = ITEMS.register("diamond_shard",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static final RegistryObject<Item> WITHER_ES = ITEMS.register("wither_es",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
@@ -56,7 +59,7 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> NETHERITE_LONGSWORD = ITEMS.register("netherite_longsword",
                 () -> new BleedSwordItem(Tiers.NETHERITE, 5, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> WITHER_LONGSWORD = ITEMS.register("wither_longsword",
-                () -> new WitherSwordItem(Tiers.NETHERITE, 5, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new WitherSwordItem(Tiers.NETHERITE, 6, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> TRAINING_SWORD = ITEMS.register("training_sword",
                 () -> new SwordItem(ModTiers.STEEL, -3, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
@@ -140,6 +143,45 @@ import net.minecraftforge.registries.RegistryObject;
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> NETH_STEEL_BOOTS = ITEMS.register("neth_steel_boots",
                 () -> new Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.FEET,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> GOLD_NETH_STEEL_HELMET = ITEMS.register("gold_neth_steel_helmet",
+                () -> new Gold_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.HEAD,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> GOLD_NETH_STEEL_CHESTPLATE = ITEMS.register("gold_neth_steel_chestplate",
+                () -> new Gold_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.CHEST,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> GOLD_NETH_STEEL_LEGGING = ITEMS.register("gold_neth_steel_leggings",
+                () -> new Gold_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.LEGS,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> GOLD_NETH_STEEL_BOOTS = ITEMS.register("gold_neth_steel_boots",
+                () -> new Gold_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.FEET,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> DIAMOND_NETH_STEEL_HELMET = ITEMS.register("diamond_neth_steel_helmet",
+                () -> new Diamond_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.HEAD,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DIAMOND_NETH_STEEL_CHESTPLATE = ITEMS.register("diamond_neth_steel_chestplate",
+                () -> new Diamond_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.CHEST,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DIAMOND_NETH_STEEL_LEGGING = ITEMS.register("diamond_neth_steel_leggings",
+                () -> new Diamond_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.LEGS,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> DIAMOND_NETH_STEEL_BOOTS = ITEMS.register("diamond_neth_steel_boots",
+                () -> new Diamond_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.FEET,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> STEEL_NETH_STEEL_HELMET = ITEMS.register("steel_neth_steel_helmet",
+                () -> new Steel_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.HEAD,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> STEEL_NETH_STEEL_CHESTPLATE = ITEMS.register("steel_neth_steel_chestplate",
+                () -> new Steel_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.CHEST,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> STEEL_NETH_STEEL_LEGGING = ITEMS.register("steel_neth_steel_leggings",
+                () -> new Steel_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.LEGS,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> STEEL_NETH_STEEL_BOOTS = ITEMS.register("steel_neth_steel_boots",
+                () -> new Steel_Neth_Steel_ArmorItem(ModArmorMaterials.STEEL_NETHER, EquipmentSlot.FEET,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static void register(IEventBus eventBus) {

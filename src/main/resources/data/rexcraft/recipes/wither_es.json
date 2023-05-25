@@ -4,14 +4,17 @@
     "#": {
       "item": "minecraft:diamond"
     },
+    "$": {
+      "item": "minecraft:obsidian"
+    },
     "X": {
       "item": "minecraft:wither_rose"
     }
   },
   "pattern": [
-    " # ",
+    "$#$",
     "#X#",
-    " # "
+    "$#$"
   ],
   "result": {
     "item": "rexcraft:wither_es",

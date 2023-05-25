@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "rexcraft:item/diamond_neth_steel_leggings"
+  }
+}

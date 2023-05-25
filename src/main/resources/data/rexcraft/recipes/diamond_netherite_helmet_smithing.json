@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "rexcraft:diamond_shard"
+  },
+  "base": {
+    "item": "rexcraft:neth_steel_helmet"
+  },
+  "result": {
+    "item": "rexcraft:diamond_neth_steel_helmet"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "   ",
+    " # ",
+    "   "
+  ],
+  "result": {
+    "item": "rexcraft:diamond_shard",
+    "count": 4
+  }
+}
