@@ -4,7 +4,7 @@
       "item": "rexcraft:dubia"
     },
     "title": "Pest Control",
-    "description": "Tame a leopard gecko",
+    "description": "Tame a leopard gecko.",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true

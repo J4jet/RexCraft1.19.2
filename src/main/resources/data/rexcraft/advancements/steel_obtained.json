@@ -4,7 +4,7 @@
       "item": "rexcraft:steel_ingot"
     },
     "title": "Forged in Fire",
-    "description": "Obtain Steel",
+    "description": "Obtain steel.",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true

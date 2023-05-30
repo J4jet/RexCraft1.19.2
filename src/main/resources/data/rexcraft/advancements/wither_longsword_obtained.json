@@ -3,8 +3,8 @@
     "icon": {
       "item": "rexcraft:wither_es"
     },
-    "title": "Blade of the Great Destroyer",
-    "description": "an unholy relic...",
+    "title": "Legacy of War",
+    "description": "A relic from an age of wolves...",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true

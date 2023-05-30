@@ -4,7 +4,7 @@
       "item": "rexcraft:cat_treat"
     },
     "title": "Emotional Support",
-    "description": "Tame a hedgehog",
+    "description": "Tame a hedgehog.",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true
