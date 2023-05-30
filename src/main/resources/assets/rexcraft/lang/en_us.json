@@ -77,5 +77,8 @@
   "sounds.rexcraft.gecko_hurt": "Leopard Gecko Chirping",
   "effect.rexcraft.bleed": "Bleeding",
 
+  "entity.rexcraft.gecko": "a leopard gecko",
+  "entity.rexcraft.hedgy": "a hedgehog",
+
   "block.rexcraft.weed": "Weeds"
 }
