@@ -79,7 +79,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
                 .add(Attributes.MAX_HEALTH, 8.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.15f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
     }
 
     @Override
@@ -143,6 +143,10 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         return pStack.getItem() == ModItems.DUBIA.get();
     }
 
+    public boolean isHeal(ItemStack pStack){
+        return pStack.getItem() == ModItems.CAT_TREAT.get();
+    }
+
     //DATA_ID_TYPE_VARIANT
     public int getGeckoType() {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
@@ -199,6 +203,16 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
 
         if(isFood(itemstack)){
             return super.mobInteract(player, hand);
+        }
+
+        if(this.isHeal(itemstack) && this.getHealth() < this.getMaxHealth()){
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.heal(2);
+            this.spawnSoulSpeedParticle();
+            return InteractionResult.SUCCESS;
+
         }
 
         if (item == itemForTaming && !isTame()) {

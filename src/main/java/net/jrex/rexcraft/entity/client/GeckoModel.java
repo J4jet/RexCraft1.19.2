@@ -2,6 +2,7 @@ package net.jrex.rexcraft.entity.client;
 
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.entity.custom.GeckoEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
@@ -21,7 +22,13 @@ public class GeckoModel  extends AnimatedGeoModel<GeckoEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(GeckoEntity animatable) {
-        return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
+        String s = ChatFormatting.stripFormatting(animatable.getName().getString());
+        if (s != null && "cursed".equals(s)) {
+            return new ResourceLocation(RexCraft.MOD_ID, "animations/mildgeck.animation.json");
+        } else {
+            return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
+        }
+        //return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
     }
     //Look at the player!
     @SuppressWarnings({ "unchecked", "rawtypes" })
