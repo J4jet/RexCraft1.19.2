@@ -1,9 +1,11 @@
 package net.jrex.rexcraft.item;
 
 import net.jrex.rexcraft.RexCraft;
+import net.jrex.rexcraft.block.ModBlocks;
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.item.custom.*;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,6 +19,16 @@ import net.minecraftforge.registries.RegistryObject;
 
         public static final RegistryObject<Item> WORM = ITEMS.register("worm",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> CRICKET_ITEM = ITEMS.register("cricket_item",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+        public static final RegistryObject<Item> BLUEBERRY_SEEDS = ITEMS.register("blueberry_seeds",
+                () -> new ItemNameBlockItem(ModBlocks.BLUEBERRY_CROP.get(),
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> BLUEBERRY = ITEMS.register("blueberry",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)
+                        .food(new FoodProperties.Builder().nutrition(1).saturationMod(1f).build())));
         public static final RegistryObject<Item> DUBIA = ITEMS.register("dubia",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> ALLO = ITEMS.register("allo",

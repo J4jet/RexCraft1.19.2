@@ -11,6 +11,8 @@ import net.jrex.rexcraft.painting.ModPaintings;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.jrex.rexcraft.world.feature.ModConfiguredFeatures;
 import net.jrex.rexcraft.world.feature.ModPlacedFeatures;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -76,6 +78,7 @@ public class RexCraft
 
             EntityRenderers.register(ModEntityTypes.GECKO.get(), GeckoRenderer::new);
             EntityRenderers.register(ModEntityTypes.HEDGY.get(), HedgyRenderer::new);
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUEBERRY_CROP.get(), RenderType.cutout());
 
         }
     }

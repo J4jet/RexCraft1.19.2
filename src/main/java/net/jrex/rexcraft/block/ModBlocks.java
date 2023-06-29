@@ -1,6 +1,7 @@
 package net.jrex.rexcraft.block;
 
 import net.jrex.rexcraft.RexCraft;
+import net.jrex.rexcraft.block.custom.BlueberryCropBlock;
 import net.jrex.rexcraft.item.ModCreativeModeTab;
 import net.jrex.rexcraft.item.ModItems;
 import net.minecraft.world.effect.MobEffects;
@@ -26,12 +27,18 @@ public class ModBlocks {
             DeferredRegister.create(ForgeRegistries.BLOCKS, RexCraft.MOD_ID);
 
     public static final RegistryObject<Block> WEED = registerBlock("weed",
-            () -> new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 1,
+            () -> new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 3,
+                    BlockBehaviour.Properties.copy(Blocks.DANDELION)), ModCreativeModeTab.REXCRAFT_TAB);
+
+    public static final RegistryObject<Block> BLUEBERRY_BUSH = registerBlock("blueberry_bush",
+            () -> new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 3,
                     BlockBehaviour.Properties.copy(Blocks.DANDELION)), ModCreativeModeTab.REXCRAFT_TAB);
 
     public static final RegistryObject<Block> STEEL_BLOCK = registerBlock("steel_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).strength(7f,10f).requiresCorrectToolForDrops()), ModCreativeModeTab.REXCRAFT_TAB);
 
+    public static final RegistryObject<Block> BLUEBERRY_CROP = BLOCKS.register("blueberry_crop",
+            () -> new BlueberryCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){

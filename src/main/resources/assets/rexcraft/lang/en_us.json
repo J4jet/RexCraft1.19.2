@@ -1,5 +1,9 @@
 {
   "item.rexcraft.worm": "Mealworm",
+  "item.rexcraft.cricket_item": "Cricket",
+  "item.rexcraft.blueberry": "Blueberry",
+  "block.rexcraft.blueberry_bush": "Wild Blueberry Bush",
+  "item.rexcraft.blueberry_seeds": "Blueberry Seeds",
   "item.rexcraft.dubia": "Dubia Roach",
   "item.rexcraft.allo": "Allosaurus Skull",
   "item.rexcraft.cat_treat": "Cat Treats",
@@ -79,6 +83,8 @@
 
   "entity.rexcraft.gecko": "a leopard gecko",
   "entity.rexcraft.hedgy": "a hedgehog",
+
+  "block.rexcraft.blueberry_crop": "Blueberry Bush",
 
   "block.rexcraft.weed": "Weeds"
 }

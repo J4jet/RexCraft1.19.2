@@ -40,6 +40,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
@@ -144,7 +145,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
     }
 
     public boolean isHeal(ItemStack pStack){
-        return pStack.getItem() == ModItems.CAT_TREAT.get();
+        return pStack.getItem() == ModItems.CRICKET_ITEM.get();
     }
 
     //DATA_ID_TYPE_VARIANT
@@ -210,6 +211,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
                 itemstack.shrink(1);
             }
             this.heal(2);
+            this.gameEvent(GameEvent.EAT, this);
             this.spawnSoulSpeedParticle();
             return InteractionResult.SUCCESS;
 

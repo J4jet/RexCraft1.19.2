@@ -1,0 +1,7 @@
+{
+  "parent" : "minecraft:block/cross",
+  "textures": {
+    "cross": "rexcraft:block/blueberry_stage1"
+  },
+  "render_type": "cutout"
+}
