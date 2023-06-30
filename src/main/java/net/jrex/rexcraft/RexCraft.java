@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.jrex.rexcraft.block.ModBlocks;
 import net.jrex.rexcraft.effect.ModEffects;
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.client.CricketRenderer;
 import net.jrex.rexcraft.entity.client.GeckoRenderer;
 import net.jrex.rexcraft.entity.client.HedgyRenderer;
 import net.jrex.rexcraft.item.ModItems;
@@ -78,6 +79,7 @@ public class RexCraft
 
             EntityRenderers.register(ModEntityTypes.GECKO.get(), GeckoRenderer::new);
             EntityRenderers.register(ModEntityTypes.HEDGY.get(), HedgyRenderer::new);
+            EntityRenderers.register(ModEntityTypes.CRICKET.get(), CricketRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUEBERRY_CROP.get(), RenderType.cutout());
 
         }

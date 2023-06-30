@@ -1,6 +1,7 @@
 package net.jrex.rexcraft.entity;
 
 import net.jrex.rexcraft.RexCraft;
+import net.jrex.rexcraft.entity.custom.CricketEntity;
 import net.jrex.rexcraft.entity.custom.GeckoEntity;
 import net.jrex.rexcraft.entity.custom.HedgyEntity;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +28,12 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.of(HedgyEntity::new, MobCategory.CREATURE)
                             .sized(0.8f, 0.6f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "hedgy").toString()));
+
+    public static final RegistryObject<EntityType<CricketEntity>> CRICKET =
+            ENTITY_TYPES.register("cricket",
+                    () -> EntityType.Builder.of(CricketEntity::new, MobCategory.CREATURE)
+                            .sized(0.3f, 0.2f)
+                            .build(new ResourceLocation(RexCraft.MOD_ID, "cricket").toString()));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

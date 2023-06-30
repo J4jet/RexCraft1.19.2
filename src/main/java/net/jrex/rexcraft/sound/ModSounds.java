@@ -28,6 +28,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> GECKO_HURT =
             registerSoundEvent("gecko_hurt");
 
+    public static final RegistryObject<SoundEvent> CRICKET_CHIRP =
+            registerSoundEvent("cricket_chirp");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

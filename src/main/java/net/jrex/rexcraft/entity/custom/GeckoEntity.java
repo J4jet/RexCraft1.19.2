@@ -100,6 +100,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Silverfish.class, false));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Endermite.class, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, CricketEntity.class, false));
 
     }
 
@@ -110,6 +111,8 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.walk", true));
             return PlayState.CONTINUE;
         }
+
+        //if(this.isSprinting())
 
         if (this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
@@ -144,6 +147,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         return pStack.getItem() == ModItems.DUBIA.get();
     }
 
+    //Used as the healing item, in the case of the gecko it's a cricket
     public boolean isHeal(ItemStack pStack){
         return pStack.getItem() == ModItems.CRICKET_ITEM.get();
     }
@@ -202,17 +206,19 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
 
         Item itemForTaming = ModItems.WORM.get();
 
+        //if the item "isFood", just use for taming
         if(isFood(itemstack)){
             return super.mobInteract(player, hand);
         }
 
+        //if the item "isHeal" and the current health is less than the max health of the mob, eat the food and heal
         if(this.isHeal(itemstack) && this.getHealth() < this.getMaxHealth()){
             if (!player.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
             this.heal(2);
             this.gameEvent(GameEvent.EAT, this);
-            this.spawnSoulSpeedParticle();
+            this.spawnTamingParticles(true);
             return InteractionResult.SUCCESS;
 
         }

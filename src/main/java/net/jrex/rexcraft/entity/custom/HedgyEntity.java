@@ -110,7 +110,12 @@ public class HedgyEntity extends TamableAnimal implements IAnimatable {
     public boolean isFood(ItemStack pStack) {
         return pStack.getItem() == ModItems.CAT_TREAT.get();
     }
-    
+
+    //Used as the healing item, in the case of the gecko it's a cricket
+    public boolean isHeal(ItemStack pStack){
+        return pStack.getItem() == ModItems.BLUEBERRY.get();
+    }
+
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
@@ -177,6 +182,18 @@ public class HedgyEntity extends TamableAnimal implements IAnimatable {
 
         if(isFood(itemstack)){
             return super.mobInteract(player, hand);
+        }
+
+        //if the item "isHeal" and the current health is less than the max health of the mob, eat the food and heal
+        if(this.isHeal(itemstack) && this.getHealth() < this.getMaxHealth()){
+            if (!player.getAbilities().instabuild) {
+                itemstack.shrink(1);
+            }
+            this.heal(1);
+            this.gameEvent(GameEvent.EAT, this);
+            this.spawnTamingParticles(true);
+            return InteractionResult.SUCCESS;
+
         }
 
         if (item == itemForTaming && !isTame()) {

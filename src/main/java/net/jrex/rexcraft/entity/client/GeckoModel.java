@@ -22,8 +22,12 @@ public class GeckoModel  extends AnimatedGeoModel<GeckoEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(GeckoEntity animatable) {
+
+        //the string s is being used to store the name of the gecko
         String s = ChatFormatting.stripFormatting(animatable.getName().getString());
-        if (s != null && "cursed".equals(s)) {
+
+        //if it's name is "cursed" use this set of animations instead
+        if ("cursed".equals(s)) {
             return new ResourceLocation(RexCraft.MOD_ID, "animations/mildgeck.animation.json");
         } else {
             return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
@@ -36,6 +40,9 @@ public class GeckoModel  extends AnimatedGeoModel<GeckoEntity> {
     public void setLivingAnimations(GeckoEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         IBone head = this.getAnimationProcessor().getBone("head");
+
+        //experimental, trying to get the neck to move too
+        IBone neck = this.getAnimationProcessor().getBone("neck");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         if (head != null) {
