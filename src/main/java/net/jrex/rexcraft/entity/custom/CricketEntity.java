@@ -99,7 +99,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     }
 
     protected float getSoundVolume() {
-        return 0.2F;
+        return 0.4F;
     }
 
     @Override
