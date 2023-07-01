@@ -16,12 +16,12 @@ import javax.annotation.Nullable;
 public class CricketRenderer extends GeoEntityRenderer<CricketEntity> {
     public CricketRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new CricketModel());
-        this.shadowRadius = 0.2f;
+        this.shadowRadius = 0.07f;
     }
 
     @Override
     public ResourceLocation getTextureLocation(CricketEntity instance) {
-        return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/cricket_entity.png");
+        return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/cricket/cricket.png");
     }
 
     @Override
@@ -30,10 +30,10 @@ public class CricketRenderer extends GeoEntityRenderer<CricketEntity> {
                                     @Nullable VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
         if(animatable.isBaby()){
-            stack.scale(0.1f, 0.1f, 0.1f);
+            stack.scale(0.05f, 0.05f, 0.05f);
         }
         else {
-            stack.scale(0.2f, 0.2f, 0.2f);
+            stack.scale(0.1f, 0.1f, 0.1f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

@@ -17,6 +17,7 @@ public class ModEvents {
         public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
             event.put(ModEntityTypes.GECKO.get(), GeckoEntity.setAttributes());
             event.put(ModEntityTypes.HEDGY.get(), HedgyEntity.setAttributes());
+            event.put(ModEntityTypes.CRICKET.get(), HedgyEntity.setAttributes());
         }
 
     }

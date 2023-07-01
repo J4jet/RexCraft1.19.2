@@ -28,8 +28,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> GECKO_HURT =
             registerSoundEvent("gecko_hurt");
 
-    public static final RegistryObject<SoundEvent> CRICKET_CHIRP =
-            registerSoundEvent("cricket_chirp");
+    public static final RegistryObject<SoundEvent> CRICKET_IDLE =
+            registerSoundEvent("cricket_idle");
 
 
 
