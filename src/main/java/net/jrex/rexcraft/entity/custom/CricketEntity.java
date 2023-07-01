@@ -52,8 +52,8 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
 
     private static AttributeSupplier setAttributes() {
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 4)
-                .add(Attributes.MOVEMENT_SPEED, 3).build();
+                .add(Attributes.MAX_HEALTH, 0.5f)
+                .add(Attributes.MOVEMENT_SPEED, 2.5).build();
 
     }
 
@@ -74,11 +74,11 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("cricket.animation.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("cricket.animation.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         return PlayState.CONTINUE;
     }
 
@@ -95,7 +95,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.CRICKET_CHIRP.get();
+        return ModSounds.CRICKET_IDLE.get();
     }
 
     protected float getSoundVolume() {

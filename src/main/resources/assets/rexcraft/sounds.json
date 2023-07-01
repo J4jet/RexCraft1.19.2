@@ -1,4 +1,12 @@
 {
+
+  "cricket_idle": {
+    "subtitle": "sounds.rexcraft.cricket_idle",
+    "sounds": [
+      "rexcraft:cricket_idle"
+    ]
+  },
+
   "hedgy_idle": {
     "subtitle": "sounds.rexcraft.hedgy_idle",
     "sounds": [

@@ -32,7 +32,7 @@ public class ModEntityTypes {
     public static final RegistryObject<EntityType<CricketEntity>> CRICKET =
             ENTITY_TYPES.register("cricket",
                     () -> EntityType.Builder.of(CricketEntity::new, MobCategory.CREATURE)
-                            .sized(0.3f, 0.2f)
+                            .sized(0.1f, 0.1f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "cricket").toString()));
 
     public static void register(IEventBus eventBus) {
