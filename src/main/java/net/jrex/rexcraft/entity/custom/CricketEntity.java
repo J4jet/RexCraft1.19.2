@@ -50,7 +50,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
         return pStack.getItem() == Items.CARROT;
     }
 
-    private static AttributeSupplier setAttributes() {
+    public static AttributeSupplier setAttributes() {
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 0.5f)
                 .add(Attributes.MOVEMENT_SPEED, 2.5).build();

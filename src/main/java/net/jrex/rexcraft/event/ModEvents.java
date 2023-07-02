@@ -2,6 +2,8 @@ package net.jrex.rexcraft.event;
 
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.custom.BucklandiiEntity;
+import net.jrex.rexcraft.entity.custom.CricketEntity;
 import net.jrex.rexcraft.entity.custom.GeckoEntity;
 import net.jrex.rexcraft.entity.custom.HedgyEntity;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -17,7 +19,8 @@ public class ModEvents {
         public static void entityAttributeEvent(EntityAttributeCreationEvent event) {
             event.put(ModEntityTypes.GECKO.get(), GeckoEntity.setAttributes());
             event.put(ModEntityTypes.HEDGY.get(), HedgyEntity.setAttributes());
-            event.put(ModEntityTypes.CRICKET.get(), HedgyEntity.setAttributes());
+            event.put(ModEntityTypes.CRICKET.get(), CricketEntity.setAttributes());
+            event.put(ModEntityTypes.BUCKLANDII.get(), BucklandiiEntity.setAttributes());
         }
 
     }

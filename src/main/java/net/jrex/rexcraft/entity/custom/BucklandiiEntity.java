@@ -24,11 +24,16 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -73,7 +78,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
                 .add(Attributes.MAX_HEALTH, 8.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
 
     @Override
@@ -81,19 +86,17 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
-        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(3, new PanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
-        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.5D, 2.5D));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(Items.EGG), false));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Silverfish.class, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Endermite.class, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, CricketEntity.class, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Cow.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Sheep.class, true));
 
     }
 
@@ -101,18 +104,18 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bucklandii.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
             return PlayState.CONTINUE;
         }
 
         //if(this.isSprinting())
 
         if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bucklandii.sitting", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bucklandii.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle1", true));
         return PlayState.CONTINUE;
     }
 
@@ -120,7 +123,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
         if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bucklandii.attack", false));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack1", false));
             this.swinging = false;
         }
 
@@ -141,6 +144,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket
+    //look into wolf class to see how meat works
     public boolean isHeal(ItemStack pStack){
         return pStack.getItem() == ModItems.CRICKET_ITEM.get();
     }
@@ -297,12 +301,12 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.16f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.16f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
         }
     }
 

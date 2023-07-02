@@ -40,7 +40,7 @@ public class ModEntityTypes {
             ENTITY_TYPES.register("bucklandii",
                     () -> EntityType.Builder.of(BucklandiiEntity::new, MobCategory.CREATURE)
                             //Hitbox Size!
-                            .sized(0.9f, 0.9f)
+                            .sized(2.4f, 2.5f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "bucklandii").toString()));
 
     public static void register(IEventBus eventBus) {

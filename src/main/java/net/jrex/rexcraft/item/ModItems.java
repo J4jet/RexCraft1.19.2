@@ -34,6 +34,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> ALLO = ITEMS.register("allo",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
+        public static final RegistryObject<Item> MEG_JAW = ITEMS.register("meg_jaw",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static final RegistryObject<Item> GECKO_TAIL = ITEMS.register("gecko_tail",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
@@ -45,12 +48,17 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> GECKO_SPAWN_EGG = ITEMS.register("gecko_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.GECKO, 0xFFD133, 0x25241F,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
+        public static final RegistryObject<Item> BUCKLANDII_SPAWN_EGG = ITEMS.register("bucklandii_spawn_egg",
+                () -> new ForgeSpawnEggItem(ModEntityTypes.BUCKLANDII, 0x25241F, 0xFFD133,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static final RegistryObject<Item> HEDGY_SPAWN_EGG = ITEMS.register("hedgy_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.HEDGY, 0x502e22, 0xffede6,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
         public static final RegistryObject<Item> CRICKET_SPAWN_EGG = ITEMS.register("cricket_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.CRICKET, 0x502e22, 0xFFD133,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.CRICKET, 0x502e22, 0x25241F,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
