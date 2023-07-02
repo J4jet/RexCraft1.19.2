@@ -39,5 +39,19 @@
     "sounds": [
       "rexcraft:gecko_hurt"
     ]
+  },
+
+  "bucklandii_death": {
+    "subtitle": "sounds.rexcraft.bucklandii.bucklandii_death",
+    "sounds": [
+      "rexcraft:bucklandii_death"
+    ]
+  },
+
+  "bucklandii_hurt": {
+    "subtitle": "sounds.rexcraft.bucklandii.bucklandii_hurt",
+    "sounds": [
+      "rexcraft:bucklandii_hurt"
+    ]
   }
 }
