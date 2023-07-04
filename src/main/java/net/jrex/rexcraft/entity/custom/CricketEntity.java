@@ -53,7 +53,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     public static AttributeSupplier setAttributes() {
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 0.5f)
-                .add(Attributes.MOVEMENT_SPEED, 2.5).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.9).build();
 
     }
 
@@ -61,7 +61,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(2, new PanicGoal(this, 2.0D));
+        this.goalSelector.addGoal(2, new PanicGoal(this, 1.5D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, GeckoEntity.class, 8.0F, 2.5D, 2.5D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
@@ -99,7 +99,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     }
 
     protected float getSoundVolume() {
-        return 0.4F;
+        return 0.5F;
     }
 
     @Override

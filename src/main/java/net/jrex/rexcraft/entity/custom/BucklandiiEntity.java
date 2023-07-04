@@ -23,11 +23,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Silverfish;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
@@ -49,6 +51,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+
+import java.util.List;
 import java.util.Random;
 
 public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
@@ -75,41 +79,46 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 8.0D)
-                .add(Attributes.ATTACK_DAMAGE, 2.0f)
+                .add(Attributes.MAX_HEALTH, 15.0D)
+                .add(Attributes.ATTACK_DAMAGE, 4.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
-        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
-        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(Items.EGG), false));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Cow.class, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Sheep.class, true));
 
+            this.goalSelector.addGoal(1, new FloatGoal(this));
+            this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+            this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
+            this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
+            this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+            this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
+            this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
+            this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+            this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+            this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Cow.class, true));
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, true));
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Sheep.class, true));
+            //this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Villager.class, true));
     }
-
 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
-            return PlayState.CONTINUE;
+            if(this.isSprinting()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle1", true));
+                return PlayState.CONTINUE;
+            }
+            else{
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+                return PlayState.CONTINUE;
+            }
+
         }
 
         //if(this.isSprinting())
-
         if (this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
             return PlayState.CONTINUE;
@@ -124,10 +133,18 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
         //int rand_int = rand.nextInt(upperbound);
 
-        //System.out.println("rand_ int = " + rand_int);
+        //if(event.getController().getCurrentAnimation() != null){
+            //System.out.println("Animation Name = " + event.getController().getCurrentAnimation().toString());
+        //}
+        //System.out.println("Animation Name = " + event.getController().getCurrentAnimation().toString());
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle1", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle0", true));
         return PlayState.CONTINUE;
+
+//        if(event.getController().getCurrentAnimation().toString().equals("idle1")) {
+//            event.getController().markNeedsReload();
+//        }
+        //return PlayState.CONTINUE;
 
     }
 
@@ -161,13 +178,14 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
     @Override
     public boolean isFood(ItemStack pStack){
-        return pStack.getItem() == ModItems.DUBIA.get();
+        Item item = pStack.getItem();
+        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket
     //look into wolf class to see how meat works
     public boolean isHeal(ItemStack pStack){
-        return pStack.getItem() == ModItems.CRICKET_ITEM.get();
+        return pStack.getItem() == ModItems.BLUEBERRY.get();
     }
 
     //DATA_ID_TYPE_VARIANT
@@ -203,6 +221,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
         return ModSounds.BUCKLANDII_DEATH.get();
     }
 
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.BUCKLANDII_IDLE.get();
+    }
+
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
     }
@@ -222,7 +244,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
-        Item itemForTaming = ModItems.WORM.get();
+        Item itemForTaming = Items.EGG;
 
         //if the item "isFood", just use for taming
         if(isFood(itemstack)){
@@ -323,6 +345,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+
+
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2D);
@@ -351,4 +375,24 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
     private void setVariant(BucklandiiVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
+
+//    /**
+//     * Loops through nearby animals and finds another animal of the same type that can be mated with. Returns the first
+//     * valid mate found.
+//     */
+//    @javax.annotation.Nullable
+//    private Animal getFreePartner() {
+//        List<? extends Animal> list = this.level.getNearbyEntities(this.partnerClass, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(8.0D));
+//        double d0 = Double.MAX_VALUE;
+//        Animal animal = null;
+//
+//        for(Animal animal1 : list) {
+//            if (this.animal.canMate(animal1) && this.animal.distanceToSqr(animal1) < d0) {
+//                animal = animal1;
+//                d0 = this.animal.distanceToSqr(animal1);
+//            }
+//        }
+//
+//        return animal;
+//    }
 }

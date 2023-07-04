@@ -42,14 +42,21 @@
   },
 
   "bucklandii_death": {
-    "subtitle": "sounds.rexcraft.bucklandii.bucklandii_death",
+    "subtitle": "sounds.rexcraft.bucklandii_death",
     "sounds": [
-      "rexcraft:bucklandii_death"
+      "rexcraft:bucklandii:bucklandii_death"
+    ]
+  },
+
+  "bucklandii_idle": {
+    "subtitle": "sounds.rexcraft.bucklandii_growl_1",
+    "sounds": [
+      "rexcraft:bucklandii:bucklandii_growl_1"
     ]
   },
 
   "bucklandii_hurt": {
-    "subtitle": "sounds.rexcraft.bucklandii.bucklandii_hurt",
+    "subtitle": "sounds.rexcraft.bucklandii_hurt",
     "sounds": [
       "rexcraft:bucklandii_hurt"
     ]

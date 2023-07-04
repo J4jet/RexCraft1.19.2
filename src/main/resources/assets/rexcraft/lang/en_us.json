@@ -77,12 +77,20 @@
   "item.rexcraft.diamond_shard": "Diamond Shard",
 
   "itemGroup.rexcrafttab": "RexCraft",
+
+
   "sounds.rexcraft.hedgy_idle": "Hedgehog Hiss",
   "sounds.rexcraft.cricket_idle": "Cricket Chirp",
   "sounds.rexcraft.hedgy_pain": "Hedgehog in Pain",
   "sounds.rexcraft.hedgy_death": "Hedgehog Dying",
   "sounds.rexcraft.gecko_death": "Leopard Gecko Screaming",
+  "sounds.rexcraft.bucklandii_hurt": "Meg_sound_hurt",
+  "sounds.rexcraft.bucklandii_death": "Meg_sound_dead",
+  "sounds.rexcraft.bucklandii_growl": "Meg_sound_growl",
   "sounds.rexcraft.gecko_hurt": "Leopard Gecko Chirping",
+
+
+
   "effect.rexcraft.bleed": "Bleeding",
 
   "entity.rexcraft.gecko": "a leopard gecko",
