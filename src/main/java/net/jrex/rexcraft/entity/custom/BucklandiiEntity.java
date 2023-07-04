@@ -2,7 +2,6 @@ package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.variant.BucklandiiVariant;
-import net.jrex.rexcraft.entity.variant.GeckoVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
@@ -50,6 +49,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import java.util.Random;
 
 public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
@@ -115,15 +115,36 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
             return PlayState.CONTINUE;
         }
 
+        //So this is working but not how I want it to. It's changing the number every tick and therefore cannot choose an animation.
+        //I need to find a way to have it only call this when the animation ends. Maybe make a separate method to call?
+
+        //Random rand = new Random();
+
+        //int upperbound = 2;
+
+        //int rand_int = rand.nextInt(upperbound);
+
+        //System.out.println("rand_ int = " + rand_int);
+
         event.getController().setAnimation(new AnimationBuilder().addAnimation("idle1", true));
         return PlayState.CONTINUE;
+
     }
 
+    //this could be useful!
+    //can confirm, VERY useful!
     private PlayState attackPredicate(AnimationEvent event) {
 
         if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack1", false));
+
+            Random rand = new Random();
+
+            int upperbound = 3;
+
+            int rand_int = rand.nextInt(upperbound);
+
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
             this.swinging = false;
         }
 
@@ -170,7 +191,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 4.0F);
     }
 
 

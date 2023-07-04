@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"attack3": {
+		"attack0": {
 			"animation_length": 0.625,
 			"bones": {
 				"neck": {
@@ -597,7 +597,7 @@
 				}
 			}
 		},
-		"idle2": {
+		"idle0": {
 			"loop": true,
 			"bones": {
 				"meg": {
