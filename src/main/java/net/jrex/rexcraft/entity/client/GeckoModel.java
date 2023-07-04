@@ -49,5 +49,11 @@ public class GeckoModel  extends AnimatedGeoModel<GeckoEntity> {
             head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
             head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
         }
+
+        //WWWWWOOOOOOOO YYYYEEEEAAAAHHHH BABY THAT'S WHAT I'VE BEEN WAITIN FOR
+        if(neck != null){
+            neck.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+            neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+        }
     }
 }
