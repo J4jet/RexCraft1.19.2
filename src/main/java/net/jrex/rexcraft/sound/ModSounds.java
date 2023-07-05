@@ -34,8 +34,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> BUCKLANDII_HURT =
             registerSoundEvent("bucklandii_hurt");
 
-    public static final RegistryObject<SoundEvent> BUCKLANDII_IDLE =
-            registerSoundEvent("bucklandii_idle");
+    public static final RegistryObject<SoundEvent> BUCKLANDII_GROWL =
+            registerSoundEvent("bucklandii_growl");
 
     public static final RegistryObject<SoundEvent> CRICKET_IDLE =
             registerSoundEvent("cricket_idle");

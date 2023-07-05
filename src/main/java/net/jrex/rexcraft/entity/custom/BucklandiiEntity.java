@@ -161,9 +161,16 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
             int rand_int = rand.nextInt(upperbound);
 
+
+            //System.out.println("Attacking!");
+            //this.playSound(ModSounds.BUCKLANDII_HURT.get(),0.9f,1.0f);
+            //this.playSound(SoundEvents.CHICKEN_HURT,0.9f,1.0f);
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
+
             this.swinging = false;
         }
+
+       // this.playSound(ModSounds.BUCKLANDII_HURT.get(),0.9f,1.0f);
 
         return PlayState.CONTINUE;
     }
@@ -222,7 +229,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.BUCKLANDII_IDLE.get();
+        return ModSounds.BUCKLANDII_GROWL.get();
     }
 
     protected SoundEvent getSwimSound() {

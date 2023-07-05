@@ -53,7 +53,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     public static AttributeSupplier setAttributes() {
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 0.5f)
-                .add(Attributes.MOVEMENT_SPEED, 0.9).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.16).build();
 
     }
 
@@ -99,7 +99,7 @@ public class CricketEntity extends TamableAnimal implements IAnimatable {
     }
 
     protected float getSoundVolume() {
-        return 0.5F;
+        return 0.8F;
     }
 
     @Override

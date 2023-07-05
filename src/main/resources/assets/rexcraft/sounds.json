@@ -1,19 +1,10 @@
 {
-
-  "cricket_idle": {
-    "subtitle": "sounds.rexcraft.cricket_idle",
-    "sounds": [
-      "rexcraft:cricket_idle"
-    ]
-  },
-
   "hedgy_idle": {
     "subtitle": "sounds.rexcraft.hedgy_idle",
     "sounds": [
       "rexcraft:hedgy_idle"
     ]
   },
-
   "hedgy_pain": {
     "subtitle": "sounds.rexcraft.hedgy_pain",
     "sounds": [
@@ -26,32 +17,22 @@
       "rexcraft:hedgy_death"
     ]
   },
-
   "gecko_death": {
     "subtitle": "sounds.rexcraft.gecko_death",
     "sounds": [
       "rexcraft:gecko_death"
     ]
   },
-
   "gecko_hurt": {
     "subtitle": "sounds.rexcraft.gecko_hurt",
     "sounds": [
       "rexcraft:gecko_hurt"
     ]
   },
-
-  "bucklandii_death": {
-    "subtitle": "sounds.rexcraft.bucklandii_death",
+  "cricket_idle": {
+    "subtitle": "sounds.rexcraft.cricket_idle",
     "sounds": [
-      "rexcraft:bucklandii:bucklandii_death"
-    ]
-  },
-
-  "bucklandii_idle": {
-    "subtitle": "sounds.rexcraft.bucklandii_growl_1",
-    "sounds": [
-      "rexcraft:bucklandii:bucklandii_growl_1"
+      "rexcraft:cricket_idle"
     ]
   },
 
@@ -59,6 +40,18 @@
     "subtitle": "sounds.rexcraft.bucklandii_hurt",
     "sounds": [
       "rexcraft:bucklandii_hurt"
+    ]
+  },
+  "bucklandii_death": {
+    "subtitle": "sounds.rexcraft.bucklandii_death",
+    "sounds": [
+      "rexcraft:bucklandii_death"
+    ]
+  },
+  "bucklandii_growl": {
+    "subtitle": "sounds.rexcraft.bucklandii_growl",
+    "sounds": [
+      "rexcraft:bucklandii_growl"
     ]
   }
 }

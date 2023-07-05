@@ -1099,7 +1099,7 @@
 			},
 			"sound_effects": {
 				"1.4583": {
-					"effect": "bucklandii_growl_1.mp3"
+					"effect": "bucklandii_growl"
 				}
 			}
 		},

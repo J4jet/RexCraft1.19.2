@@ -42,7 +42,7 @@ public class GeckoModel  extends AnimatedGeoModel<GeckoEntity> {
         IBone head = this.getAnimationProcessor().getBone("head");
 
         //experimental, trying to get the neck to move too
-        IBone neck = this.getAnimationProcessor().getBone("neck");
+        //IBone neck = this.getAnimationProcessor().getBone("neck2");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         if (head != null) {
@@ -51,9 +51,9 @@ public class GeckoModel  extends AnimatedGeoModel<GeckoEntity> {
         }
 
         //WWWWWOOOOOOOO YYYYEEEEAAAAHHHH BABY THAT'S WHAT I'VE BEEN WAITIN FOR
-        if(neck != null){
-            neck.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
-            neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
-        }
+//        if(neck != null){
+//            neck.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+//            neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+//        }
     }
 }

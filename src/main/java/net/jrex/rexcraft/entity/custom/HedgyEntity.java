@@ -5,6 +5,7 @@ import net.jrex.rexcraft.entity.variant.HedgyVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
+import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

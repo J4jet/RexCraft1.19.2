@@ -33,20 +33,22 @@
 					"name": "neck",
 					"parent": "body1",
 					"pivot": [-1, 10.4, -20],
-					"rotation": [15, -12.5, 0]
-				},
-				{
-					"name": "neck2",
-					"parent": "neck",
-					"pivot": [-4, 19.4, -34],
+					"rotation": [15, -12.5, 0],
 					"cubes": [
-						{"origin": [-8.1, 15.46687, -29.31758], "size": [15.2, 7.6, 6], "pivot": [-4, 19.4, -29], "rotation": [-30, 0, 0], "uv": [0, 128]},
 						{"origin": [-7.1, 15.56687, -25.31758], "size": [13.2, 6.9, 9], "pivot": [-4, 19.4, -29], "rotation": [-30, 0, 0], "uv": [46, 114]}
 					]
 				},
 				{
-					"name": "head",
+					"name": "neck2",
 					"parent": "neck",
+					"pivot": [-1, 16.4, -25],
+					"cubes": [
+						{"origin": [-8.1, 15.46687, -29.31758], "size": [15.2, 7.6, 6], "pivot": [-4, 19.4, -29], "rotation": [-30, 0, 0], "uv": [0, 128]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "neck2",
 					"pivot": [-1, 19.4, -29],
 					"rotation": [-10, 0, 0],
 					"cubes": [
