@@ -90,10 +90,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
             this.goalSelector.addGoal(1, new FloatGoal(this));
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-            this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
             this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
+            this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
+            this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.0D, false));
             this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-            this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
             this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
             this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
             this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
