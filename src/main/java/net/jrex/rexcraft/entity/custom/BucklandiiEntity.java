@@ -52,6 +52,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+//Things for being angry:
+//Use these things to be able to make this mob angry, make sure you have everything or it will not work.
+import net.minecraft.world.entity.NeutralMob;
+
 import java.util.List;
 import java.util.Random;
 
