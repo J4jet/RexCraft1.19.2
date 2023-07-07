@@ -597,7 +597,7 @@
 				}
 			}
 		},
-		"idle0": {
+		"idle": {
 			"loop": true,
 			"bones": {
 				"meg": {
