@@ -32,7 +32,10 @@ public class BucklandiiModel extends AnimatedGeoModel<BucklandiiEntity> {
         if ("mildred".equals(s) || "Mildred".equals(s)) {
             return new ResourceLocation(RexCraft.MOD_ID, "animations/bucklandii_mild.animation.json");
         } else {
-            return new ResourceLocation(RexCraft.MOD_ID, "animations/bucklandii.animation.json");
+            if(animatable.isAngry()){
+                return new ResourceLocation(RexCraft.MOD_ID, "animations/bucklandii_angry.animation.json");
+            }
+            else{return new ResourceLocation(RexCraft.MOD_ID, "animations/bucklandii.animation.json");}
         }
         //return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
     }

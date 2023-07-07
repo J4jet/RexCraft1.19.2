@@ -13,6 +13,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -21,12 +23,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Cow;
-import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.npc.Villager;
@@ -58,14 +56,29 @@ import net.minecraft.world.entity.NeutralMob;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+import java.util.function.Predicate;
 
-public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
+public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob {
 
     private static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
+
+    public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
+        EntityType<?> entitytype = p_30437_.getType();
+        return entitytype == EntityType.VILLAGER || entitytype == EntityType.COW || entitytype == EntityType.SHEEP || entitytype == EntityType.PIG
+                || entitytype == EntityType.LLAMA || entitytype == EntityType.HORSE;
+    };
+
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
+
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 40);
+
+    @Nullable
+    private UUID persistentAngerTarget;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -101,11 +114,16 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
             this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
             this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
             this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-            this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
-            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Cow.class, true));
-            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, true));
-            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Sheep.class, true));
-            //this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Villager.class, true));
+
+            this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+            this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+            this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+            //this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+            //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Cow.class, true));
+            //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, true));
+            //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Sheep.class, true));
+            this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
+            this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
 
@@ -142,7 +160,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
         //}
         //System.out.println("Animation Name = " + event.getController().getCurrentAnimation().toString());
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle0", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         return PlayState.CONTINUE;
 
 //        if(event.getController().getCurrentAnimation().toString().equals("idle1")) {
@@ -233,7 +251,13 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.BUCKLANDII_GROWL.get();
+
+        if(this.isAngry()){
+            return ModSounds.BUCKLANDII_HURT.get();
+        }
+        else {
+            return ModSounds.BUCKLANDII_GROWL.get();
+        }
     }
 
     protected SoundEvent getSwimSound() {
@@ -246,6 +270,15 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
     protected float getSoundVolume() {
         return 0.8F;
+    }
+
+    public void aiStep() {
+        super.aiStep();
+
+        if (!this.level.isClientSide) {
+            this.updatePersistentAnger((ServerLevel)this.level, true);
+        }
+
     }
 
 
@@ -328,6 +361,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
         this.entityData.define(DATA_ID_TYPE_VARIANT,0);
+        this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
     }
 
     public void setSitting(boolean sitting) {
@@ -385,6 +419,33 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable {
 
     private void setVariant(BucklandiiVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+    }
+
+    @Override
+    public int getRemainingPersistentAngerTime() {
+        return this.entityData.get(DATA_REMAINING_ANGER_TIME);
+    }
+
+    @Override
+    public void setRemainingPersistentAngerTime(int pTime) {
+        this.entityData.set(DATA_REMAINING_ANGER_TIME, pTime);
+    }
+
+
+    @Nullable
+    @Override
+    public UUID getPersistentAngerTarget() {
+        return this.persistentAngerTarget;
+    }
+
+    @Override
+    public void setPersistentAngerTarget(@javax.annotation.Nullable UUID pTarget) {
+        this.persistentAngerTarget = pTarget;
+    }
+
+    @Override
+    public void startPersistentAngerTimer() {
+        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
 
 //    /**
