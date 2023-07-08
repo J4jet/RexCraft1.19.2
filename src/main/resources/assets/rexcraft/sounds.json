@@ -53,5 +53,12 @@
     "sounds": [
       "rexcraft:bucklandii_growl"
     ]
+  },
+
+  "bucklandii_angry": {
+    "subtitle": "sounds.rexcraft.bucklandii_angry",
+    "sounds": [
+      "rexcraft:bucklandii_angry"
+    ]
   }
 }

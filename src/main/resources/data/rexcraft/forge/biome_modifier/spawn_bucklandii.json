@@ -1,0 +1,15 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:savanna_plateau",
+    "minecraft:windswept_savanna",
+    "minecraft:savanna",
+    "minecraft:swamp"
+  ],
+  "spawners": {
+    "type": "rexcraft:bucklandii",
+    "weight": 80,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

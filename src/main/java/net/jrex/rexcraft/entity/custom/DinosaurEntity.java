@@ -13,7 +13,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
@@ -25,16 +24,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.monster.Endermite;
-import net.minecraft.world.entity.monster.Silverfish;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,43 +44,35 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-//Things for being angry:
-//Use these things to be able to make this mob angry, make sure you have everything or it will not work.
-import net.minecraft.world.entity.NeutralMob;
-
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob {
+public abstract class DinosaurEntity extends TamableAnimal implements IAnimatable, NeutralMob {
 
     private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(DinosaurEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(DinosaurEntity.class, EntityDataSerializers.INT);
 
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
-        return entitytype == EntityType.VILLAGER || entitytype == EntityType.COW || entitytype == EntityType.SHEEP || entitytype == EntityType.PIG
-                || entitytype == EntityType.LLAMA || entitytype == EntityType.HORSE;
+        return entitytype == EntityType.VILLAGER;
     };
 
-    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(DinosaurEntity.class, EntityDataSerializers.INT);
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 40);
 
     @Nullable
     private UUID persistentAngerTarget;
 
-    private int destroyBlocksTick;
-
     private AnimationFactory factory = new AnimationFactory(this);
 
 
 
-    public BucklandiiEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
+    public DinosaurEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -132,14 +117,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
-            if(this.isSprinting()){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle1", true));
-                return PlayState.CONTINUE;
-            }
-            else{
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
                 return PlayState.CONTINUE;
-            }
 
         }
 
@@ -149,36 +128,17 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             return PlayState.CONTINUE;
         }
 
-        //So this is working but not how I want it to. It's changing the number every tick and therefore cannot choose an animation.
-        //I need to find a way to have it only call this when the animation ends. Maybe make a separate method to call?
-
-        //Random rand = new Random();
-
-        //int upperbound = 2;
-
-        //int rand_int = rand.nextInt(upperbound);
-
-        //if(event.getController().getCurrentAnimation() != null){
-            //System.out.println("Animation Name = " + event.getController().getCurrentAnimation().toString());
-        //}
-        //System.out.println("Animation Name = " + event.getController().getCurrentAnimation().toString());
-
         event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         return PlayState.CONTINUE;
 
-//        if(event.getController().getCurrentAnimation().toString().equals("idle1")) {
-//            event.getController().markNeedsReload();
-//        }
-        //return PlayState.CONTINUE;
-
     }
 
-    //this could be useful!
-    //can confirm, VERY useful!
     private PlayState attackPredicate(AnimationEvent event) {
 
         if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
             event.getController().markNeedsReload();
+
+            //this bit here is used to grab a random attack animation
 
             Random rand = new Random();
 
@@ -186,50 +146,30 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
             int rand_int = rand.nextInt(upperbound);
 
-
-            //System.out.println("Attacking!");
-            //this.playSound(ModSounds.BUCKLANDII_HURT.get(),0.9f,1.0f);
-            //this.playSound(SoundEvents.CHICKEN_HURT,0.9f,1.0f);
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
 
             this.swinging = false;
         }
 
-       // this.playSound(ModSounds.BUCKLANDII_HURT.get(),0.9f,1.0f);
-
         return PlayState.CONTINUE;
-    }
-
-    @Deprecated //Forge: DO NOT USE use BlockState.canEntityDestroy
-    public static boolean canDestroy(BlockState pState) {
-        return !pState.isAir() && !pState.is(BlockTags.WITHER_IMMUNE);
     }
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
-        BucklandiiEntity baby = ModEntityTypes.BUCKLANDII.get().create(serverLevel);
-        BucklandiiVariant variant = Util.getRandom(BucklandiiVariant.values(), this.random);
-        baby.setVariant(variant);
-        return baby;
+        return null;
     }
 
     @Override
     public boolean isFood(ItemStack pStack){
         Item item = pStack.getItem();
-        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
+        return true;
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket
     //look into wolf class to see how meat works
     public boolean isHeal(ItemStack pStack){
-        return pStack.getItem() == ModItems.BLUEBERRY.get();
+        return true;
     }
-
-    //DATA_ID_TYPE_VARIANT
-//    public int getGeckoType() {
-//        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-//    }
-
 
     @Override
     public void registerControllers(AnimationData data) {
@@ -238,35 +178,11 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     }
 
-
     @Override
     public AnimationFactory getFactory() {
         return factory;
     }
 
-
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 4.0F);
-    }
-
-
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.BUCKLANDII_HURT.get();
-    }
-
-    protected SoundEvent getDeathSound() {
-        return ModSounds.BUCKLANDII_DEATH.get();
-    }
-
-    protected SoundEvent getAmbientSound() {
-
-        if(this.isAngry()){
-            return ModSounds.BUCKLANDII_ANGRY.get();
-        }
-        else {
-            return ModSounds.BUCKLANDII_GROWL.get();
-        }
-    }
 
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
@@ -360,7 +276,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("isSitting", this.isSitting());
-        tag.putInt("Variant",this.getTypeVariant());
     }
 
 
@@ -408,27 +323,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         }
     }
 
-    /* VARIANTS */
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
-                                        MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
-                                        @Nullable CompoundTag p_146750_) {
-        BucklandiiVariant variant = Util.getRandom(BucklandiiVariant.values(), this.random);
-        setVariant(variant);
-        return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
-    }
-
-    public BucklandiiVariant getVariant() {
-        return BucklandiiVariant.byId(this.getTypeVariant() & 255);
-    }
-
-    private int getTypeVariant() {
-        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-    }
-
-    private void setVariant(BucklandiiVariant variant) {
-        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
-    }
-
     @Override
     public int getRemainingPersistentAngerTime() {
         return this.entityData.get(DATA_REMAINING_ANGER_TIME);
@@ -455,24 +349,4 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
-
-//    /**
-//     * Loops through nearby animals and finds another animal of the same type that can be mated with. Returns the first
-//     * valid mate found.
-//     */
-//    @javax.annotation.Nullable
-//    private Animal getFreePartner() {
-//        List<? extends Animal> list = this.level.getNearbyEntities(this.partnerClass, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(8.0D));
-//        double d0 = Double.MAX_VALUE;
-//        Animal animal = null;
-//
-//        for(Animal animal1 : list) {
-//            if (this.animal.canMate(animal1) && this.animal.distanceToSqr(animal1) < d0) {
-//                animal = animal1;
-//                d0 = this.animal.distanceToSqr(animal1);
-//            }
-//        }
-//
-//        return animal;
-//    }
 }

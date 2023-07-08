@@ -70,6 +70,8 @@ public class RexCraft
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
             SpawnPlacements.register(ModEntityTypes.CRICKET.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
+            SpawnPlacements.register(ModEntityTypes.BUCKLANDII.get(),
+                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
         });
     }
 
