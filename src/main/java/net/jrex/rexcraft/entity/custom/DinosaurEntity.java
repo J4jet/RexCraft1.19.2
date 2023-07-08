@@ -76,20 +76,6 @@ public abstract class DinosaurEntity extends TamableAnimal implements IAnimatabl
         super(pEntityType, pLevel);
     }
 
-
-    @Nullable
-
-
-
-    public static AttributeSupplier setAttributes() {
-
-        return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0f)
-                .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
-    }
-
     @Override
     protected void registerGoals() {
 
@@ -190,10 +176,6 @@ public abstract class DinosaurEntity extends TamableAnimal implements IAnimatabl
 
     protected SoundEvent getSwimSplashSound() {
         return SoundEvents.GENERIC_SPLASH;
-    }
-
-    protected float getSoundVolume() {
-        return 0.8F;
     }
 
     public void aiStep() {
@@ -305,23 +287,6 @@ public abstract class DinosaurEntity extends TamableAnimal implements IAnimatabl
         return true;
     }
 
-    @Override
-    public void setTame(boolean tamed) {
-        super.setTame(tamed);
-        if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(18.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.3D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
-
-
-        } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(15.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
-        }
-    }
 
     @Override
     public int getRemainingPersistentAngerTime() {

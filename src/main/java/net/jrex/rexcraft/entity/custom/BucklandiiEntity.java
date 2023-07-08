@@ -13,12 +13,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -60,7 +59,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob {
+public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob, ContainerListener, HasCustomInventoryScreen, PlayerRideableJumping, Saddleable {
 
     private static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
@@ -454,6 +453,51 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     @Override
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    @Override
+    public void containerChanged(Container pContainer) {
+
+    }
+
+    @Override
+    public void openCustomInventoryScreen(Player pPlayer) {
+
+    }
+
+    @Override
+    public void onPlayerJump(int pJumpPower) {
+
+    }
+
+    @Override
+    public boolean canJump() {
+        return false;
+    }
+
+    @Override
+    public void handleStartJump(int pJumpPower) {
+
+    }
+
+    @Override
+    public void handleStopJump() {
+
+    }
+
+    @Override
+    public boolean isSaddleable() {
+        return false;
+    }
+
+    @Override
+    public void equipSaddle(@Nullable SoundSource pSource) {
+
+    }
+
+    @Override
+    public boolean isSaddled() {
+        return false;
     }
 
 //    /**
