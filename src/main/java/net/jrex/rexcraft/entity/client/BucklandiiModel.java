@@ -14,7 +14,10 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class BucklandiiModel extends AnimatedGeoModel<BucklandiiEntity> {
     @Override
     public ResourceLocation getModelResource(BucklandiiEntity object) {
-        return new ResourceLocation(RexCraft.MOD_ID, "geo/bucklandii.geo.json");
+        if(object.isSaddled()){
+            return new ResourceLocation(RexCraft.MOD_ID, "geo/bucklandii_saddled.geo.json");
+        }
+        else{return new ResourceLocation(RexCraft.MOD_ID, "geo/bucklandii.geo.json");}
     }
 
     @Override

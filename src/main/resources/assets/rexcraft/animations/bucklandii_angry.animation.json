@@ -1092,6 +1092,14 @@
 					"rotation": {
 						"vector": [7.5, 0, 0]
 					}
+				},
+				"saddle": {
+					"rotation": {
+						"vector": [10, 0, 0]
+					},
+					"position": {
+						"vector": [0, -3, 0]
+					}
 				}
 			}
 		}
