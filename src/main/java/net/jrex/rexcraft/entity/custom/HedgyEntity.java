@@ -172,6 +172,17 @@ public class HedgyEntity extends TamableAnimal implements IAnimatable {
         return 0.2F;
     }
 
+    public void aiStep() {
+        super.aiStep();
+
+        if (!this.level.isClientSide && this.isAlive()) {
+            if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
+                this.heal(1.0F);
+            }
+        }
+
+    }
+
 
     /* TAMEABLE */
     @Override

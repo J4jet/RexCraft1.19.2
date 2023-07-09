@@ -198,6 +198,17 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         return 0.8F;
     }
 
+    public void aiStep() {
+        super.aiStep();
+
+        if (!this.level.isClientSide && this.isAlive()) {
+            if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
+                this.heal(1.0F);
+            }
+        }
+
+    }
+
 
     /* TAMEABLE */
     @Override

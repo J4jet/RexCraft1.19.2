@@ -6,6 +6,7 @@ import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,6 +16,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.*;
@@ -25,10 +27,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,8 +42,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -59,7 +66,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob, ContainerListener, HasCustomInventoryScreen, PlayerRideableJumping, Saddleable {
+//TamableAnimal
+public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob, PlayerRideableJumping, Saddleable {
 
     private static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
@@ -77,10 +85,14 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 40);
 
+    private static final EntityDataAccessor<Byte> DATA_ID_FLAGS = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BYTE);
+
+    private static final int FLAG_SADDLE = 4;
+
     @Nullable
     private UUID persistentAngerTarget;
 
-    private int destroyBlocksTick;
+    //private int destroyBlocksTick;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -199,10 +211,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         return PlayState.CONTINUE;
     }
 
-    @Deprecated //Forge: DO NOT USE use BlockState.canEntityDestroy
-    public static boolean canDestroy(BlockState pState) {
-        return !pState.isAir() && !pState.is(BlockTags.WITHER_IMMUNE);
-    }
+//    @Deprecated //Forge: DO NOT USE use BlockState.canEntityDestroy
+//    public static boolean canDestroy(BlockState pState) {
+//        return !pState.isAir() && !pState.is(BlockTags.WITHER_IMMUNE);
+//    }
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
@@ -223,6 +235,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public boolean isHeal(ItemStack pStack){
         return pStack.getItem() == ModItems.BLUEBERRY.get();
     }
+
 
     //DATA_ID_TYPE_VARIANT
 //    public int getGeckoType() {
@@ -279,13 +292,107 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         return 0.8F;
     }
 
+    protected boolean isImmobile() {
+        return super.isImmobile() && this.isVehicle() && this.isSaddled();
+    }
+
     public void aiStep() {
         super.aiStep();
+
+        if (!this.level.isClientSide && this.isAlive()) {
+            if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
+                this.heal(1.0F);
+            }
+        }
 
         if (!this.level.isClientSide) {
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
 
+    }
+
+    protected void doPlayerRide(Player pPlayer) {
+        if (!this.level.isClientSide) {
+            pPlayer.setYRot(this.getYRot());
+            pPlayer.setXRot(this.getXRot());
+            pPlayer.startRiding(this);
+        }
+
+    }
+
+    protected void updateContainerEquipment() {
+        if (!this.level.isClientSide) {
+            this.setFlag(4, this.isSaddled());
+        }
+    }
+
+    public void positionRider(@NotNull Entity pPassenger) {
+        if (this.hasPassenger(pPassenger)) {
+            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
+            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
+            float f2 = 0.3F;
+            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset(), this.getZ() - (double)(0.3F * f));
+        }
+    }
+
+    @javax.annotation.Nullable
+    public LivingEntity getControllingPassenger() {
+        if (this.isSaddled()) {
+            Entity entity = this.getFirstPassenger();
+            if (entity instanceof LivingEntity) {
+                return (LivingEntity)entity;
+            }
+        }
+
+        return null;
+    }
+
+    @javax.annotation.Nullable
+    private Vec3 getDismountLocationInDirection(Vec3 pDirection, LivingEntity pPassenger) {
+        double d0 = this.getX() + pDirection.x;
+        double d1 = this.getBoundingBox().minY;
+        double d2 = this.getZ() + pDirection.z;
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+
+        for(Pose pose : pPassenger.getDismountPoses()) {
+            blockpos$mutableblockpos.set(d0, d1, d2);
+            double d3 = this.getBoundingBox().maxY + 0.75D;
+
+            while(true) {
+                double d4 = this.level.getBlockFloorHeight(blockpos$mutableblockpos);
+                if ((double)blockpos$mutableblockpos.getY() + d4 > d3) {
+                    break;
+                }
+
+                if (DismountHelper.isBlockFloorValid(d4)) {
+                    AABB aabb = pPassenger.getLocalBoundsForPose(pose);
+                    Vec3 vec3 = new Vec3(d0, (double)blockpos$mutableblockpos.getY() + d4, d2);
+                    if (DismountHelper.canDismountTo(this.level, pPassenger, aabb.move(vec3))) {
+                        pPassenger.setPose(pose);
+                        return vec3;
+                    }
+                }
+
+                blockpos$mutableblockpos.move(Direction.UP);
+                if (!((double)blockpos$mutableblockpos.getY() < d3)) {
+                    break;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
+        Vec3 vec3 = getCollisionHorizontalEscapeVector((double)this.getBbWidth(), (double)pLivingEntity.getBbWidth(), this.getYRot() + (pLivingEntity.getMainArm() == HumanoidArm.RIGHT ? 90.0F : -90.0F));
+        Vec3 vec31 = this.getDismountLocationInDirection(vec3, pLivingEntity);
+        if (vec31 != null) {
+            return vec31;
+        } else {
+            Vec3 vec32 = getCollisionHorizontalEscapeVector((double)this.getBbWidth(), (double)pLivingEntity.getBbWidth(), this.getYRot() + (pLivingEntity.getMainArm() == HumanoidArm.LEFT ? 90.0F : -90.0F));
+            Vec3 vec33 = this.getDismountLocationInDirection(vec32, pLivingEntity);
+            return vec33 != null ? vec33 : this.position();
+        }
     }
 
 
@@ -336,8 +443,23 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             }
         }
 
-        if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND) {
+        if (this.isVehicle()) {
+            return super.mobInteract(player, hand);
+        }
+
+        if(item == Items.SADDLE && this.isTame() && !this.level.isClientSide && this.isSaddleable() && !this.isSaddled()){
+            itemstack.shrink(1);
+            this.equipSaddle(SoundSource.NEUTRAL);
+            return InteractionResult.SUCCESS;
+        }
+
+        if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND && player.isCrouching()) {
             setSitting(!isSitting());
+            return InteractionResult.SUCCESS;
+        }
+
+        if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND && !this.isSitting()) {
+            this.doPlayerRide(player);
             return InteractionResult.SUCCESS;
         }
 
@@ -353,6 +475,9 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         super.readAdditionalSaveData(tag);
         setSitting(tag.getBoolean("isSitting"));
         this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
+
+        //check for saddle
+        this.updateContainerEquipment();
     }
 
     @Override
@@ -369,6 +494,21 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         this.entityData.define(SITTING, false);
         this.entityData.define(DATA_ID_TYPE_VARIANT,0);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
+        this.entityData.define(DATA_ID_FLAGS, (byte)0);
+    }
+
+    protected boolean getFlag(int pFlagId) {
+        return (this.entityData.get(DATA_ID_FLAGS) & pFlagId) != 0;
+    }
+
+    protected void setFlag(int pFlagId, boolean pValue) {
+        byte b0 = this.entityData.get(DATA_ID_FLAGS);
+        if (pValue) {
+            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 | pFlagId));
+        } else {
+            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 & ~pFlagId));
+        }
+
     }
 
     public void setSitting(boolean sitting) {
@@ -404,6 +544,41 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+        }
+    }
+
+    public void travel(@NotNull Vec3 pTravelVector) {
+
+        if (this.isAlive()) {
+            LivingEntity livingentity = this.getControllingPassenger();
+            if (this.isVehicle() && livingentity != null) {
+                this.setYRot(livingentity.getYRot());
+                this.yRotO = this.getYRot();
+                this.setXRot(livingentity.getXRot() * 0.5F);
+                this.setRot(this.getYRot(), this.getXRot());
+                this.yBodyRot = this.getYRot();
+                this.yHeadRot = this.yBodyRot;
+                float f = livingentity.xxa * 0.5F;
+                float f1 = livingentity.zza;
+
+                if (this.onGround) {
+                    Vec3 vec3 = this.getDeltaMovement();
+                    this.setDeltaMovement(vec3.x, 0, vec3.z);
+                }
+
+                if (this.isControlledByLocalInstance()) {
+                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                    super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
+                } else if (livingentity instanceof Player) {
+                    this.setDeltaMovement(Vec3.ZERO);
+                }
+
+
+                this.tryCheckInsideBlocks();
+            } else {
+                this.flyingSpeed = 0.02F;
+                super.travel(pTravelVector);
+            }
         }
     }
 
@@ -456,16 +631,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     }
 
     @Override
-    public void containerChanged(Container pContainer) {
-
-    }
-
-    @Override
-    public void openCustomInventoryScreen(Player pPlayer) {
-
-    }
-
-    @Override
     public void onPlayerJump(int pJumpPower) {
 
     }
@@ -487,17 +652,23 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     @Override
     public boolean isSaddleable() {
-        return false;
+        return this.isAlive() && !this.isBaby() && this.isTame();
     }
 
     @Override
-    public void equipSaddle(@Nullable SoundSource pSource) {
+    public void equipSaddle(@javax.annotation.Nullable SoundSource pSource) {
+        //this.inventory.setItem(0, new ItemStack(Items.SADDLE));
+        //Seeing as it has no inventory, figure out how to equip the saddle by right-clicking the entity
+        this.setFlag(FLAG_SADDLE,true);
+        if (pSource != null) {
+            this.level.playSound((Player)null, this, SoundEvents.HORSE_SADDLE, pSource, 0.5F, 1.0F);
+        }
 
     }
 
     @Override
     public boolean isSaddled() {
-        return false;
+        return this.getFlag(4);
     }
 
 //    /**
