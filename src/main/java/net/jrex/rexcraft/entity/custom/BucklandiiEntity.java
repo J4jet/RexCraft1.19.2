@@ -72,6 +72,9 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     private static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
 
+    private static final EntityDataAccessor<Boolean> SADDLED =
+            SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
+
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
 
@@ -489,9 +492,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         tag.putBoolean("isSitting", this.isSitting());
         tag.putInt("Variant",this.getTypeVariant());
         //this.updateContainerEquipment();
-        if (this.isSaddled()) {
-            tag.put("SaddleItem", new CompoundTag());
-        }
+//        if (this.isSaddled()) {
+//            tag.putBoolean("SaddleItem", this.isSaddled());
+//        }
+        tag.putBoolean("Saddled", this.isSaddled());
     }
 
 
