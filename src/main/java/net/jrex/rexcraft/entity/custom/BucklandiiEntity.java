@@ -328,21 +328,13 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     }
 
     public void positionRider(@NotNull Entity pPassenger) {
-        super.positionRider(pPassenger);
-
-        if (pPassenger instanceof Mob mob) {
-            this.yBodyRot = mob.yBodyRot;
-        }
-
         if (this.hasPassenger(pPassenger)) {
             float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
             float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
+
+            //offset upwards
             float f2 = 0.3F;
-            //x is side to side, y is hight and z is forward or back?
-            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset(), this.getZ() - (double)(0.3F * f));
-            if (pPassenger instanceof LivingEntity) {
-                ((LivingEntity)pPassenger).yBodyRot = this.yBodyRot;
-            }
+            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + f2, this.getZ() - (double)(0.3F * f));
         }
     }
 
@@ -497,6 +489,9 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         tag.putBoolean("isSitting", this.isSitting());
         tag.putInt("Variant",this.getTypeVariant());
         //this.updateContainerEquipment();
+        if (this.isSaddled()) {
+            tag.put("SaddleItem", new CompoundTag());
+        }
     }
 
 
