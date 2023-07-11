@@ -76,6 +76,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     private static final EntityDataAccessor<Boolean> SADDLED =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
 
+    //private static final EntityDataAccessor<Boolean> DATA_INTERESTED_ID = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
+
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
 
@@ -477,6 +479,9 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         setSaddled(tag.getBoolean("isSaddled"));
         this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
 
+        //I think this saves if it's angry?
+        this.readPersistentAngerSaveData(this.level, tag);
+
         //check for saddle
         //this.updateContainerEquipment();
     }
@@ -487,6 +492,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         tag.putBoolean("isSitting", this.isSitting());
         tag.putBoolean("isSaddled", this.isSaddled());
         tag.putInt("Variant",this.getTypeVariant());
+
+        this.addPersistentAngerSaveData(tag);
         //this.updateContainerEquipment();
 //        if (this.isSaddled()) {
 //            tag.putBoolean("SaddleItem", this.isSaddled());
@@ -502,22 +509,23 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         this.entityData.define(SADDLED, false);
         this.entityData.define(DATA_ID_TYPE_VARIANT,0);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
+        //this.entityData.define(DATA_INTERESTED_ID, false);
         //this.entityData.define(DATA_ID_FLAGS, (byte)0);
     }
 
-    protected boolean getFlag(int pFlagId) {
-        return (this.entityData.get(DATA_ID_FLAGS) & pFlagId) != 0;
-    }
-
-    protected void setFlag(int pFlagId, boolean pValue) {
-        byte b0 = this.entityData.get(DATA_ID_FLAGS);
-        if (pValue) {
-            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 | pFlagId));
-        } else {
-            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 & ~pFlagId));
-        }
-
-    }
+//    protected boolean getFlag(int pFlagId) {
+//        return (this.entityData.get(DATA_ID_FLAGS) & pFlagId) != 0;
+//    }
+//
+//    protected void setFlag(int pFlagId, boolean pValue) {
+//        byte b0 = this.entityData.get(DATA_ID_FLAGS);
+//        if (pValue) {
+//            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 | pFlagId));
+//        } else {
+//            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 & ~pFlagId));
+//        }
+//
+//    }
 
     @Override
     public Team getTeam() {
@@ -665,6 +673,14 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         this.entityData.set(SADDLED, saddled);
 
     }
+
+//    public void setIsInterested(boolean pIsInterested) {
+//        this.entityData.set(DATA_INTERESTED_ID, pIsInterested);
+//    }
+
+//    public boolean isInterested() {
+//        return this.entityData.get(DATA_INTERESTED_ID);
+//    }
 
     public boolean isSitting() {
         return this.entityData.get(SITTING);
