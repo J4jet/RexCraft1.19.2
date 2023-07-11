@@ -28,6 +28,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.npc.Villager;
@@ -323,13 +324,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     }
 
-    protected void updateContainerEquipment() {
-        if (!this.level.isClientSide) {
-            this.setFlag(4, this.isSaddled());
-        }
-
-    }
-
     public void positionRider(@NotNull Entity pPassenger) {
         if (this.hasPassenger(pPassenger)) {
             float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
@@ -480,22 +474,24 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setSitting(tag.getBoolean("isSitting"));
+        setSaddled(tag.getBoolean("isSaddled"));
         this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
 
         //check for saddle
-        this.updateContainerEquipment();
+        //this.updateContainerEquipment();
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("isSitting", this.isSitting());
+        tag.putBoolean("isSaddled", this.isSaddled());
         tag.putInt("Variant",this.getTypeVariant());
         //this.updateContainerEquipment();
 //        if (this.isSaddled()) {
 //            tag.putBoolean("SaddleItem", this.isSaddled());
 //        }
-        tag.putBoolean("Saddled", this.isSaddled());
+        //tag.putBoolean("Saddled", this.isSaddled());
     }
 
 
@@ -503,9 +499,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(SITTING, false);
+        this.entityData.define(SADDLED, false);
         this.entityData.define(DATA_ID_TYPE_VARIANT,0);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
-        this.entityData.define(DATA_ID_FLAGS, (byte)0);
+        //this.entityData.define(DATA_ID_FLAGS, (byte)0);
     }
 
     protected boolean getFlag(int pFlagId) {
@@ -520,15 +517,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             this.entityData.set(DATA_ID_FLAGS, (byte)(b0 & ~pFlagId));
         }
 
-    }
-
-    public void setSitting(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
-        this.setOrderedToSit(sitting);
-    }
-
-    public boolean isSitting() {
-        return this.entityData.get(SITTING);
     }
 
     @Override
@@ -661,25 +649,48 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     }
 
+    protected void updateContainerEquipment() {
+        if (!this.level.isClientSide) {
+            this.entityData.set(SADDLED,this.isSaddled());
+        }
+
+    }
+
+    public void setSitting(boolean sitting) {
+        this.entityData.set(SITTING, sitting);
+        this.setOrderedToSit(sitting);
+    }
+
+    public void setSaddled(boolean saddled) {
+        this.entityData.set(SADDLED, saddled);
+
+    }
+
+    public boolean isSitting() {
+        return this.entityData.get(SITTING);
+    }
+
     @Override
     public boolean isSaddleable() {
         return this.isAlive() && !this.isBaby() && this.isTame();
     }
 
     @Override
-    public void equipSaddle(@javax.annotation.Nullable SoundSource pSource) {
+    public void equipSaddle(@Nullable SoundSource pSource) {
         //this.inventory.setItem(0, new ItemStack(Items.SADDLE));
         //Seeing as it has no inventory, figure out how to equip the saddle by right-clicking the entity
-        this.setFlag(FLAG_SADDLE,true);
+        //this.setFlag(FLAG_SADDLE,true);
+        this.entityData.set(SADDLED,true);
         if (pSource != null) {
-            this.level.playSound((Player)null, this, SoundEvents.HORSE_SADDLE, pSource, 0.5F, 1.0F);
+            this.level.playSound(null, this, SoundEvents.HORSE_SADDLE, pSource, 0.5F, 1.0F);
         }
 
     }
 
     @Override
     public boolean isSaddled() {
-        return this.getFlag(4);
+        return this.entityData.get(SADDLED);
+                //this.getFlag(4);
     }
 
 //    /**
@@ -700,5 +711,17 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 //        }
 //
 //        return animal;
+//    }
+
+//    static class LlamaAttackWolfGoal extends NearestAttackableTargetGoal<Wolf> {
+//        public LlamaAttackWolfGoal(Llama pLlama) {
+//            super(pLlama, Wolf.class, 16, false, true, (p_30845_) -> {
+//                return !((Wolf)p_30845_).isTame();
+//            });
+//        }
+//
+//        protected double getFollowDistance() {
+//            return super.getFollowDistance() * 0.25D;
+//        }
 //    }
 }
