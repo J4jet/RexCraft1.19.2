@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -26,19 +25,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Llama;
-import net.minecraft.world.entity.monster.Endermite;
-import net.minecraft.world.entity.monster.Silverfish;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
-import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,15 +50,12 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 //Things for being angry:
-//Use these things to be able to make this mob angry, make sure you have everything or it will not work.
+//Use these things to be able to make this mob angry, make sure you have everything, or it will not work.
 import net.minecraft.world.entity.NeutralMob;
-
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-//TamableAnimal
 public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob, PlayerRideableJumping, Saddleable {
 
     private static final EntityDataAccessor<Boolean> SITTING =
@@ -75,8 +63,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     private static final EntityDataAccessor<Boolean> SADDLED =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
-
-    //private static final EntityDataAccessor<Boolean> DATA_INTERESTED_ID = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
@@ -91,9 +77,12 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 40);
 
-    private static final EntityDataAccessor<Byte> DATA_ID_FLAGS = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BYTE);
+    //speed modifier of the entity when being ridden
+    public static float speedMod = 0.5f;
 
-    private static final int FLAG_SADDLE = 4;
+    public static int attacknum = 3;
+
+    public static float riderOffset = 0.3f;
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -107,11 +96,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public BucklandiiEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
-
-
-    @Nullable
-
-
 
     public static AttributeSupplier setAttributes() {
 
@@ -159,60 +143,32 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             }
 
         }
-
-        //if(this.isSprinting())
         if (this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
             return PlayState.CONTINUE;
         }
 
-        //So this is working but not how I want it to. It's changing the number every tick and therefore cannot choose an animation.
-        //I need to find a way to have it only call this when the animation ends. Maybe make a separate method to call?
-
-        //Random rand = new Random();
-
-        //int upperbound = 2;
-
-        //int rand_int = rand.nextInt(upperbound);
-
-        //if(event.getController().getCurrentAnimation() != null){
-            //System.out.println("Animation Name = " + event.getController().getCurrentAnimation().toString());
-        //}
-        //System.out.println("Animation Name = " + event.getController().getCurrentAnimation().toString());
-
         event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         return PlayState.CONTINUE;
-
-//        if(event.getController().getCurrentAnimation().toString().equals("idle1")) {
-//            event.getController().markNeedsReload();
-//        }
-        //return PlayState.CONTINUE;
-
     }
 
-    //this could be useful!
-    //can confirm, VERY useful!
     private PlayState attackPredicate(AnimationEvent event) {
 
         if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
             event.getController().markNeedsReload();
 
+            //a random number is chosen between 0 and attacknum, then added to the end of "attack" to get a random attack animation!
+
             Random rand = new Random();
 
-            int upperbound = 3;
+            int upperbound = attacknum;
 
             int rand_int = rand.nextInt(upperbound);
 
-
-            //System.out.println("Attacking!");
-            //this.playSound(ModSounds.BUCKLANDII_HURT.get(),0.9f,1.0f);
-            //this.playSound(SoundEvents.CHICKEN_HURT,0.9f,1.0f);
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
 
             this.swinging = false;
         }
-
-       // this.playSound(ModSounds.BUCKLANDII_HURT.get(),0.9f,1.0f);
 
         return PlayState.CONTINUE;
     }
@@ -232,23 +188,21 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     @Override
     public boolean isFood(ItemStack pStack){
-        Item item = pStack.getItem();
-        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
+        return pStack.getItem() == ModItems.BLUEBERRY.get();
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket
     //look into wolf class to see how meat works
     public boolean isHeal(ItemStack pStack){
-        return pStack.getItem() == ModItems.BLUEBERRY.get();
+        Item item = pStack.getItem();
+        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
     }
 
-
-    //DATA_ID_TYPE_VARIANT
-//    public int getGeckoType() {
-//        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-//    }
-
-
+    //taming item
+    public boolean tameItem(ItemStack pStack){
+        Item item = pStack.getItem();
+        return item == Items.EGG;
+    }
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this,"controller",0,this::predicate));
@@ -256,17 +210,14 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     }
 
-
     @Override
     public AnimationFactory getFactory() {
         return factory;
     }
 
-
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(SoundEvents.GRASS_STEP, 0.15F, 4.0F);
     }
-
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return ModSounds.BUCKLANDII_HURT.get();
@@ -331,9 +282,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
             float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
 
-            //offset upwards
-            float f2 = 0.3F;
-            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + f2, this.getZ() - (double)(0.3F * f));
+            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + riderOffset, this.getZ() - (double)(0.3F * f));
         }
     }
 
@@ -397,14 +346,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         }
     }
 
-
-    /* TAMEABLE */
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
-
-        Item itemForTaming = Items.EGG;
 
         //if the item "isFood", just use for taming
         if(isFood(itemstack)){
@@ -423,7 +368,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
         }
 
-        if (item == itemForTaming && !isTame()) {
+        //if this is the item for taming, tame and set to sit
+        if (this.tameItem(itemstack) && !isTame()) {
             if (this.level.isClientSide) {
                 return InteractionResult.CONSUME;
             } else {
@@ -445,27 +391,31 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             }
         }
 
+        //this is for controlling it
         if (this.isVehicle()) {
             return super.mobInteract(player, hand);
         }
 
+        //if item is a saddle, and this is saddleable, equip saddle
         if(item == Items.SADDLE && this.isTame() && !this.level.isClientSide && this.isSaddleable() && !this.isSaddled()){
             itemstack.shrink(1);
             this.equipSaddle(SoundSource.NEUTRAL);
             return InteractionResult.SUCCESS;
         }
 
+        //sit and unsit by crouching and right clicking
         if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND && player.isCrouching()) {
             setSitting(!isSitting());
             return InteractionResult.SUCCESS;
         }
 
+        //ride by right clicking with an empty hand
         if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND && !this.isSitting()) {
             this.doPlayerRide(player);
             return InteractionResult.SUCCESS;
         }
 
-        if (itemstack.getItem() == itemForTaming) {
+        if (this.tameItem(itemstack)) {
             return InteractionResult.PASS;
         }
 
@@ -482,8 +432,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         //I think this saves if it's angry?
         this.readPersistentAngerSaveData(this.level, tag);
 
-        //check for saddle
-        //this.updateContainerEquipment();
     }
 
     @Override
@@ -492,13 +440,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         tag.putBoolean("isSitting", this.isSitting());
         tag.putBoolean("isSaddled", this.isSaddled());
         tag.putInt("Variant",this.getTypeVariant());
-
         this.addPersistentAngerSaveData(tag);
-        //this.updateContainerEquipment();
-//        if (this.isSaddled()) {
-//            tag.putBoolean("SaddleItem", this.isSaddled());
-//        }
-        //tag.putBoolean("Saddled", this.isSaddled());
     }
 
 
@@ -509,23 +451,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         this.entityData.define(SADDLED, false);
         this.entityData.define(DATA_ID_TYPE_VARIANT,0);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
-        //this.entityData.define(DATA_INTERESTED_ID, false);
-        //this.entityData.define(DATA_ID_FLAGS, (byte)0);
     }
-
-//    protected boolean getFlag(int pFlagId) {
-//        return (this.entityData.get(DATA_ID_FLAGS) & pFlagId) != 0;
-//    }
-//
-//    protected void setFlag(int pFlagId, boolean pValue) {
-//        byte b0 = this.entityData.get(DATA_ID_FLAGS);
-//        if (pValue) {
-//            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 | pFlagId));
-//        } else {
-//            this.entityData.set(DATA_ID_FLAGS, (byte)(b0 & ~pFlagId));
-//        }
-//
-//    }
 
     @Override
     public Team getTeam() {
@@ -574,7 +500,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
                 }
 
                 if (this.isControlledByLocalInstance()) {
-                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED));
+                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + speedMod);
                     super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
                 } else if (livingentity instanceof Player) {
                     this.setDeltaMovement(Vec3.ZERO);
@@ -609,6 +535,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     private void setVariant(BucklandiiVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
+    //
 
     @Override
     public int getRemainingPersistentAngerTime() {
@@ -619,7 +546,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public void setRemainingPersistentAngerTime(int pTime) {
         this.entityData.set(DATA_REMAINING_ANGER_TIME, pTime);
     }
-
 
     @Nullable
     @Override
@@ -648,21 +574,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     }
 
     @Override
-    public void handleStartJump(int pJumpPower) {
-
-    }
+    public void handleStartJump(int pJumpPower) {}
 
     @Override
-    public void handleStopJump() {
-
-    }
-
-    protected void updateContainerEquipment() {
-        if (!this.level.isClientSide) {
-            this.entityData.set(SADDLED,this.isSaddled());
-        }
-
-    }
+    public void handleStopJump() {}
 
     public void setSitting(boolean sitting) {
         this.entityData.set(SITTING, sitting);
@@ -673,14 +588,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         this.entityData.set(SADDLED, saddled);
 
     }
-
-//    public void setIsInterested(boolean pIsInterested) {
-//        this.entityData.set(DATA_INTERESTED_ID, pIsInterested);
-//    }
-
-//    public boolean isInterested() {
-//        return this.entityData.get(DATA_INTERESTED_ID);
-//    }
 
     public boolean isSitting() {
         return this.entityData.get(SITTING);
@@ -693,9 +600,6 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     @Override
     public void equipSaddle(@Nullable SoundSource pSource) {
-        //this.inventory.setItem(0, new ItemStack(Items.SADDLE));
-        //Seeing as it has no inventory, figure out how to equip the saddle by right-clicking the entity
-        //this.setFlag(FLAG_SADDLE,true);
         this.entityData.set(SADDLED,true);
         if (pSource != null) {
             this.level.playSound(null, this, SoundEvents.HORSE_SADDLE, pSource, 0.5F, 1.0F);
@@ -706,8 +610,9 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     @Override
     public boolean isSaddled() {
         return this.entityData.get(SADDLED);
-                //this.getFlag(4);
     }
+
+    //These are for attempting to create a custom goal:
 
 //    /**
 //     * Loops through nearby animals and finds another animal of the same type that can be mated with. Returns the first
