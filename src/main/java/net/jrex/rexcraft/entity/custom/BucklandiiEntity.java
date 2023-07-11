@@ -78,11 +78,11 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 40);
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = 0.5f;
+    public static float speedMod = 0.0f;
 
     public static int attacknum = 3;
 
-    public static float riderOffset = 0.3f;
+    public static float riderOffset = 0.4f;
 
     @Nullable
     private UUID persistentAngerTarget;

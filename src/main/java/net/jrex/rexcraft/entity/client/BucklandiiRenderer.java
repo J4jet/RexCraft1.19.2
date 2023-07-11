@@ -56,7 +56,7 @@ public class BucklandiiRenderer extends GeoEntityRenderer<BucklandiiEntity> {
         if(animatable.isBaby()) {
             stack.scale(0.15F, 0.15F, 0.15F);
         } else {
-            stack.scale(0.5f, 0.5f,0.5f);
+            stack.scale(0.52f, 0.52f,0.52f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
