@@ -76,7 +76,9 @@
 
   "item.rexcraft.diamond_shard": "Diamond Shard",
 
-  "itemGroup.rexcrafttab": "RexCraft",
+  "itemGroup.rexcrafttab": "RexCraft Armory",
+  "itemGroup.rexcraft_dinosaurs": "RexCraft Dinosaurs",
+  "itemGroup.rexcraft_misc": "RexCraft Miscellaneous",
 
 
   "sounds.rexcraft.hedgy_idle": "Hedgehog hissing",

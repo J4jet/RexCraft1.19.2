@@ -18,48 +18,93 @@ import net.minecraftforge.registries.RegistryObject;
                 DeferredRegister.create(ForgeRegistries.ITEMS, RexCraft.MOD_ID);
 
         public static final RegistryObject<Item> WORM = ITEMS.register("worm",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
         public static final RegistryObject<Item> CRICKET_ITEM = ITEMS.register("cricket_item",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
         public static final RegistryObject<Item> BLUEBERRY_SEEDS = ITEMS.register("blueberry_seeds",
                 () -> new ItemNameBlockItem(ModBlocks.BLUEBERRY_CROP.get(),
-                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
         public static final RegistryObject<Item> BLUEBERRY = ITEMS.register("blueberry",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)
                         .food(new FoodProperties.Builder().nutrition(1).saturationMod(1f).build())));
         public static final RegistryObject<Item> DUBIA = ITEMS.register("dubia",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
         public static final RegistryObject<Item> ALLO = ITEMS.register("allo",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> CARNO_BUFF_IRON = ITEMS.register("carno_buff_iron",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> CARNO_BUFF_GOLD = ITEMS.register("carno_buff_gold",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> CARNO_BUFF_diamond = ITEMS.register("carno_buff_diamond",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> CARNO_BUFF_NETH = ITEMS.register("carno_buff_neth",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> BONESTACK = ITEMS.register("bonestack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> BEEFSTACK = ITEMS.register("beefstack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> PORKSTACK = ITEMS.register("porkstack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> MUTTONSTACK = ITEMS.register("muttonstack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> CHICKENSTACK = ITEMS.register("chickenstack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> CODSTACK = ITEMS.register("codstack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> SALMONSTACK = ITEMS.register("salmonstack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> IRON_BOWL = ITEMS.register("iron_bowl",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> GOLD_BOWL = ITEMS.register("gold_bowl",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> DIAMOND_BOWL = ITEMS.register("diamond_bowl",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> NETH_BOWL = ITEMS.register("neth_bowl",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> MEG_JAW = ITEMS.register("meg_jaw",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> GECKO_TAIL = ITEMS.register("gecko_tail",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
         public static final RegistryObject<Item> HEDGEHOG_QUILL = ITEMS.register("hedgehog_quill",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
         public static final RegistryObject<Item> CAT_TREAT = ITEMS.register("cat_treat",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
         public static final RegistryObject<Item> GECKO_SPAWN_EGG = ITEMS.register("gecko_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.GECKO, 0xFFD133, 0x25241F,
-                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
         public static final RegistryObject<Item> BUCKLANDII_SPAWN_EGG = ITEMS.register("bucklandii_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.BUCKLANDII, 0x25241F, 0xFFD133,
-                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> HEDGY_SPAWN_EGG = ITEMS.register("hedgy_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.HEDGY, 0x502e22, 0xffede6,
-                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
         public static final RegistryObject<Item> CRICKET_SPAWN_EGG = ITEMS.register("cricket_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.CRICKET, 0x502e22, 0x25241F,
-                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
         public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
