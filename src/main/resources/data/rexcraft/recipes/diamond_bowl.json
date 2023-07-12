@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "minecraft:porkchop"
+      "item": "minecraft:diamond"
     }
   },
   "pattern": [
-    "###",
-    "###",
-    "###"
+    "   ",
+    "# #",
+    " # "
   ],
   "result": {
-    "item": "rexcraft:porkstack",
+    "item": "rexcraft:diamond_bowl",
     "count": 1
   }
 }

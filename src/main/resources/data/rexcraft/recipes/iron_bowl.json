@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "minecraft:porkchop"
+      "item": "minecraft:iron_ingot"
     }
   },
   "pattern": [
-    "###",
-    "###",
-    "###"
+    "   ",
+    "# #",
+    " # "
   ],
   "result": {
-    "item": "rexcraft:porkstack",
+    "item": "rexcraft:iron_bowl",
     "count": 1
   }
 }

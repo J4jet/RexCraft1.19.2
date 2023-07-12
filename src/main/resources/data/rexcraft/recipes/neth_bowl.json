@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "minecraft:porkchop"
+      "item": "minecraft:netherite_ingot"
     }
   },
   "pattern": [
-    "###",
-    "###",
-    "###"
+    "   ",
+    "# #",
+    " # "
   ],
   "result": {
-    "item": "rexcraft:porkstack",
+    "item": "rexcraft:neth_bowl",
     "count": 1
   }
 }

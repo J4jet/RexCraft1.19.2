@@ -46,6 +46,25 @@
   "item.rexcraft.netherite_dagger": "Netherite Dagger",
   "item.rexcraft.great_helm": "Great Helm",
 
+  "item.rexcraft.iron_bowl": "Iron Bowl",
+  "item.rexcraft.gold_bowl": "Golden Bowl",
+  "item.rexcraft.diamond_bowl": "Diamond Bowl",
+  "item.rexcraft.neth_bowl": "Netherite Bowl",
+
+  "item.rexcraft.carno_buff_iron": "Iron Tier Carnivore Buffet",
+  "item.rexcraft.carno_buff_gold": "Gold Tier Carnivore Buffet",
+  "item.rexcraft.carno_buff_diamond": "Diamond Tier Carnivore Buffet",
+  "item.rexcraft.carno_buff_neth": "Netherite Tier Carnivore Buffet",
+
+  "item.rexcraft.beefstack": "Beef Stack",
+  "item.rexcraft.porkstack": "Pork Stack",
+  "item.rexcraft.salmonstack": "Salmon Stack",
+  "item.rexcraft.muttonstack": "Mutton Stack",
+  "item.rexcraft.codstack": "Cod Stack",
+  "item.rexcraft.bonestack": "Bone Stack",
+  "item.rexcraft.chickenstack": "Chicken Stack",
+
+
   "item.rexcraft.gecko_tail": "Gecko Tail",
   "item.rexcraft.hedgehog_quill": "Hedgehog Quill",
 

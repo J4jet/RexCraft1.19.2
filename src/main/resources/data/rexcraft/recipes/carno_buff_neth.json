@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "rexcraft:beefstack"
+    },
+    "$": {
+      "item": "rexcraft:chickenstack"
+    },
+    "&": {
+      "item": "rexcraft:porkstack"
+    },
+    "*": {
+      "item": "rexcraft:bonestack"
+    },
+    "%": {
+      "item": "rexcraft:muttonstack"
+    },
+    "!": {
+      "item": "rexcraft:salmonstack"
+    },
+    "^": {
+      "item": "rexcraft:codstack"
+    },
+    "@": {
+      "item": "rexcraft:neth_bowl"
+    }
+  },
+  "pattern": [
+    "&#%",
+    "!$^",
+    "*@*"
+  ],
+  "result": {
+    "item": "rexcraft:carno_buff_neth",
+    "count": 1
+  }
+}

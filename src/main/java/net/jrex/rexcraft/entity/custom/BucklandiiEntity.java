@@ -188,7 +188,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     @Override
     public boolean isFood(ItemStack pStack){
-        return pStack.getItem() == ModItems.BLUEBERRY.get();
+        Item item = pStack.getItem();
+        return item == ModItems.BEEFSTACK.get() || item == ModItems.PORKSTACK.get() || item == ModItems.CHICKENSTACK.get() || item == ModItems.MUTTONSTACK.get();
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket
@@ -201,7 +202,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     //taming item
     public boolean tameItem(ItemStack pStack){
         Item item = pStack.getItem();
-        return item == Items.EGG;
+        return item == ModItems.CARNO_BUFF_GOLD.get() || item == ModItems.CARNO_BUFF_DIAMOND.get() || item == ModItems.CARNO_BUFF_NETH.get();
     }
     @Override
     public void registerControllers(AnimationData data) {
