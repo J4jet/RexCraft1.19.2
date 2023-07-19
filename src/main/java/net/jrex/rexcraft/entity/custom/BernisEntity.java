@@ -1,26 +1,46 @@
 package net.jrex.rexcraft.entity.custom;
 
+import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.variant.BucklandiiVariant;
+import net.jrex.rexcraft.item.ModItems;
+import net.jrex.rexcraft.sound.ModSounds;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.NeutralMob;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.horse.Donkey;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.scores.Team;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -40,6 +60,18 @@ public class BernisEntity extends AbstractHorse implements IAnimatable, NeutralM
             SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.INT);
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.INT);
+
+
+
+    private static final int FLAG_TAME = 2;
+    private static final int FLAG_SADDLE = 4;
+    private static final int FLAG_BRED = 8;
+    private static final int FLAG_EATING = 16;
+    private static final int FLAG_STANDING = 32;
+    private static final int FLAG_OPEN_MOUTH = 64;
+    public static final int INV_SLOT_SADDLE = 0;
+    public static final int INV_SLOT_ARMOR = 1;
+    public static final int INV_BASE_COUNT = 2;
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(40, 60);
 
@@ -89,11 +121,10 @@ public class BernisEntity extends AbstractHorse implements IAnimatable, NeutralM
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
-            if(this.isVehicle()){
+            if (this.isVehicle()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));
                 return PlayState.CONTINUE;
-            }
-            else{
+            } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
                 return PlayState.CONTINUE;
             }
@@ -110,7 +141,7 @@ public class BernisEntity extends AbstractHorse implements IAnimatable, NeutralM
 
     private PlayState attackPredicate(AnimationEvent event) {
 
-        if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
             event.getController().markNeedsReload();
 
             //a random number is chosen between 0 and attacknum, then added to the end of "attack" to get a random attack animation!
@@ -128,6 +159,205 @@ public class BernisEntity extends AbstractHorse implements IAnimatable, NeutralM
 
         return PlayState.CONTINUE;
     }
+
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
+        //BernisEntity baby = ModEntityTypes.BERNIS.get().create(serverLevel);
+        //BucklandiiVariant variant = Util.getRandom(BucklandiiVariant.values(), this.random);
+        //baby.setVariant(variant);
+        return null;
+    }
+
+    @Override
+    public boolean isFood(ItemStack pStack) {
+        Item item = pStack.getItem();
+        return item == ModItems.BEEFSTACK.get() || item == ModItems.PORKSTACK.get() || item == ModItems.CHICKENSTACK.get() || item == ModItems.MUTTONSTACK.get();
+    }
+
+    public boolean isHeal(ItemStack pStack) {
+        Item item = pStack.getItem();
+        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
+    }
+
+    //taming item
+    public boolean tameItem(ItemStack pStack) {
+        Item item = pStack.getItem();
+        return item == ModItems.CARNO_BUFF_GOLD.get() || item == ModItems.CARNO_BUFF_DIAMOND.get() || item == ModItems.CARNO_BUFF_NETH.get();
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
+        data.addAnimationController(new AnimationController(this, "attackController", 0, this::attackPredicate));
+
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return factory;
+    }
+
+    protected void playStepSound(BlockPos pos, BlockState blockIn) {
+        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 5.0F);
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.BUCKLANDII_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return ModSounds.BUCKLANDII_DEATH.get();
+    }
+
+    protected SoundEvent getAmbientSound() {
+
+        if (this.isAngry()) {
+            return ModSounds.BUCKLANDII_ANGRY.get();
+        } else {
+            return ModSounds.BUCKLANDII_GROWL.get();
+        }
+    }
+
+    @Override
+    protected SoundEvent getSwimSound() {
+        return SoundEvents.GENERIC_SWIM;
+    }
+
+    @Override
+    protected SoundEvent getSwimSplashSound() {
+        return SoundEvents.GENERIC_SPLASH;
+    }
+
+    protected float getSoundVolume() {
+        return 0.8F;
+    }
+
+    protected boolean isImmobile() {
+        return super.isImmobile() && this.isVehicle() && this.isSaddled();
+    }
+
+    public void aiStep() {
+        super.aiStep();
+
+        if (!this.level.isClientSide && this.isAlive()) {
+            if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
+                this.heal(1.0F);
+            }
+        }
+
+        if (!this.level.isClientSide) {
+            this.updatePersistentAnger((ServerLevel)this.level, true);
+        }
+
+    }
+
+    protected void updateContainerEquipment() {
+        if (!this.level.isClientSide) {
+            this.setFlag(4, !this.inventory.getItem(0).isEmpty());
+        }
+    }
+
+
+    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+        if (!this.isBaby()) {
+            if (this.isTamed() && pPlayer.isSecondaryUseActive()) {
+                this.openCustomInventoryScreen(pPlayer);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+
+            if (this.isVehicle()) {
+                return super.mobInteract(pPlayer, pHand);
+            }
+        }
+
+        if (!itemstack.isEmpty()) {
+            if (this.isFood(itemstack)) {
+                return this.fedFood(pPlayer, itemstack);
+            }
+
+            InteractionResult interactionresult = itemstack.interactLivingEntity(pPlayer, this, pHand);
+            if (interactionresult.consumesAction()) {
+                return interactionresult;
+            }
+
+            if (!this.isTamed()) {
+                this.makeMad();
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+
+            boolean flag = !this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE);
+            if (this.isArmor(itemstack) || flag) {
+                this.openCustomInventoryScreen(pPlayer);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+        }
+
+        if (this.isBaby()) {
+            return super.mobInteract(pPlayer, pHand);
+        } else {
+            this.doPlayerRide(pPlayer);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        //setSaddled(tag.getBoolean("isSaddled"));
+        this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
+
+//        this.readPersistentAngerSaveData(this.level, tag);
+//        if (!tag.isEmpty()) {
+//            this.inventory.setItem(1, itemstack);
+//        }
+//    }
+//
+      this.updateContainerEquipment();
+
+    }
+
+//    public boolean canMate(Animal pOtherAnimal) {
+//        if (pOtherAnimal == this) {
+//            return false;
+//        } else if (!(pOtherAnimal instanceof Donkey) && !(pOtherAnimal instanceof Horse)) {
+//            return false;
+//        } else {
+//            return this.canParent() && ((AbstractHorse)pOtherAnimal).canParent();
+//        }
+//    }
+
+    public boolean canWearArmor() {
+        return false;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("isSaddled", this.isSaddled());
+        //tag.putInt("Variant",this.getTypeVariant());
+        this.addPersistentAngerSaveData(tag);
+    }
+
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(SITTING, false);
+        this.entityData.define(SADDLED, false);
+        this.entityData.define(DATA_ID_TYPE_VARIANT,0);
+        this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
+    }
+
+    @Override
+    public Team getTeam() {
+        return super.getTeam();
+    }
+
+    public boolean canBeLeashed(Player player) {
+        return true;
+    }
+
 
     //left off here, seems since it's not TamableAnimal it doesn't sit or follow.
 
@@ -155,15 +385,5 @@ public class BernisEntity extends AbstractHorse implements IAnimatable, NeutralM
     @Override
     public void startPersistentAngerTimer() {
 
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 }
