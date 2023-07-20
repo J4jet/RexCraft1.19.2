@@ -1,10 +1,7 @@
 package net.jrex.rexcraft.entity;
 
 import net.jrex.rexcraft.RexCraft;
-import net.jrex.rexcraft.entity.custom.BucklandiiEntity;
-import net.jrex.rexcraft.entity.custom.CricketEntity;
-import net.jrex.rexcraft.entity.custom.GeckoEntity;
-import net.jrex.rexcraft.entity.custom.HedgyEntity;
+import net.jrex.rexcraft.entity.custom.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -42,6 +39,13 @@ public class ModEntityTypes {
                             //Hitbox Size!
                             .sized(1.5f, 2f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "bucklandii").toString()));
+
+    public static final RegistryObject<EntityType<BernisEntity>> BERNIS =
+            ENTITY_TYPES.register("bernis",
+                    () -> EntityType.Builder.of(BernisEntity::new, MobCategory.CREATURE)
+                            //Hitbox Size!
+                            .sized(1.5f, 2f)
+                            .build(new ResourceLocation(RexCraft.MOD_ID, "bernis").toString()));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

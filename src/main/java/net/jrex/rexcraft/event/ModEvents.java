@@ -2,10 +2,7 @@ package net.jrex.rexcraft.event;
 
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.entity.ModEntityTypes;
-import net.jrex.rexcraft.entity.custom.BucklandiiEntity;
-import net.jrex.rexcraft.entity.custom.CricketEntity;
-import net.jrex.rexcraft.entity.custom.GeckoEntity;
-import net.jrex.rexcraft.entity.custom.HedgyEntity;
+import net.jrex.rexcraft.entity.custom.*;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +18,7 @@ public class ModEvents {
             event.put(ModEntityTypes.HEDGY.get(), HedgyEntity.setAttributes());
             event.put(ModEntityTypes.CRICKET.get(), CricketEntity.setAttributes());
             event.put(ModEntityTypes.BUCKLANDII.get(), BucklandiiEntity.setAttributes());
+            event.put(ModEntityTypes.BERNIS.get(), BernisEntity.setAttributes());
         }
 
     }

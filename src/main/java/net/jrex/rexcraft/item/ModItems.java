@@ -104,6 +104,10 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new ForgeSpawnEggItem(ModEntityTypes.BUCKLANDII, 0x25241F, 0xFFD133,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> BERNIS_SPAWN_EGG = ITEMS.register("bernis_spawn_egg",
+                () -> new ForgeSpawnEggItem(ModEntityTypes.BERNIS, 0x25241F, 0xFFD133,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> HEDGY_SPAWN_EGG = ITEMS.register("hedgy_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.HEDGY, 0x502e22, 0xffede6,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));

@@ -4,10 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.jrex.rexcraft.block.ModBlocks;
 import net.jrex.rexcraft.effect.ModEffects;
 import net.jrex.rexcraft.entity.ModEntityTypes;
-import net.jrex.rexcraft.entity.client.BucklandiiRenderer;
-import net.jrex.rexcraft.entity.client.CricketRenderer;
-import net.jrex.rexcraft.entity.client.GeckoRenderer;
-import net.jrex.rexcraft.entity.client.HedgyRenderer;
+import net.jrex.rexcraft.entity.client.*;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.painting.ModPaintings;
 import net.jrex.rexcraft.sound.ModSounds;
@@ -86,6 +83,7 @@ public class RexCraft
             EntityRenderers.register(ModEntityTypes.HEDGY.get(), HedgyRenderer::new);
             EntityRenderers.register(ModEntityTypes.CRICKET.get(), CricketRenderer::new);
             EntityRenderers.register(ModEntityTypes.BUCKLANDII.get(), BucklandiiRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BERNIS.get(), BernisRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUEBERRY_CROP.get(), RenderType.cutout());
 
         }
