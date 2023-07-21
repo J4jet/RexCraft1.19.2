@@ -7,6 +7,7 @@ import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,10 +31,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.animal.horse.Donkey;
-import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.animal.horse.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -62,12 +60,6 @@ import java.util.UUID;
 
 public class BernisEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
 
-    private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.BOOLEAN);
-
-    private static final EntityDataAccessor<Boolean> SADDLED =
-            SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.BOOLEAN);
-
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.INT);
 
@@ -80,7 +72,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     public static int attacknum = 3;
 
-    public static float riderOffset = 0.9f;
+    public static float riderOffset = 1.0f;
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -97,7 +89,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
                 .add(Attributes.MAX_HEALTH, 25.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0f)
                 .add(Attributes.ATTACK_SPEED, 0.8f)
-                .add(Attributes.MOVEMENT_SPEED, 0.5f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
 
     @Override
@@ -108,7 +100,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.0D, false));
-        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D, BernisEntity.class));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -229,12 +221,12 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     @Override
-    protected SoundEvent getSwimSound() {
+    protected @NotNull SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
     }
 
     @Override
-    protected SoundEvent getSwimSplashSound() {
+    protected @NotNull SoundEvent getSwimSplashSound() {
         return SoundEvents.GENERIC_SPLASH;
     }
 
@@ -263,98 +255,96 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     }
 
-    protected void updateContainerEquipment() {
-        if (!this.level.isClientSide) {
-            this.setFlag(4, !this.inventory.getItem(0).isEmpty());
-        }
-    }
-
-
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-
-        //if the item "isFood", just use for taming
-        if(isFood(itemstack)){
-            return super.mobInteract(player, hand);
-        }
-
-        //if the item "isHeal" and the current health is less than the max health of the mob, eat the food and heal
-        if(this.isHeal(itemstack) && this.getHealth() < this.getMaxHealth()){
-            if (!player.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
-            this.heal(2);
-            this.gameEvent(GameEvent.EAT, this);
-            this.spawnTamingParticles(true);
-            return InteractionResult.SUCCESS;
-
-        }
-
         if (!this.isBaby()) {
             if (this.isTamed() && player.isSecondaryUseActive()) {
                 this.openCustomInventoryScreen(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
+
+            if (this.isVehicle()) {
+                return super.mobInteract(player, hand);
+            }
         }
 
-        //if this is the item for taming, tame and set to sit
-        if (this.tameItem(itemstack) && !isTamed()) {
-            if (this.level.isClientSide) {
-                return InteractionResult.CONSUME;
-            } else {
+        if (!itemstack.isEmpty()) {
+
+            if (this.tameItem(itemstack) && !isTamed()) {
+                if (this.level.isClientSide) {
+                    return InteractionResult.CONSUME;
+                } else {
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+
+                    if (!ForgeEventFactory.onAnimalTame(this, player)) {
+                        if (!this.level.isClientSide) {
+                            this.setTamed(true);
+                            this.spawnTamingParticles(true);
+                            this.navigation.recomputePath();
+                            this.setTarget(null);
+                            this.level.broadcastEntityEvent(this, (byte)7);
+                        }
+                    }
+
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
+            if (this.isFood(itemstack)) {
+
+                if (!this.level.isClientSide && !this.isBaby() && this.canFallInLove()) {
+                    this.usePlayerItem(player, hand, itemstack);
+                    this.setInLove(player);
+                    return InteractionResult.SUCCESS;
+                }
+
+                else if (this.isBaby()) {
+
+                    this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 0.0D, 0.0D, 0.0D);
+                }
+
+                if (this.level.isClientSide) {
+                    return InteractionResult.CONSUME;
+                }
+            }
+
+            if(this.isHeal(itemstack) && this.getHealth() < this.getMaxHealth()){
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.heal(2);
+                this.gameEvent(GameEvent.EAT, this);
+                this.spawnTamingParticles(true);
+                return InteractionResult.SUCCESS;
+
+            }
+
+            if (!this.hasChest() && itemstack.is(Blocks.CHEST.asItem())) {
+                this.setChest(true);
+                this.playChestEquipsSound();
                 if (!player.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
 
-                if (!ForgeEventFactory.onAnimalTame(this, player)) {
-                    if (!this.level.isClientSide) {
-                        //super.tamed(player);
-                        this.setTamed(true);
-                        this.spawnTamingParticles(true);
-                        this.navigation.recomputePath();
-                        this.setTarget(null);
-                        this.level.broadcastEntityEvent(this, (byte)7);
-                    }
-                }
+                this.createInventory();
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
 
-                return InteractionResult.SUCCESS;
+            if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
+                this.openCustomInventoryScreen(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
         }
 
-        //this is for controlling it
-        if (this.isVehicle()) {
+        if (this.isBaby()) {
             return super.mobInteract(player, hand);
-        }
-
-        //sit and unsit by crouching and right clicking
-        if(isTamed() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND && player.isCrouching()) {
-            this.openCustomInventoryScreen(player);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        }
-
-        //ride by right clicking with an empty hand
-        if(isTamed() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND) {
+        } else {
             this.doPlayerRide(player);
-            return InteractionResult.SUCCESS;
-        }
-
-        if (!this.hasChest() && itemstack.is(Blocks.CHEST.asItem()) && player.isCrouching()) {
-            this.setChest(true);
-            this.playChestEquipsSound();
-            if (!player.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
-
-            this.createInventory();
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
-
-        if (this.tameItem(itemstack)) {
-            return InteractionResult.PASS;
-        }
-
-        return super.mobInteract(player, hand);
     }
 
     @Override
@@ -373,46 +363,29 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     }
 
+    @Override
     protected boolean canParent() {
-        return !this.isVehicle() && !this.isPassenger() && this.isTamed() && !this.isBaby() && this.getHealth() >= this.getMaxHealth() && this.isInLove();
+        return !this.isVehicle() && !this.isPassenger() && !this.isBaby() && this.isInLove();
     }
 
+    @Override
     public boolean canMate(Animal pOtherAnimal) {
-        if (pOtherAnimal == this) {
-            return false;
-        } else if (!(pOtherAnimal instanceof Donkey) && !(pOtherAnimal instanceof Horse)) {
-            return false;
-        } else {
-            return this.canParent() && ((BernisEntity)pOtherAnimal).canParent();
-        }
+        return pOtherAnimal != this && pOtherAnimal instanceof BernisEntity && this.canParent() && ((BernisEntity)pOtherAnimal).canParent();
     }
 
     public boolean canWearArmor() {
         return false;
     }
+//    @Override
+//    protected int getInventorySize() {
+//        return this.hasChest() ? 3 : super.getInventorySize();
+//    }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
 
-
         //Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
-        tag.putBoolean("ChestedHorse", this.hasChest());
-        if (this.hasChest()) {
-            ListTag listtag = new ListTag();
-
-            for(int i = 2; i < this.inventory.getContainerSize(); ++i) {
-                ItemStack itemstack = this.inventory.getItem(i);
-                if (!itemstack.isEmpty()) {
-                    CompoundTag compoundtag = new CompoundTag();
-                    compoundtag.putByte("Slot", (byte)i);
-                    itemstack.save(compoundtag);
-                    listtag.add(compoundtag);
-                }
-            }
-
-            tag.put("Items", listtag);
-        }
 
         this.addPersistentAngerSaveData(tag);
     }
@@ -499,7 +472,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
     @Override
     public void setRemainingPersistentAngerTime(int pRemainingPersistentAngerTime) {
-
+        this.entityData.set(DATA_REMAINING_ANGER_TIME, pRemainingPersistentAngerTime);
     }
 
     @Nullable
