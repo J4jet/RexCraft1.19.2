@@ -14,9 +14,15 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class BernisModel extends AnimatedGeoModel<BernisEntity> {
     @Override
     public ResourceLocation getModelResource(BernisEntity object) {
-        if(object.isSaddled()){
-            return new ResourceLocation(RexCraft.MOD_ID, "geo/bernis_saddled.geo.json");
+        if(object.isSaddled() && object.hasChest()){
+            return new ResourceLocation(RexCraft.MOD_ID, "geo/bernis_chested_saddled.geo.json");
         }
+        else if(object.isSaddled()){
+            return new ResourceLocation(RexCraft.MOD_ID, "geo/bernis_saddled.geo.json");}
+
+        else if(object.hasChest()){
+            return new ResourceLocation(RexCraft.MOD_ID, "geo/bernis_chested.geo.json");}
+
         else{return new ResourceLocation(RexCraft.MOD_ID, "geo/bernis.geo.json");}
     }
 
