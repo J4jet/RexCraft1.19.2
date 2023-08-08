@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "rexcraft:item/beet_stack"
+    "layer0": "rexcraft:item/zucc_seeds"
   }
 }

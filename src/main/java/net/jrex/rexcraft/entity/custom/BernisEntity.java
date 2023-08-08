@@ -99,7 +99,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
         //this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.0D, false));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.5D, false));
         this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, BernisEntity.class));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -163,18 +163,18 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     @Override
     public boolean isFood(ItemStack pStack) {
         Item item = pStack.getItem();
-        return item == ModItems.BEEFSTACK.get() || item == ModItems.PORKSTACK.get() || item == ModItems.CHICKENSTACK.get() || item == ModItems.MUTTONSTACK.get();
+        return item == ModItems.ZUCC_STACK.get() || item == ModItems.BEET_STACK.get() || item == ModItems.CARROT_STACK.get() || item == ModItems.POTATO_STACK.get();
     }
 
     public boolean isHeal(ItemStack pStack) {
         Item item = pStack.getItem();
-        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
+        return item.isEdible() && (item == ModItems.ZUCC.get() || item == ModItems.BLUEBERRY.get() || item == Items.WHEAT || item == Items.CARROT) ;
     }
 
     //taming item
     public boolean tameItem(ItemStack pStack) {
         Item item = pStack.getItem();
-        return item == ModItems.CARNO_BUFF_GOLD.get() || item == ModItems.CARNO_BUFF_DIAMOND.get() || item == ModItems.CARNO_BUFF_NETH.get();
+        return item == ModItems.HERB_BUFF_GOLD.get() || item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
     }
 
     @Override
