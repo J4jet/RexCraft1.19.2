@@ -18,6 +18,13 @@ public class ModCreativeModeTab {
         }
     };
 
+    public static final CreativeModeTab REXCRAFT_FOODS = new CreativeModeTab("rexcraft_foods") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(ModItems.ZUCC.get());
+        }
+    };
+
     public static final CreativeModeTab REXCRAFT_MISC = new CreativeModeTab("rexcraft_misc") {
         @Override
         public ItemStack makeIcon() {

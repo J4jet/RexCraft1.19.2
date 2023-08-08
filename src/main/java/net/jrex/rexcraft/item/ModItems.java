@@ -26,10 +26,14 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
         public static final RegistryObject<Item> BLUEBERRY_SEEDS = ITEMS.register("blueberry_seeds",
                 () -> new ItemNameBlockItem(ModBlocks.BLUEBERRY_CROP.get(),
-                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)));
+
+        public static final RegistryObject<Item> ZUCC_SEEDS = ITEMS.register("zucc_seeds",
+                () -> new ItemNameBlockItem(ModBlocks.BLUEBERRY_CROP.get(),
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)));
 
         public static final RegistryObject<Item> BLUEBERRY = ITEMS.register("blueberry",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
                         .food(new FoodProperties.Builder().nutrition(1).saturationMod(1f).build())));
         public static final RegistryObject<Item> DUBIA = ITEMS.register("dubia",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
@@ -54,24 +58,75 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> BEEFSTACK = ITEMS.register("beefstack",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
 
         public static final RegistryObject<Item> PORKSTACK = ITEMS.register("porkstack",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
 
         public static final RegistryObject<Item> MUTTONSTACK = ITEMS.register("muttonstack",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
 
         public static final RegistryObject<Item> CHICKENSTACK = ITEMS.register("chickenstack",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.8F).meat().build())));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.8F).meat().build())));
 
         public static final RegistryObject<Item> CODSTACK = ITEMS.register("codstack",
-                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)
-                        .food(new FoodProperties.Builder().nutrition(4).saturationMod(1f).build())));
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1f).build())));
 
         public static final RegistryObject<Item> SALMONSTACK = ITEMS.register("salmonstack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(5).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> BEET_STACK = ITEMS.register("beet_stack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(4).saturationMod(0.2f).build())));
+
+        public static final RegistryObject<Item> BLUEBERRY_STACK = ITEMS.register("blueberry_stack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> CARROT_STACK = ITEMS.register("carrot_stack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(3).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> POTATO_STACK = ITEMS.register("potato_stack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(3).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> SWEETBERRY_STACK = ITEMS.register("sweetberry_stack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> ZUCC_STACK = ITEMS.register("zucc_stack",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> ZUCC = ITEMS.register("zucc",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> HERB_BUFF_NETH_IRON = ITEMS.register("herb_buff_iron",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)
-                        .food(new FoodProperties.Builder().nutrition(5).saturationMod(1f).build())));
+                        .food(new FoodProperties.Builder().nutrition(5).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> HERB_BUFF_GOLD = ITEMS.register("herb_buff_gold",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)
+                        .food(new FoodProperties.Builder().nutrition(6).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> HERB_BUFF_DIAMOND = ITEMS.register("herb_buff_diamond",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)
+                        .food(new FoodProperties.Builder().nutrition(7).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> HERB_BUFF_NETH = ITEMS.register("herb_buff_neth",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)
+                        .food(new FoodProperties.Builder().nutrition(8).saturationMod(0.1f).build())));
+
+        public static final RegistryObject<Item> ZUCC_DOUGH = ITEMS.register("zucc_dough",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.4F).build())));
+
+        public static final RegistryObject<Item> ZUCC_BREAD = ITEMS.register("zucc_bread",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(8).saturationMod(0.6f).build())));
 
         public static final RegistryObject<Item> IRON_BOWL = ITEMS.register("iron_bowl",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
