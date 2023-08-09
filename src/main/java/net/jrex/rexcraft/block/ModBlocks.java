@@ -2,6 +2,7 @@ package net.jrex.rexcraft.block;
 
 import net.jrex.rexcraft.RexCraft;
 import net.jrex.rexcraft.block.custom.BlueberryCropBlock;
+import net.jrex.rexcraft.block.custom.ZuccCropBlock;
 import net.jrex.rexcraft.item.ModCreativeModeTab;
 import net.jrex.rexcraft.item.ModItems;
 import net.minecraft.world.effect.MobEffects;
@@ -39,6 +40,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> BLUEBERRY_CROP = BLOCKS.register("blueberry_crop",
             () -> new BlueberryCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
+
+    public static final RegistryObject<Block> ZUCC_CROP = BLOCKS.register("zucc_crop",
+            () -> new ZuccCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){

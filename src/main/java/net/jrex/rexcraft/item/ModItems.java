@@ -29,7 +29,7 @@ import net.minecraftforge.registries.RegistryObject;
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)));
 
         public static final RegistryObject<Item> ZUCC_SEEDS = ITEMS.register("zucc_seeds",
-                () -> new ItemNameBlockItem(ModBlocks.BLUEBERRY_CROP.get(),
+                () -> new ItemNameBlockItem(ModBlocks.ZUCC_CROP.get(),
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)));
 
         public static final RegistryObject<Item> BLUEBERRY = ITEMS.register("blueberry",
