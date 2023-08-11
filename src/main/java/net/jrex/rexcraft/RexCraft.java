@@ -85,6 +85,7 @@ public class RexCraft
             EntityRenderers.register(ModEntityTypes.BUCKLANDII.get(), BucklandiiRenderer::new);
             EntityRenderers.register(ModEntityTypes.BERNIS.get(), BernisRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUEBERRY_CROP.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(ModBlocks.ZUCC_CROP.get(), RenderType.cutout());
 
         }
     }

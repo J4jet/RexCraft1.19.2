@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:hay_block"
+    },
+    "$": {
+      "item": "rexcraft:beet_stack"
+    },
+    "&": {
+      "item": "minecraft:melon"
+    },
+    "*": {
+      "item": "rexcraft:blueberry_stack"
+    },
+    "%": {
+      "item": "rexcraft:potato_stack"
+    },
+    "!": {
+      "item": "rexcraft:sweetberry_stack"
+    },
+    "^": {
+      "item": "rexcraft:zucc_stack"
+    },
+    "+": {
+      "item": "rexcraft:carrot_stack"
+    },
+    "@": {
+      "item": "rexcraft:gold_bowl"
+    }
+  },
+  "pattern": [
+    "&#%",
+    "!$^",
+    "*@+"
+  ],
+  "result": {
+    "item": "rexcraft:herb_buff_gold",
+    "count": 1
+  }
+}

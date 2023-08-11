@@ -1,0 +1,12 @@
+
+{
+  "variants": {
+    "age=0": { "model": "rexcraft:block/zucc_stage0" },
+    "age=1": { "model": "rexcraft:block/zucc_stage1" },
+    "age=2": { "model": "rexcraft:block/zucc_stage2" },
+    "age=3": { "model": "rexcraft:block/zucc_stage3" },
+    "age=4": { "model": "rexcraft:block/zucc_stage4" },
+    "age=5": { "model": "rexcraft:block/zucc_stage5" },
+    "age=6": { "model": "rexcraft:block/zucc_stage6" }
+  }
+}
