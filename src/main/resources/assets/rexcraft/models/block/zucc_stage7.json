@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/crop",
   "textures": {
-    "crop": "rexcraft:block/zucc_stage6"
+    "crop": "rexcraft:block/zucc_stage7"
   }
 }
