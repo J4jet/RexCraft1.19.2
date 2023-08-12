@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class ZuccCropBlock extends CropBlock {
 
-    public static final IntegerProperty AGE = IntegerProperty.create("age",0,6);
+    public static final IntegerProperty AGE = IntegerProperty.create("age",0,7);
     public ZuccCropBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -27,7 +27,7 @@ public class ZuccCropBlock extends CropBlock {
 
     @Override
     public int getMaxAge() {
-        return 6;
+        return 7;
     }
 
     @Override

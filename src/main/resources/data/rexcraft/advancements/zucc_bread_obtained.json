@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "rexcraft:zucc_bread"
+    },
+    "title": "A Real Baker",
+    "description": "Bake some Zucchini Bread.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+
+  },
+  "parent": "rexcraft:rexcraft",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "rexcraft:zucc_bread"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

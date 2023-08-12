@@ -12,7 +12,7 @@
   "spawners": {
     "type": "rexcraft:gecko",
     "weight": 150,
-    "minCount": 3,
-    "maxCount": 5
+    "minCount": 2,
+    "maxCount": 3
   }
 }

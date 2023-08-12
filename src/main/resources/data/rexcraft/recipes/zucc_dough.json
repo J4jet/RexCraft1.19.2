@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "$": {
+      "item": "minecraft:wheat"
+    },
+    "X": {
+      "item": "minecraft:egg"
+    },
+    "#": {
+      "item": "rexcraft:zucc"
+    }
+  },
+  "pattern": [
+    "$#$",
+    "#X#",
+    "$#$"
+  ],
+  "result": {
+    "item": "rexcraft:zucc_dough",
+    "count": 1
+  }
+}

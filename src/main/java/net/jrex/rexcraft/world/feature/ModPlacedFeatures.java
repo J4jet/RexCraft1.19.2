@@ -25,6 +25,10 @@ public class ModPlacedFeatures {
             () -> new PlacedFeature(ModConfiguredFeatures.BLUEBERRY_BUSH.getHolder().get(), List.of(RarityFilter.onAverageOnceEvery(2),
                     InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())));
 
+    public static final RegistryObject<PlacedFeature> ZUCC_BUSH_PLACED = PLACED_FEATURES.register("zucc_bush_placed",
+            () -> new PlacedFeature(ModConfiguredFeatures.ZUCC_BUSH.getHolder().get(), List.of(RarityFilter.onAverageOnceEvery(2),
+                    InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())));
+
 
     public static void register(IEventBus eventBus) {
         PLACED_FEATURES.register(eventBus);

@@ -35,6 +35,10 @@ public class ModBlocks {
             () -> new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 3,
                     BlockBehaviour.Properties.copy(Blocks.DANDELION)), ModCreativeModeTab.REXCRAFT_MISC);
 
+    public static final RegistryObject<Block> ZUCC_BUSH = registerBlock("zucc_bush",
+            () -> new FlowerBlock(MobEffects.MOVEMENT_SLOWDOWN, 3,
+                    BlockBehaviour.Properties.copy(Blocks.DANDELION)), ModCreativeModeTab.REXCRAFT_MISC);
+
     public static final RegistryObject<Block> STEEL_BLOCK = registerBlock("steel_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).strength(7f,10f).requiresCorrectToolForDrops()), ModCreativeModeTab.REXCRAFT_TAB);
 

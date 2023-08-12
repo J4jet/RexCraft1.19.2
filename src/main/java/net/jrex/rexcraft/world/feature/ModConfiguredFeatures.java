@@ -25,8 +25,13 @@ public class ModConfiguredFeatures {
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> BLUEBERRY_BUSH = CONFIGURED_FEATURES.register("blueberry_bush",
             () -> new ConfiguredFeature<>(Feature.FLOWER,
-                    new RandomPatchConfiguration(4, 2, 1, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
+                    new RandomPatchConfiguration(5, 3, 2, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
                             new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.BLUEBERRY_BUSH.get()))))));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> ZUCC_BUSH = CONFIGURED_FEATURES.register("zucc_bush",
+            () -> new ConfiguredFeature<>(Feature.FLOWER,
+                    new RandomPatchConfiguration(4, 2, 1, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
+                            new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.ZUCC_BUSH.get()))))));
 
     public static void regester(IEventBus eventBus){
         CONFIGURED_FEATURES.register(eventBus);

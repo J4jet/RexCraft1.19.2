@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/crop",
+  "parent" : "minecraft:block/cross",
   "textures": {
-    "crop": "rexcraft:block/zucc_stage7"
-  }
+    "cross": "rexcraft:block/zucc_stage7"
+  },
+  "render_type": "cutout"
 }

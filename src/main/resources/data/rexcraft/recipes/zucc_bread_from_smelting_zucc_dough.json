@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 150,
+  "experience": 0.8,
+
+  "ingredient": {
+    "item": "rexcraft:zucc_dough"
+  },
+  "result": "rexcraft:zucc_bread"
+}
