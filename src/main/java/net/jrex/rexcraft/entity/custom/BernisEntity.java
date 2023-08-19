@@ -204,19 +204,19 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.BUCKLANDII_HURT.get();
+        return ModSounds.BERNIS_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.BUCKLANDII_DEATH.get();
+        return ModSounds.BERNIS_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
 
         if (this.isAngry()) {
-            return ModSounds.BUCKLANDII_ANGRY.get();
+            return ModSounds.BERNIS_ANGRY.get();
         } else {
-            return ModSounds.BUCKLANDII_GROWL.get();
+            return ModSounds.BERNIS_IDLE.get();
         }
     }
 
@@ -231,7 +231,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     protected float getSoundVolume() {
-        return 0.8F;
+        return 0.7F;
     }
 
     protected boolean isImmobile() {

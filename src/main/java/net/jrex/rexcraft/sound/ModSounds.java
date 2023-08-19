@@ -40,6 +40,18 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> BUCKLANDII_ANGRY =
             registerSoundEvent("bucklandii_angry");
 
+    public static final RegistryObject<SoundEvent> BERNIS_DEATH =
+            registerSoundEvent("bernis_death");
+
+    public static final RegistryObject<SoundEvent> BERNIS_HURT =
+            registerSoundEvent("bernis_hurt");
+
+    public static final RegistryObject<SoundEvent> BERNIS_IDLE =
+            registerSoundEvent("bernis_idle");
+
+    public static final RegistryObject<SoundEvent> BERNIS_ANGRY =
+            registerSoundEvent("bernis_angry");
+
     public static final RegistryObject<SoundEvent> CRICKET_IDLE =
             registerSoundEvent("cricket_idle");
 
