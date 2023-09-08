@@ -1,0 +1,55 @@
+{
+  "parent": "rexcraft:rexcraft",
+  "criteria": {
+    "rexcraft:bucklandii": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:bucklandii"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
+    "rexcraft:bernis": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:bernis"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "rexcraft:meg_jaw"
+    },
+    "title": "Life finds a way... or does it?",
+    "description": "Breed every dinosaur.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+
+  },
+  "requirements": [
+    [
+      "rexcraft:bucklandii"
+    ],
+    [
+      "rexcraft:bernis"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  }
+}
