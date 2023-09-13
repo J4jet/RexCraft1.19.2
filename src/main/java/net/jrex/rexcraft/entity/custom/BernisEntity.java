@@ -401,6 +401,11 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     @Override
+    public boolean canJump() {
+        return false;
+    }
+
+    @Override
     public Team getTeam() {
         return super.getTeam();
     }
