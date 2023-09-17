@@ -21,8 +21,10 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +39,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -49,12 +53,15 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+
 //Things for being angry:
 //Use these things to be able to make this mob angry, make sure you have everything, or it will not work.
 import net.minecraft.world.entity.NeutralMob;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
+
+import static net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES;
 
 public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob, PlayerRideableJumping, Saddleable {
 
@@ -83,6 +90,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public static int attacknum = 3;
 
     public static float riderOffset = 0.4f;
+
+
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -486,6 +495,11 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         if (this.isAlive()) {
             LivingEntity livingentity = this.getControllingPassenger();
             if (this.isVehicle() && livingentity != null) {
+
+
+                // Forge - see IForgeEntity#getStepHeight
+                //this.getStepHeight();
+                this.maxUpStep = 1.0F;
                 this.setYRot(livingentity.getYRot());
                 this.yRotO = this.getYRot();
                 this.setXRot(livingentity.getXRot() * 0.5F);
@@ -500,6 +514,12 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
                     this.setDeltaMovement(vec3.x, 0, vec3.z);
                 }
 
+//                if (this.onGround) {
+//                    f = 0.0F;
+//                    f1 = 0.0F;
+//                }
+
+                this.flyingSpeed = this.getSpeed() * 0.1F;
                 if (this.isControlledByLocalInstance()) {
                     this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + speedMod);
                     super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
@@ -514,6 +534,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
                 super.travel(pTravelVector);
             }
         }
+
     }
 
     /* VARIANTS */
