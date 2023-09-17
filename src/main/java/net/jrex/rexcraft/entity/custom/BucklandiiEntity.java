@@ -85,7 +85,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 40);
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = 0.0f;
+    public static float speedMod = 0.001f;
 
     public static int attacknum = 3;
 
@@ -495,8 +495,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         if (this.isAlive()) {
             LivingEntity livingentity = this.getControllingPassenger();
             if (this.isVehicle() && livingentity != null) {
-
-
+                //maxstepup is deped so try using this?
                 // Forge - see IForgeEntity#getStepHeight
                 //this.getStepHeight();
                 this.maxUpStep = 1.0F;

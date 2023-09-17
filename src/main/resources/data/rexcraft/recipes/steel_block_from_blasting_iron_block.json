@@ -4,7 +4,7 @@
   "experience": 0.7,
 
   "ingredient": {
-    "item": "minecraft:iron_ingot"
+    "item": "minecraft:iron_block"
   },
-  "result": "rexcraft:steel_ingot"
+  "result": "rexcraft:steel_block"
 }
