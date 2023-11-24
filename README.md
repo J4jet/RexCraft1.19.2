@@ -1,5 +1,5 @@
 # RexCraft 1.19.2 Overview 
-Much of the work I've done with this mod leverages inheritance, and therefore uses a lot of existing code, though this is not entirely the case. This mod adds in mobs, materials, tools, and armor, however is more focused on the mobs.
+This is a mod for Minecraft 1.19.2. Much of the work I've done with this mod leverages inheritance, and therefore uses a lot of existing code, though this is not entirely the case. This mod adds in mobs, materials, tools, and armor, however is more focused on the mobs.
 
 <img src="https://github.com/JasaurusRex/RexCraft1.19.2/assets/106399510/2b911d98-037c-4d2d-adea-cb7918bc1052" width=30% height=50%>
 
