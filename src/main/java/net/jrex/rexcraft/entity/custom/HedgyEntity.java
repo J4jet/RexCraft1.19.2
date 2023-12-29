@@ -4,6 +4,7 @@ import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.variant.HedgyVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.core.BlockPos;
@@ -172,8 +173,15 @@ public class HedgyEntity extends TamableAnimal implements IAnimatable {
         return 0.2F;
     }
 
+
     public void aiStep() {
         super.aiStep();
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        assert s != null;
+        if (s.equals("Wilbur")) {
+            //this.makeInv();
+            this.setInvulnerable(true);
+        }
 
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {

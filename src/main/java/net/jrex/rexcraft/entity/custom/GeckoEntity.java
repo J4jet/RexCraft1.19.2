@@ -34,6 +34,7 @@ import net.minecraft.world.entity.monster.Silverfish;
 
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -198,13 +199,13 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         return 0.8F;
     }
 
+
     public void aiStep() {
         super.aiStep();
         String s = ChatFormatting.stripFormatting(this.getName().getString());
         assert s != null;
         if (s.equals("Nova")) {
-            //this.setInvulnerable(true);
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0D);
+            //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0D);
             this.setInvulnerable(true);
         }
 
