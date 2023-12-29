@@ -91,6 +91,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     public static float riderOffset = 0.4f;
 
+    public static float step_height = 1.0F;
+
 
 
     @Nullable
@@ -498,7 +500,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
                 //maxstepup is deped so try using this?
                 // Forge - see IForgeEntity#getStepHeight
                 //this.getStepHeight();
-                this.maxUpStep = 1.0F;
+                this.maxUpStep = step_height;
                 this.setYRot(livingentity.getYRot());
                 this.yRotO = this.getYRot();
                 this.setXRot(livingentity.getXRot() * 0.5F);

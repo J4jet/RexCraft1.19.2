@@ -13,6 +13,7 @@ public class BleedSwordItem extends SwordItem {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
 
+    //somewhere there is a Forge attribute thing that changes the reach of an item
     @Override
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pTarget.addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 40), pAttacker);
