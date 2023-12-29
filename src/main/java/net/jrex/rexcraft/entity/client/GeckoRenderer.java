@@ -47,6 +47,7 @@ public class GeckoRenderer extends GeoEntityRenderer<GeckoEntity> {
         String s = ChatFormatting.stripFormatting(instance.getName().getString());
         if (s != null && "Nova".equals(s)) {
             return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/nova.png");
+
         } else {
             return LOCATION_BY_VARIANT.get(instance.getVariant());
         }

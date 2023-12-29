@@ -141,6 +141,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+
         if (event.isMoving()) {
             if(this.isVehicle()){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));

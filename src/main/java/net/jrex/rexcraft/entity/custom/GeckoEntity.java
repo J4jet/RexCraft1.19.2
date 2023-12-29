@@ -200,6 +200,13 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
 
     public void aiStep() {
         super.aiStep();
+        String s = ChatFormatting.stripFormatting(this.getName().getString());
+        assert s != null;
+        if (s.equals("Nova")) {
+            //this.setInvulnerable(true);
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0D);
+            this.setInvulnerable(true);
+        }
 
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
