@@ -67,6 +67,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(40, 60);
 
+
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
 
@@ -241,7 +242,6 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     @Override
     public void aiStep() {
         super.aiStep();
-
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(1.0F);
@@ -377,9 +377,10 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     public boolean canWearArmor() {
         return false;
     }
+
 //    @Override
-//    protected int getInventorySize() {
-//        return this.hasChest() ? 3 : super.getInventorySize();
+//    public int getInventoryColumns() {
+//        return 8;
 //    }
 
     @Override
