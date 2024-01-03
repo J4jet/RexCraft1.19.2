@@ -4,11 +4,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public enum BernisVariant {
-
-    BLUE_M(0),
-    BLUE_F(1),
-    GREEN_M(2),
-    GREEN_F(4);
+    GREEN_M(1),
+    GREEN_F(2);
 
     private static final BernisVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
             comparingInt(BernisVariant::getId)).toArray(BernisVariant[]::new);

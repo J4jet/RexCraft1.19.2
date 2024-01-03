@@ -269,6 +269,13 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public void aiStep() {
         super.aiStep();
 
+//        if(this.isAngry()){
+//            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+//        }
+//        else if (!this.isAngry()){
+//            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+//        }
+
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(1.0F);

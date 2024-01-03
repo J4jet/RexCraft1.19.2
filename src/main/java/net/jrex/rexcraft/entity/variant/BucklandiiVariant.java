@@ -6,9 +6,7 @@ import java.util.Comparator;
 public enum BucklandiiVariant {
 
     BROWN_M(0),
-    BROWN_F(1),
-    RED_M(2),
-    RED_F(4);
+    BROWN_F(1);
 
     private static final BucklandiiVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
             comparingInt(BucklandiiVariant::getId)).toArray(BucklandiiVariant[]::new);

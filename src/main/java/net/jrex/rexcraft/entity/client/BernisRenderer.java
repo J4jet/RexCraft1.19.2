@@ -8,6 +8,7 @@ import net.jrex.rexcraft.entity.custom.BernisEntity;
 import net.jrex.rexcraft.entity.custom.BucklandiiEntity;
 import net.jrex.rexcraft.entity.variant.BernisVariant;
 import net.jrex.rexcraft.entity.variant.BucklandiiVariant;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -23,10 +24,6 @@ public class BernisRenderer extends GeoEntityRenderer<BernisEntity> {
 
     public static final Map<BernisVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(BernisVariant.class), (p_114874_) -> {
-                p_114874_.put(BernisVariant.BLUE_M,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bernis/bernis_m.png"));
-                p_114874_.put(BernisVariant.BLUE_F,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bernis/bernis_f.png"));
                 p_114874_.put(BernisVariant.GREEN_F,
                         new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bernis/bernis_mv2.png"));
                 p_114874_.put(BernisVariant.GREEN_M,
@@ -42,7 +39,13 @@ public class BernisRenderer extends GeoEntityRenderer<BernisEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(BernisEntity instance) {
-        return LOCATION_BY_VARIANT.get(instance.getVariant());
+        String s = ChatFormatting.stripFormatting(instance.getName().getString());
+        if (s != null && "Aladar".equals(s)) {
+            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bernis/bernis_m.png");
+
+        } else {
+            return LOCATION_BY_VARIANT.get(instance.getVariant());
+        }
 
     }
 

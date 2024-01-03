@@ -28,10 +28,10 @@ public class BucklandiiRenderer extends GeoEntityRenderer<BucklandiiEntity> {
                         new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bucklandii/bucklandiif.png"));
                 p_114874_.put(BucklandiiVariant.BROWN_F,
                         new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bucklandii/bucklandiim.png"));
-                p_114874_.put(BucklandiiVariant.RED_F,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bucklandii/bucklandiimv2.png"));
-                p_114874_.put(BucklandiiVariant.RED_M,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bucklandii/bucklandiifv2.png"));
+//                p_114874_.put(BucklandiiVariant.RED_F,
+//                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bucklandii/bucklandiimv2.png"));
+//                p_114874_.put(BucklandiiVariant.RED_M,
+//                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/bucklandii/bucklandiifv2.png"));
 
             });
     public BucklandiiRenderer(EntityRendererProvider.Context renderManager) {
