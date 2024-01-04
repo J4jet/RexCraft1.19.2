@@ -30,7 +30,7 @@ public class BorealRenderer extends GeoEntityRenderer<BorealEntity> {
             });
     public BorealRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BorealModel());
-        this.shadowRadius = 0.5f;
+        this.shadowRadius = 0.8f;
     }
 
 
@@ -48,9 +48,9 @@ public class BorealRenderer extends GeoEntityRenderer<BorealEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(1.5F, 1.5F, 1.5F);
+            stack.scale(1.0F, 1.0F, 1.0F);
         } else {
-            stack.scale(3.0f, 3.0f,3.0f);
+            stack.scale(2.0f, 2.0f,2.0f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

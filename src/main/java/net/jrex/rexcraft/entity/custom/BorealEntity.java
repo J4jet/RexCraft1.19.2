@@ -87,8 +87,8 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0f)
-                .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
+                .add(Attributes.ATTACK_SPEED, 1.5f)
+                .add(Attributes.MOVEMENT_SPEED, 0.19f).build();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         //this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, BorealEntity.class));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -259,7 +259,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.isBaby()) {
             if (this.isTamed() && player.isSecondaryUseActive()) {
-                this.openCustomInventoryScreen(player);
+                this.doPlayerRide(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
@@ -341,7 +341,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         if (this.isBaby()) {
             return super.mobInteract(player, hand);
         } else {
-            this.doPlayerRide(player);
+            this.openCustomInventoryScreen(player);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
     }

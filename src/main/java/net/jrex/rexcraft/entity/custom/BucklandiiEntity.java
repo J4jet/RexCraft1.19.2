@@ -178,6 +178,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             int rand_int = rand.nextInt(upperbound);
 
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
+            System.out.print(rand_int);
 
             this.swinging = false;
         }

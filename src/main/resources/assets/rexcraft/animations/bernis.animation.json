@@ -1157,7 +1157,7 @@
 				}
 			}
 		},
-		"attack3": {
+		"attack0": {
 			"animation_length": 0.5,
 			"bones": {
 				"armr": {

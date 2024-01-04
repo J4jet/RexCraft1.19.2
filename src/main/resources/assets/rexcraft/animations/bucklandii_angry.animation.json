@@ -185,7 +185,7 @@
 				}
 			}
 		},
-		"attack3": {
+		"attack0": {
 			"animation_length": 0.625,
 			"bones": {
 				"neck": {

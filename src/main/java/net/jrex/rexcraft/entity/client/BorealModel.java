@@ -12,7 +12,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class BorealModel extends AnimatedGeoModel<BorealEntity> {
     @Override
     public ResourceLocation getModelResource(BorealEntity object) {
-        if(object.hasChest()){
+        if(object.hasChest()) {
             return new ResourceLocation(RexCraft.MOD_ID, "geo/boreal_chested.geo.json");
         }
 
