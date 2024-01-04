@@ -71,6 +71,8 @@ public class RexCraft
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
             SpawnPlacements.register(ModEntityTypes.BERNIS.get(),
                     SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
+            SpawnPlacements.register(ModEntityTypes.BOREAL.get(),
+                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AgeableMob::checkMobSpawnRules);
         });
     }
 
@@ -86,6 +88,7 @@ public class RexCraft
             EntityRenderers.register(ModEntityTypes.CRICKET.get(), CricketRenderer::new);
             EntityRenderers.register(ModEntityTypes.BUCKLANDII.get(), BucklandiiRenderer::new);
             EntityRenderers.register(ModEntityTypes.BERNIS.get(), BernisRenderer::new);
+            EntityRenderers.register(ModEntityTypes.BOREAL.get(), BorealRenderer::new);
             //ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUEBERRY_CROP.get(), RenderType.cutout());
             //ItemBlockRenderTypes.setRenderLayer(ModBlocks.ZUCC_CROP.get(), RenderType.cutout());
 

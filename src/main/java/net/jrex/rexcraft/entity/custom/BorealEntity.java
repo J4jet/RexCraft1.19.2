@@ -2,25 +2,22 @@ package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.variant.BernisVariant;
-import net.jrex.rexcraft.entity.variant.BucklandiiVariant;
+import net.jrex.rexcraft.entity.variant.BorealVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.Container;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,9 +26,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.horse.*;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -58,12 +56,12 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import java.util.Random;
 import java.util.UUID;
 
-public class BernisEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
+public class BorealEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(BorealEntity.class, EntityDataSerializers.INT);
 
-    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BorealEntity.class, EntityDataSerializers.INT);
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(40, 60);
 
@@ -80,16 +78,16 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    public BernisEntity(EntityType<? extends AbstractChestedHorse> pEntityType, Level pLevel) {
+    public BorealEntity(EntityType<? extends AbstractChestedHorse> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 25.0D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0f)
-                .add(Attributes.ATTACK_SPEED, 0.8f)
+                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.ATTACK_DAMAGE, 8.0f)
+                .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
     }
 
@@ -101,7 +99,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2D, false));
-        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, BernisEntity.class));
+        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, BorealEntity.class));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -115,7 +113,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
             if (this.isVehicle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
                 return PlayState.CONTINUE;
             } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
@@ -155,8 +153,8 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
-        BernisEntity baby = ModEntityTypes.BERNIS.get().create(serverLevel);
-        BernisVariant variant = Util.getRandom(BernisVariant.values(), this.random);
+        BorealEntity baby = ModEntityTypes.BOREAL.get().create(serverLevel);
+        BorealVariant variant = Util.getRandom(BorealVariant.values(), this.random);
         baby.setVariant(variant);
         return baby;
     }
@@ -176,16 +174,6 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     public boolean tameItem(ItemStack pStack) {
         Item item = pStack.getItem();
         return item == ModItems.HERB_BUFF_GOLD.get() || item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
-    }
-
-    @Override
-    public void positionRider(@NotNull Entity pPassenger) {
-        if (this.hasPassenger(pPassenger)) {
-            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
-            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
-
-            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + riderOffset, this.getZ() - (double)(0.3F * f));
-        }
     }
 
     @Override
@@ -248,11 +236,22 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
             }
             this.followMommy();
         }
+        if(this.isAngry()){
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+        }
+        else if (!this.isAngry()){
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+        }
 
         if (!this.level.isClientSide) {
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
 
+    }
+
+    @Override
+    public boolean isSaddleable() {
+        return false;
     }
 
     @Override
@@ -332,11 +331,11 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
                 this.createInventory();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
-
-            if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
-                this.openCustomInventoryScreen(player);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
-            }
+            //from Bernisentity, I don't want Boreal to be rideable
+//            if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
+//                this.openCustomInventoryScreen(player);
+//                return InteractionResult.sidedSuccess(this.level.isClientSide);
+//            }
         }
 
         if (this.isBaby()) {
@@ -371,7 +370,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     @Override
     public boolean canMate(Animal pOtherAnimal) {
-        return pOtherAnimal != this && pOtherAnimal instanceof BernisEntity && this.canParent() && ((BernisEntity)pOtherAnimal).canParent();
+        return pOtherAnimal != this && pOtherAnimal instanceof BorealEntity && this.canParent() && ((BorealEntity)pOtherAnimal).canParent();
     }
 
     public boolean canWearArmor() {
@@ -454,20 +453,20 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
                                         MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
                                         @Nullable CompoundTag p_146750_) {
-        BernisVariant variant = Util.getRandom(BernisVariant.values(), this.random);
+        BorealVariant variant = Util.getRandom(BorealVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
     }
 
-    public BernisVariant getVariant() {
-        return BernisVariant.byId(this.getTypeVariant() & 255);
+    public BorealVariant getVariant() {
+        return BorealVariant.byId(this.getTypeVariant() & 255);
     }
 
     private int getTypeVariant() {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
-    private void setVariant(BernisVariant variant) {
+    private void setVariant(BorealVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 
