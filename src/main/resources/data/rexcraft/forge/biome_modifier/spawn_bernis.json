@@ -5,8 +5,7 @@
     "minecraft:forest",
     "minecraft:birch_forest",
     "minecraft:dark_forest",
-    "minecraft:meadow",
-    "minecraft:swamp"
+    "minecraft:meadow"
   ],
   "spawners": {
     "type": "rexcraft:bernis",

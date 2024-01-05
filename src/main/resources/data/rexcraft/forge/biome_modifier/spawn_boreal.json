@@ -1,0 +1,13 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:stony_shore",
+    "minecraft:beach"
+  ],
+  "spawners": {
+    "type": "rexcraft:boreal",
+    "weight": 35,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

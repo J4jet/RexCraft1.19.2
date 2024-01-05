@@ -141,8 +141,9 @@
 
   "entity.rexcraft.gecko": "Leopard Gecko",
   "entity.rexcraft.hedgy": "Hedgehog",
-  "entity.rexcraft.bucklandii": "Megalosaurus Bucklandii",
-  "entity.rexcraft.bernis": "Iguanodon Bernissartensis",
+  "entity.rexcraft.bucklandii": "Megalosaurus bucklandii",
+  "entity.rexcraft.bernis": "Iguanodon bernissartensis",
+  "entity.rexcraft.boreal": "Borealopelta markmitchelli",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 

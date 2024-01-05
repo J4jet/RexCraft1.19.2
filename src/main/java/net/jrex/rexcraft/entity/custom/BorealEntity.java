@@ -63,15 +63,13 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BorealEntity.class, EntityDataSerializers.INT);
 
-    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(40, 60);
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(60, 90);
 
 
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
 
     public static int attacknum = 3;
-
-    public static float riderOffset = 1.0f;
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -85,10 +83,10 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
-                .add(Attributes.ATTACK_DAMAGE, 8.0f)
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.ATTACK_DAMAGE, 6.0f)
                 .add(Attributes.ATTACK_SPEED, 1.5f)
-                .add(Attributes.MOVEMENT_SPEED, 0.19f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
     }
 
     @Override
@@ -121,10 +119,6 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
             }
 
         }
-//        if (this.isSitting()) {
-//            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
-//            return PlayState.CONTINUE;
-//        }
 
         event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         return PlayState.CONTINUE;

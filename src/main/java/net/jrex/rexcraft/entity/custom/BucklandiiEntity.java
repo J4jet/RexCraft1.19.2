@@ -111,8 +111,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 15.0D)
-                .add(Attributes.ATTACK_DAMAGE, 4.0f)
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.ATTACK_DAMAGE, 8.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
@@ -487,15 +487,15 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(18.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.3D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(25.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9.3D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(15.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
         }

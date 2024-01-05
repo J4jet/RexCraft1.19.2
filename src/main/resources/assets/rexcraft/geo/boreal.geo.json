@@ -126,8 +126,13 @@
 					]
 				},
 				{
-					"name": "neck",
+					"name": "neck_root",
 					"parent": "body",
+					"pivot": [0, 7.35, -4]
+				},
+				{
+					"name": "neck",
+					"parent": "neck_root",
 					"pivot": [0, 7.35, -4],
 					"cubes": [
 						{"origin": [-1.5, 5, -9], "size": [3, 3.2, 5.75], "uv": [32, 31]},
@@ -146,8 +151,13 @@
 					]
 				},
 				{
-					"name": "head",
+					"name": "head_root",
 					"parent": "neck",
+					"pivot": [0, 7.1, -8.5]
+				},
+				{
+					"name": "head",
+					"parent": "head_root",
 					"pivot": [0, 7.1, -8.5],
 					"cubes": [
 						{"origin": [-1.2, 5.2, -10.45], "size": [2.4, 1.75, 1.9], "pivot": [0, 7.35, -9.25], "rotation": [20, 0, 0], "uv": [0, 25]},
