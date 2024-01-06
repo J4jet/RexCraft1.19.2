@@ -3,7 +3,7 @@
   "criteria": {
     "rexcraft:bucklandii": {
       "conditions": {
-        "child": [
+        "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -13,11 +13,11 @@
           }
         ]
       },
-      "trigger": "minecraft:bred_animals"
+      "trigger": "minecraft:player_killed_entity"
     },
     "rexcraft:bernis": {
       "conditions": {
-        "child": [
+        "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -27,11 +27,11 @@
           }
         ]
       },
-      "trigger": "minecraft:bred_animals"
+      "trigger": "minecraft:player_killed_entity"
     },
     "rexcraft:boreal": {
       "conditions": {
-        "child": [
+        "entity": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -41,15 +41,16 @@
           }
         ]
       },
-      "trigger": "minecraft:bred_animals"
+      "trigger": "minecraft:player_killed_entity"
     }
   },
+
   "display": {
     "icon": {
-      "item": "rexcraft:carno_buff_neth"
+      "item": "rexcraft:meg_jaw"
     },
-    "title": "Life finds a way... or does it?",
-    "description": "Breed every dinosaur.",
+    "title": "Extinction Level Event",
+    "description": "Slay every dinosaur",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true
