@@ -1287,7 +1287,7 @@
 			}
 		},
 		"idle1": {
-			"loop": true,
+			"loop": false,
 			"animation_length": 7,
 			"bones": {
 				"body": {
@@ -1590,8 +1590,8 @@
 				}
 			}
 		},
-		"idle": {
-			"loop": true,
+		"idle0": {
+			"loop": false,
 			"animation_length": 6.29167,
 			"bones": {
 				"jaw": {

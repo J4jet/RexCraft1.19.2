@@ -160,8 +160,44 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+        //if the entity is not moving or sitting, and has a current animation:
+
+        if(!event.isMoving() && !this.isSitting() && event.getController().getCurrentAnimation() != null){
+            String name = event.getController().getCurrentAnimation().animationName;
+
+            //if that animation is anything other than an idle, just override it and set it to idle0
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting")){
+                event.getController().markNeedsReload();
+                int rand_int = rand_num();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
+            }
+            //if it's already idling, then just wait for the current idle anim to be over and choose a random one for the next loop
+            if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
+                event.getController().markNeedsReload();
+
+                //a random number is chosen between 0 and 2, then added to the end of "idle" to get a random idle animation!
+                int rand_int = rand_num();
+
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
+                //System.out.print(rand_int);
+            }
+
+        }
+
         return PlayState.CONTINUE;
+    }
+
+    /** Chooses a random number between 0 and 9, then returns 0 or 1 based on that. **/
+    protected int rand_num(){
+        Random rand = new Random();
+        int rand_num = rand.nextInt(10);
+
+        if(rand_num > 5){
+            return 0;
+        }
+        else{
+            return 1;
+        }
     }
 
     private PlayState attackPredicate(AnimationEvent event) {
@@ -178,7 +214,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             int rand_int = rand.nextInt(upperbound);
 
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
-            System.out.print(rand_int);
+            //System.out.print(rand_int);
 
             this.swinging = false;
         }
