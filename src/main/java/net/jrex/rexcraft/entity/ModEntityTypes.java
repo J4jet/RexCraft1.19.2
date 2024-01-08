@@ -51,7 +51,7 @@ public class ModEntityTypes {
             ENTITY_TYPES.register("boreal",
                     () -> EntityType.Builder.of(BorealEntity::new, MobCategory.CREATURE)
                             //Hitbox Size!
-                            .sized(2.0f, 1.4f)
+                            .sized(2.0f, 1.2f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "boreal").toString()));
 
     public static void register(IEventBus eventBus) {

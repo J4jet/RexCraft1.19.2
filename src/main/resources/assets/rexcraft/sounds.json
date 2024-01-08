@@ -56,9 +56,9 @@
   },
 
   "bucklandii_angry": {
-    "subtitle": "sounds.rexcraft.bernis_angry",
+    "subtitle": "sounds.rexcraft.bucklandii_angry",
     "sounds": [
-      "rexcraft:bernis_angry"
+      "rexcraft:bucklandii_angry"
     ]
   },
   "bernis_hurt": {
@@ -84,6 +84,31 @@
     "subtitle": "sounds.rexcraft.bernis_angry",
     "sounds": [
       "rexcraft:bernis_angry"
+    ]
+  },
+  "boreal_hurt": {
+    "subtitle": "sounds.rexcraft.boreal_hurt",
+    "sounds": [
+      "rexcraft:boreal_hurt"
+    ]
+  },
+  "boreal_death": {
+    "subtitle": "sounds.rexcraft.boreal_death",
+    "sounds": [
+      "rexcraft:boreal_death"
+    ]
+  },
+  "boreal_idle": {
+    "subtitle": "sounds.rexcraft.boreal_idle",
+    "sounds": [
+      "rexcraft:boreal_idle"
+    ]
+  },
+
+  "boreal_angry": {
+    "subtitle": "sounds.rexcraft.boreal_angry",
+    "sounds": [
+      "rexcraft:boreal_angry"
     ]
   }
 }

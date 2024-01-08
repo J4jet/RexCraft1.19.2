@@ -55,6 +55,18 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> CRICKET_IDLE =
             registerSoundEvent("cricket_idle");
 
+    public static final RegistryObject<SoundEvent> BOREAL_DEATH =
+            registerSoundEvent("boreal_death");
+
+    public static final RegistryObject<SoundEvent> BOREAL_HURT =
+            registerSoundEvent("boreal_hurt");
+
+    public static final RegistryObject<SoundEvent> BOREAL_IDLE =
+            registerSoundEvent("boreal_idle");
+
+    public static final RegistryObject<SoundEvent> BOREAL_ANGRY =
+            registerSoundEvent("boreal_angry");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

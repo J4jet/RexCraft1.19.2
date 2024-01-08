@@ -84,8 +84,10 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
 
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0D)
-                .add(Attributes.ATTACK_DAMAGE, 6.0f)
+                .add(Attributes.ATTACK_DAMAGE, 5.0f)
                 .add(Attributes.ATTACK_SPEED, 1.5f)
+                .add(Attributes.ARMOR,2.0)
+                .add(Attributes.ARMOR_TOUGHNESS,2.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
     }
 
@@ -187,19 +189,19 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.BERNIS_HURT.get();
+        return ModSounds.BOREAL_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.BERNIS_DEATH.get();
+        return ModSounds.BOREAL_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
 
         if (this.isAngry()) {
-            return ModSounds.BERNIS_ANGRY.get();
+            return ModSounds.BOREAL_ANGRY.get();
         } else {
-            return ModSounds.BERNIS_IDLE.get();
+            return ModSounds.BOREAL_IDLE.get();
         }
     }
 
@@ -232,6 +234,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         }
         if(this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+            getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
         }
         else if (!this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);

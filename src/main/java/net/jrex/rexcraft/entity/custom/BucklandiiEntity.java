@@ -487,7 +487,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(25.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(23.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9.3D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);

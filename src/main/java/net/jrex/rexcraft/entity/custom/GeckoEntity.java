@@ -82,7 +82,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
                 .add(Attributes.MAX_HEALTH, 8.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
     }
 
     @Override

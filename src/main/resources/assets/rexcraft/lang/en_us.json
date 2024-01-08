@@ -136,6 +136,11 @@
   "sounds.rexcraft.bernis_angry": "Iguanodon roaring",
   "sounds.rexcraft.gecko_hurt": "Leopard Gecko chirping",
 
+  "sounds.rexcraft.boreal_hurt": "Borealopelta in pain",
+  "sounds.rexcraft.boreal_death": "Borealopelta dying",
+  "sounds.rexcraft.boreal_idle": "Borealopelta honking",
+  "sounds.rexcraft.boreal_angry": "Borealopelta roaring",
+
 
 
   "effect.rexcraft.bleed": "Bleeding",

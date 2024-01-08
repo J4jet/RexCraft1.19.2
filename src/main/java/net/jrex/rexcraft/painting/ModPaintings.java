@@ -24,8 +24,8 @@ public class ModPaintings {
 
     public static final RegistryObject<PaintingVariant> GOONS_1 = PAINTING_VARIANTS.register("goons_1",
             () -> new PaintingVariant(80,48));
-    public static final RegistryObject<PaintingVariant> GOONS_2 = PAINTING_VARIANTS.register("goons_2",
-            () -> new PaintingVariant(48,32));
+//    public static final RegistryObject<PaintingVariant> GOONS_2 = PAINTING_VARIANTS.register("goons_2",
+//            () -> new PaintingVariant(48,32));
     public static final RegistryObject<PaintingVariant> GOONS_3 = PAINTING_VARIANTS.register("goons_3",
             () -> new PaintingVariant(64,32));
 
@@ -62,8 +62,8 @@ public class ModPaintings {
             () -> new PaintingVariant(48,32));
 
 
-    public static final RegistryObject<PaintingVariant> T2 = PAINTING_VARIANTS.register("t2",
-            () -> new PaintingVariant(64,32));
+//    public static final RegistryObject<PaintingVariant> T2 = PAINTING_VARIANTS.register("t2",
+//            () -> new PaintingVariant(64,32));
 
     public static final RegistryObject<PaintingVariant> TJ_1 = PAINTING_VARIANTS.register("tj_1",
             () -> new PaintingVariant(16,32));
