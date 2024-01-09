@@ -1618,7 +1618,7 @@
 			},
 			"sound_effects": {
 				"1.4583": {
-					"effect": "bucklandii_growl"
+					"effect": "rexcraft:bucklandii_angry"
 				}
 			}
 		},

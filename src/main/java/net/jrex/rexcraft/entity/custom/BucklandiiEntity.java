@@ -193,10 +193,10 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         int rand_num = rand.nextInt(10);
 
         if(rand_num > 5){
-            return 0;
+            return 1;
         }
         else{
-            return 1;
+            return 0;
         }
     }
 
