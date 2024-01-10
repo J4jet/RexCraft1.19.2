@@ -88,7 +88,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 29.0D)
-                .add(Attributes.ATTACK_DAMAGE, 9.0f)
+                .add(Attributes.ATTACK_DAMAGE, 10.0f)
                 .add(Attributes.ATTACK_SPEED, 1.2f)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
     }
@@ -123,13 +123,40 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
             }
 
         }
-//        if (this.isSitting()) {
-//            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
-//            return PlayState.CONTINUE;
-//        }
+        if(!event.isMoving() && event.getController().getCurrentAnimation() != null){
+            String name = event.getController().getCurrentAnimation().animationName;
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
+            //if that animation is anything other than an idle, just override it and set it to idle0
+            if(name.equals("walk") || name.equals("vehicle_walk")){
+                event.getController().markNeedsReload();
+                int rand_int = rand_num();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
+            }
+            //if it's already idling, then just wait for the current idle anim to be over and choose a random one for the next loop
+            if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
+                event.getController().markNeedsReload();
+
+                //a random number is chosen between 0 and 2, then added to the end of "idle" to get a random idle animation!
+                int rand_int = rand_num();
+
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
+                //System.out.print(rand_int);
+            }
+
+        }
         return PlayState.CONTINUE;
+    }
+
+    protected int rand_num(){
+        Random rand = new Random();
+        int rand_num = rand.nextInt(10);
+
+        if(rand_num > 5){
+            return 1;
+        }
+        else{
+            return 0;
+        }
     }
 
     private PlayState attackPredicate(AnimationEvent event) {
