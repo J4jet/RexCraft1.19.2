@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "rexcraft:grind_block"
+  },
+  "base": {
+    "item": "rexcraft:steel_neth_steel_helmet"
+  },
+  "result": {
+    "item": "rexcraft:neth_steel_helmet"
+  }
+}

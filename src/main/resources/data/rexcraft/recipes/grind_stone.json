@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_nugget"
+    },
+    "$": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#$#",
+    " # "
+  ],
+  "result": {
+    "item": "rexcraft:grind_block",
+    "count": 2
+  }
+}

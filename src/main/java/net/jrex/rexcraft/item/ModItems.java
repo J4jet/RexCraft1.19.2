@@ -189,6 +189,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> WITHER_ES = ITEMS.register("wither_es",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 
+        public static final RegistryObject<Item> GRIND_BLOCK = ITEMS.register("grind_block",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+
         public static final RegistryObject<Item> POLEAXE = ITEMS.register("poleaxe",
                 () -> new SwordItem(ModTiers.STEEL, 9, -2.9f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> DIAMOND_POLEAXE = ITEMS.register("diamond_poleaxe",
