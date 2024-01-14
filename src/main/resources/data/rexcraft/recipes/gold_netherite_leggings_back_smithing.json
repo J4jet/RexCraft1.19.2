@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "rexcraft:grind_block"
+  },
+  "base": {
+    "item": "rexcraft:gold_neth_steel_leggings"
+  },
+  "result": {
+    "item": "rexcraft:neth_steel_leggings"
+  }
+}

@@ -77,7 +77,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
         return entitytype == EntityType.VILLAGER || entitytype == EntityType.COW || entitytype == EntityType.SHEEP || entitytype == EntityType.PIG
-                || entitytype == EntityType.LLAMA || entitytype == EntityType.HORSE || entitytype == EntityType.PLAYER;
+                || entitytype == EntityType.LLAMA || entitytype == EntityType.HORSE || entitytype == ModEntityTypes.BOREAL.get() || entitytype == EntityType.PLAYER;
     };
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
