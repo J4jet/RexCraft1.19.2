@@ -27,6 +27,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.Item;
@@ -93,6 +94,19 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     public static float step_height = 1.0F;
 
+//    protected int rand_bin(){
+//        Random rand = new Random();
+//        int rand_int = rand.nextInt(2);
+//        if(rand_int == 0){
+//            System.out.println(0);
+//            return 0;
+//        }
+//        else{
+//            System.out.println(1);
+//            return 1;
+//        }
+//    }
+
 
 
     @Nullable
@@ -122,7 +136,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
             this.goalSelector.addGoal(1, new FloatGoal(this));
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-            this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
+            this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 15.0F, 6.0F, false));
             this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
             this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.0D, false));
             this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));

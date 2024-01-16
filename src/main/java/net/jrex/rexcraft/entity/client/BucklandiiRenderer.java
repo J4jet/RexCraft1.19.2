@@ -43,6 +43,7 @@ public class BucklandiiRenderer extends GeoEntityRenderer<BucklandiiEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(BucklandiiEntity instance) {
+
         return LOCATION_BY_VARIANT.get(instance.getVariant());
 
     }
