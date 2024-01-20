@@ -1,7 +1,9 @@
 package net.jrex.rexcraft.entity.custom;
 
+import net.jrex.rexcraft.effect.ModEffects;
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.variant.BucklandiiVariant;
+import net.jrex.rexcraft.entity.variant.StyracoVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
@@ -18,17 +20,17 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.*;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.PolarBear;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.Item;
@@ -41,9 +43,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -55,43 +55,36 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-
-//Things for being angry:
-//Use these things to be able to make this mob angry, make sure you have everything, or it will not work.
-import net.minecraft.world.entity.NeutralMob;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import static net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES;
-
-public class BucklandiiEntity extends TamableAnimal implements IAnimatable, NeutralMob, PlayerRideableJumping, Saddleable {
+public class StyracoEntity extends TamableAnimal implements IAnimatable, NeutralMob, PlayerRideableJumping, Saddleable {
 
     private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Boolean> SADDLED =
-            SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.INT);
 
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
-        return entitytype == EntityType.VILLAGER || entitytype == EntityType.COW || entitytype == EntityType.SHEEP || entitytype == EntityType.PIG
-                || entitytype == EntityType.LLAMA || entitytype == EntityType.HORSE || entitytype == ModEntityTypes.BOREAL.get() || entitytype == EntityType.PLAYER;
+        return entitytype == EntityType.SPIDER;
     };
 
-    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.INT);
 
-    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 40);
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(30, 50);
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = 0.001f;
+    public static float speedMod = 0.0f;
 
     public static int attacknum = 3;
 
-    public static float riderOffset = 0.4f;
+    public static float riderOffset = 0.3f;
 
     public static float step_height = 1.0F;
 
@@ -119,7 +112,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
 
 
-    public BucklandiiEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
+    public StyracoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -129,7 +122,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
     }
 
     @Override
@@ -244,29 +237,43 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
-        BucklandiiEntity baby = ModEntityTypes.BUCKLANDII.get().create(serverLevel);
-        BucklandiiVariant variant = Util.getRandom(BucklandiiVariant.values(), this.random);
+        StyracoEntity baby = ModEntityTypes.STYRACO.get().create(serverLevel);
+        StyracoVariant variant = Util.getRandom(StyracoVariant.values(), this.random);
         baby.setVariant(variant);
         return baby;
     }
 
     @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (!super.doHurtTarget(pEntity)) {
+            return false;
+        } else {
+            if (pEntity instanceof LivingEntity) {
+                ((LivingEntity)pEntity).addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 200), this);
+            }
+
+            return true;
+        }
+    }
+
+    @Override
     public boolean isFood(ItemStack pStack){
         Item item = pStack.getItem();
-        return item == ModItems.BEEFSTACK.get() || item == ModItems.PORKSTACK.get() || item == ModItems.CHICKENSTACK.get() || item == ModItems.MUTTONSTACK.get();
+        return item == ModItems.ZUCC_STACK.get() || item == ModItems.BEET_STACK.get() || item == ModItems.CARROT_STACK.get() || item == ModItems.POTATO_STACK.get();
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket
     //look into wolf class to see how meat works
     public boolean isHeal(ItemStack pStack){
         Item item = pStack.getItem();
-        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
+        return item.isEdible() && (item == ModItems.ZUCC.get() || item == ModItems.BLUEBERRY.get() || item == Items.WHEAT || item == Items.CARROT) ;
+
     }
 
     //taming item
     public boolean tameItem(ItemStack pStack){
         Item item = pStack.getItem();
-        return item == ModItems.CARNO_BUFF_GOLD.get() || item == ModItems.CARNO_BUFF_DIAMOND.get() || item == ModItems.CARNO_BUFF_NETH.get();
+        return item == ModItems.HERB_BUFF_GOLD.get() || item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
     }
     @Override
     public void registerControllers(AnimationData data) {
@@ -602,20 +609,20 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
                                         MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
                                         @Nullable CompoundTag p_146750_) {
-        BucklandiiVariant variant = Util.getRandom(BucklandiiVariant.values(), this.random);
+        StyracoVariant variant = Util.getRandom(StyracoVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
     }
 
-    public BucklandiiVariant getVariant() {
-        return BucklandiiVariant.byId(this.getTypeVariant() & 255);
+    public StyracoVariant getVariant() {
+        return StyracoVariant.byId(this.getTypeVariant() & 255);
     }
 
     private int getTypeVariant() {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
-    private void setVariant(BucklandiiVariant variant) {
+    private void setVariant(StyracoVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
     //

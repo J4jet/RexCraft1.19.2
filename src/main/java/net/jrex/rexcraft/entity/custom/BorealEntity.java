@@ -259,7 +259,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         super.aiStep();
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
-                this.heal(1.0F);
+                this.heal(2.0F);
             }
             this.followMommy();
         }
