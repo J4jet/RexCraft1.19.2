@@ -84,9 +84,9 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
 
     public static int attacknum = 3;
 
-    public static float riderOffset = 0.3f;
+    public static float riderOffset = 0.45f;
 
-    public static float step_height = 1.0F;
+    public static float step_height = 1.5F;
 
 //    protected int rand_bin(){
 //        Random rand = new Random();
@@ -119,9 +119,9 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.ATTACK_DAMAGE, 8.0f)
-                .add(Attributes.ATTACK_SPEED, 1.0f)
+                .add(Attributes.MAX_HEALTH, 23.0D)
+                .add(Attributes.ATTACK_DAMAGE, 9.0f)
+                .add(Attributes.ATTACK_SPEED, 1.7f)
                 .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
     }
 
@@ -130,7 +130,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
 
             this.goalSelector.addGoal(1, new FloatGoal(this));
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-            this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 15.0F, 6.0F, false));
+            this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 4.0F, false));
             this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
             this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.0D, false));
             this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
@@ -545,17 +545,17 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(22.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8.0D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(25.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9.4D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.5f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(8D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(23.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.7f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
         }
     }
 
