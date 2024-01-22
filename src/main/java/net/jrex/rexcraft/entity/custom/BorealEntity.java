@@ -84,7 +84,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
 
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 60.0D)
-                .add(Attributes.ATTACK_DAMAGE, 10.0f)
+                .add(Attributes.ATTACK_DAMAGE, 8.0f)
                 .add(Attributes.ATTACK_SPEED, 1.5f)
                 .add(Attributes.ARMOR,16.0)
                 .add(Attributes.ARMOR_TOUGHNESS,16.0)

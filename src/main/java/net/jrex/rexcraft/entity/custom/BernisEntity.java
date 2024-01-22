@@ -87,9 +87,9 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 55.0D)
-                .add(Attributes.ATTACK_DAMAGE, 16.0f)
-                .add(Attributes.ATTACK_SPEED, 1.2f)
+                .add(Attributes.MAX_HEALTH, 58.0D)
+                .add(Attributes.ATTACK_DAMAGE, 14.0f)
+                .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
     }
 
@@ -259,7 +259,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     protected float getSoundVolume() {
-        return 0.7F;
+        return 1.5F;
     }
 
     protected boolean isImmobile() {

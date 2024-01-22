@@ -144,6 +144,11 @@
   "sounds.rexcraft.boreal_idle": "Borealopelta honking",
   "sounds.rexcraft.boreal_angry": "Borealopelta roaring",
 
+  "sounds.rexcraft.styraco_hurt": "Styracosaurus in pain",
+  "sounds.rexcraft.styraco_death": "Styracosaurus dying",
+  "sounds.rexcraft.styraco_idle": "Styracosaurus bellowing",
+  "sounds.rexcraft.styraco_angry": "Styracosaurus roaring",
+
 
 
   "effect.rexcraft.bleed": "Bleeding",
@@ -153,6 +158,7 @@
   "entity.rexcraft.bucklandii": "Megalosaurus bucklandii",
   "entity.rexcraft.bernis": "Iguanodon bernissartensis",
   "entity.rexcraft.boreal": "Borealopelta markmitchelli",
+  "entity.rexcraft.styraco": "Styracosaurus albertensis",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 

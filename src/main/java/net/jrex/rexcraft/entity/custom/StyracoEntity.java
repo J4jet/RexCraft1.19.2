@@ -120,7 +120,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
 
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 46.0D)
-                .add(Attributes.ATTACK_DAMAGE, 14.0f)
+                .add(Attributes.ATTACK_DAMAGE, 10.0f)
                 .add(Attributes.ATTACK_SPEED, 1.7f)
                 .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
     }
@@ -249,7 +249,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             return false;
         } else {
             if (pEntity instanceof LivingEntity) {
-                ((LivingEntity)pEntity).addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 200), this);
+                ((LivingEntity)pEntity).addEffect(new MobEffectInstance(ModEffects.BLEED.get(), 30), this);
             }
 
             return true;
@@ -292,20 +292,20 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.BUCKLANDII_HURT.get();
+        return ModSounds.STYRACO_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.BUCKLANDII_DEATH.get();
+        return ModSounds.STYRACO_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
 
         if(this.isAngry()){
-            return ModSounds.BUCKLANDII_ANGRY.get();
+            return ModSounds.STYRACO_ANGRY.get();
         }
         else {
-            return ModSounds.BUCKLANDII_GROWL.get();
+            return ModSounds.STYRACO_IDLE.get();
         }
     }
 
@@ -318,7 +318,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     }
 
     protected float getSoundVolume() {
-        return 0.8F;
+        return 1.4F;
     }
 
     protected boolean isImmobile() {
@@ -546,14 +546,14 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
         super.setTame(tamed);
         if (tamed) {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(14.5D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(11.5D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.5f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
 
 
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(46.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(14.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.7f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
         }

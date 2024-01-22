@@ -127,7 +127,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 40.0D)
-                .add(Attributes.ATTACK_DAMAGE, 15.0f)
+                .add(Attributes.ATTACK_DAMAGE, 9.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
@@ -139,7 +139,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
             this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 4.0F, false));
             this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-            this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.0D, false));
+            this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.9D, false));
             this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
             this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
             this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -539,15 +539,15 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         super.setTame(tamed);
         if (tamed) {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(45.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(17.0D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
 
 
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(40.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(15.0D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9.0D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
         }
     }

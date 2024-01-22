@@ -110,5 +110,30 @@
     "sounds": [
       "rexcraft:boreal_angry"
     ]
+  },
+  "styraco_hurt": {
+    "subtitle": "sounds.rexcraft.styraco_hurt",
+    "sounds": [
+      "rexcraft:styraco_hurt"
+    ]
+  },
+  "styraco_death": {
+    "subtitle": "sounds.rexcraft.styraco_death",
+    "sounds": [
+      "rexcraft:styraco_death"
+    ]
+  },
+  "styraco_idle": {
+    "subtitle": "sounds.rexcraft.styraco_idle",
+    "sounds": [
+      "rexcraft:styraco_idle"
+    ]
+  },
+
+  "styraco_angry": {
+    "subtitle": "sounds.rexcraft.styraco_angry",
+    "sounds": [
+      "rexcraft:styraco_angry"
+    ]
   }
 }
