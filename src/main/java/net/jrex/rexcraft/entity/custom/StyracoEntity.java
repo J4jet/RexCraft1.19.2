@@ -119,8 +119,8 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 23.0D)
-                .add(Attributes.ATTACK_DAMAGE, 9.0f)
+                .add(Attributes.MAX_HEALTH, 46.0D)
+                .add(Attributes.ATTACK_DAMAGE, 14.0f)
                 .add(Attributes.ATTACK_SPEED, 1.7f)
                 .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
     }
@@ -545,15 +545,15 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(25.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9.4D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(14.5D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.5f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(23.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(46.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(14.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.7f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
         }

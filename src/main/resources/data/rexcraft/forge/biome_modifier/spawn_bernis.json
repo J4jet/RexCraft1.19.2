@@ -1,11 +1,8 @@
 {
   "type": "forge:add_spawns",
   "biomes": [
-    "minecraft:plains",
-    "minecraft:forest",
     "minecraft:birch_forest",
-    "minecraft:dark_forest",
-    "minecraft:meadow"
+    "minecraft:old_growth_birch_forest"
   ],
   "spawners": {
     "type": "rexcraft:bernis",

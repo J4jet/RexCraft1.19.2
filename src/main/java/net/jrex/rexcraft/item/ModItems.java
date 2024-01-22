@@ -149,6 +149,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> BOREAL_NECK = ITEMS.register("boreal_neck",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> STYRACO_HORN = ITEMS.register("styraco_horn",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> GECKO_TAIL = ITEMS.register("gecko_tail",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
@@ -166,7 +169,7 @@ import net.minecraftforge.registries.RegistryObject;
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> STYRACO_SPAWN_EGG = ITEMS.register("styraco_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.STYRACO, 0x55FFAA, 0x55FFFF,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.STYRACO, 0x55a09e, 0xedb508,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> BERNIS_SPAWN_EGG = ITEMS.register("bernis_spawn_egg",

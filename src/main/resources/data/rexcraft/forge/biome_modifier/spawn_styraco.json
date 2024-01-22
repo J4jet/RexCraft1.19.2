@@ -1,12 +1,11 @@
 {
   "type": "forge:add_spawns",
   "biomes": [
-    "minecraft:savanna_plateau",
-    "minecraft:windswept_savanna",
-    "minecraft:savanna"
+    "minecraft:meadow",
+    "minecraft:sunflower_plains"
   ],
   "spawners": {
-    "type": "rexcraft:bucklandii",
+    "type": "rexcraft:styraco",
     "weight": 80,
     "minCount": 1,
     "maxCount": 3
