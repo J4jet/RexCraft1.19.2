@@ -151,7 +151,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
         Random rand = new Random();
         int rand_num = rand.nextInt(10);
 
-        if(rand_num > 5){
+        if(rand_num > 6){
             return 1;
         }
         else{
