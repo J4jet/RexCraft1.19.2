@@ -42,6 +42,20 @@
         ]
       },
       "trigger": "minecraft:bred_animals"
+    },
+    "rexcraft:styraco": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:styraco"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
     }
   },
   "display": {
@@ -64,6 +78,9 @@
     ],
     [
       "rexcraft:boreal"
+    ],
+    [
+      "rexcraft:styraco"
     ]
   ],
   "rewards": {
