@@ -213,7 +213,7 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> NETHERITE_LONGSWORD = ITEMS.register("netherite_longsword",
                 () -> new BleedSwordItem(Tiers.NETHERITE, 6, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> WITHER_LONGSWORD = ITEMS.register("wither_longsword",
-                () -> new WitherSwordItem(Tiers.NETHERITE, 7, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
+                () -> new WitherSwordItem(Tiers.NETHERITE, 12, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
         public static final RegistryObject<Item> TRAINING_SWORD = ITEMS.register("training_sword",
                 () -> new SwordItem(ModTiers.STEEL, -3, -2.5f, new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
 

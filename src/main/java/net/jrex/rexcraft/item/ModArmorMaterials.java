@@ -13,15 +13,15 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterials implements ArmorMaterial {
 
-    STEEL("steel", 33, new int[]{3, 6, 8, 3}, 10, SoundEvents.ARMOR_EQUIP_NETHERITE, 1.5F, 1.5F, () -> {
+    STEEL("steel", 33, new int[]{4, 7, 9, 3}, 10, SoundEvents.ARMOR_EQUIP_NETHERITE, 2.0F, 1.5F, () -> {
         return Ingredient.of(ModItems.STEEL_INGOT.get());
     }),
 
-    STEEL_DIAMOND("steel_diamond", 45, new int[]{5, 9, 9, 4}, 15, SoundEvents.ARMOR_EQUIP_NETHERITE, 2.0F, 2.0F, () -> {
+    STEEL_DIAMOND("steel_diamond", 45, new int[]{6, 10, 10, 4}, 20, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.0F, 2.0F, () -> {
         return Ingredient.of(ModItems.STEEL_INGOT.get());
     }),
 
-    STEEL_NETHER("steel_nether", 55, new int[]{6, 10, 10, 6}, 20, SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 3.0F, () -> {
+    STEEL_NETHER("steel_nether", 55, new int[]{8, 12, 12, 8}, 30, SoundEvents.ARMOR_EQUIP_NETHERITE, 6.0F, 3.0F, () -> {
         return Ingredient.of(ModItems.STEEL_INGOT.get());
     });
 
