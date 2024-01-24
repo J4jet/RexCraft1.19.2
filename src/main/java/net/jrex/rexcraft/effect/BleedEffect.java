@@ -18,13 +18,13 @@ public class BleedEffect extends MobEffect {
         if (!pLivingEntity.level.isClientSide()) {
 
             if(pLivingEntity.isSprinting()){
-                pLivingEntity.hurt(DamageSource.GENERIC, 1.2f);
+                pLivingEntity.hurt(DamageSource.GENERIC, 1.5f);
             }
             else if(pLivingEntity.isCrouching()){
-                pLivingEntity.hurt(DamageSource.GENERIC, 0.1f);
+                pLivingEntity.hurt(DamageSource.GENERIC, 0.4f);
             }
             else{
-                pLivingEntity.hurt(DamageSource.GENERIC, 0.5f);
+                pLivingEntity.hurt(DamageSource.GENERIC, 0.8f);
             }
         }
         super.applyEffectTick(pLivingEntity, pAmplifier);
@@ -32,8 +32,14 @@ public class BleedEffect extends MobEffect {
 
     @Override
     public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
-        return true;
+
+        //used in POSITION effect:
+        // pLivingEntity.hurt(DamageSource.MAGIC, 1.0F);
+        int j = 18 >> pAmplifier;
+        if (j > 0) {
+            return pDuration % j == 0;
+        } else {
+            return true;
+        }
     }
-    //used in POSITION effect:
-    // pLivingEntity.hurt(DamageSource.MAGIC, 1.0F);
 }
