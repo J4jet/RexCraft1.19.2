@@ -61,6 +61,13 @@ public class ModEntityTypes {
                             .sized(2.0f, 2.0f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "styraco").toString()));
 
+    public static final RegistryObject<EntityType<VeloEntity>> VELO =
+            ENTITY_TYPES.register("velo",
+                    () -> EntityType.Builder.of(VeloEntity::new, MobCategory.CREATURE)
+                            //Hitbox Size!
+                            .sized(0.5f, 1f)
+                            .build(new ResourceLocation(RexCraft.MOD_ID, "velo").toString()));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

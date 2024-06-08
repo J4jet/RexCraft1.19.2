@@ -11,6 +11,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
+//import net.minecraftforge.eventbus.api.IEventbus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -186,6 +187,10 @@ import net.minecraftforge.registries.RegistryObject;
 
         public static final RegistryObject<Item> BOREAL_SPAWN_EGG = ITEMS.register("boreal_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.BOREAL, 0xaa0000, 0xffffff,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+//faa009
+        public static final RegistryObject<Item> VELO_SPAWN_EGG = ITEMS.register("velo_spawn_egg",
+                () -> new ForgeSpawnEggItem(ModEntityTypes.VELO, 0xfbf9ef, 0xfaa009,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
         public static final RegistryObject<Item> STEEL_INGOT = ITEMS.register("steel_ingot",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_TAB)));
