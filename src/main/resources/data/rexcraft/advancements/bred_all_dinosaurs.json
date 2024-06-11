@@ -29,6 +29,20 @@
       },
       "trigger": "minecraft:bred_animals"
     },
+    "rexcraft:velo": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:velo"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
     "rexcraft:boreal": {
       "conditions": {
         "child": [

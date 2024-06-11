@@ -29,6 +29,20 @@
       },
       "trigger": "minecraft:player_killed_entity"
     },
+    "rexcraft:velo": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:velo"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
     "rexcraft:boreal": {
       "conditions": {
         "entity": [

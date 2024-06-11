@@ -28,6 +28,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.Item;
@@ -43,6 +47,7 @@ import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.Pointer;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -52,9 +57,11 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
+
 
 public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob {
 
@@ -64,10 +71,68 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(VeloEntity.class, EntityDataSerializers.INT);
 
+    public static final Predicate<LivingEntity> PREY_SELECTOR_2 = (p_30437_) -> {
+        EntityType<?> entitytype = p_30437_.getType();
+            return entitytype == EntityType.VILLAGER || entitytype == EntityType.SHEEP || entitytype == EntityType.PIG ||
+                    entitytype == EntityType.ENDERMITE || entitytype == EntityType.SILVERFISH || entitytype == EntityType.AXOLOTL ||
+                    entitytype == EntityType.TADPOLE || entitytype == EntityType.CAT || entitytype == EntityType.CHICKEN ||
+                    entitytype == EntityType.FROG || entitytype == EntityType.RABBIT;
+    };
+
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
-        return entitytype == EntityType.VILLAGER || entitytype == EntityType.SHEEP || entitytype == EntityType.PIG;
+//
+//        int total = this.near_me();
+//
+//        System.out.println("total = ");
+//        System.out.println(total);
+//
+//        if (total == 0){
+//            return entitytype == EntityType.ENDERMITE || entitytype == EntityType.SILVERFISH || entitytype == EntityType.AXOLOTL ||
+//                    entitytype == EntityType.TADPOLE || entitytype == EntityType.CAT || entitytype == EntityType.CHICKEN ||
+//                    entitytype == EntityType.FROG || entitytype == EntityType.RABBIT;
+//
+//        }
+//        else {
+        return  entitytype == EntityType.ENDERMITE || entitytype == EntityType.SILVERFISH || entitytype == EntityType.AXOLOTL ||
+                entitytype == EntityType.TADPOLE || entitytype == EntityType.CAT || entitytype == EntityType.CHICKEN ||
+                entitytype == EntityType.FROG || entitytype == EntityType.RABBIT || entitytype == ModEntityTypes.GECKO.get() || entitytype == ModEntityTypes.HEDGY.get();
+//        }
     };
+
+
+
+    public final Predicate<LivingEntity> findprey(){
+
+
+
+        int total = this.near_me();
+
+        System.out.println("total = ");
+        System.out.println(total);
+
+
+        if (total == 0){
+            System.out.println("total = 0 raptors");
+            return PREY_SELECTOR;
+
+        }
+        else {
+            System.out.println("total > 0");
+            return PREY_SELECTOR_2;
+
+        }
+    };
+
+    private int near_me(){
+        int total_near_me = 0;
+
+        for(VeloEntity velo : VeloEntity.this.level.getEntitiesOfClass(VeloEntity.class, VeloEntity.this.getBoundingBox().inflate(8.0D, 4.0D, 8.0D))) {
+            total_near_me += 1;
+        }
+
+        return total_near_me;
+    }
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(VeloEntity.class, EntityDataSerializers.INT);
 
@@ -126,13 +191,15 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
             this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 4.0F, false));
             this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-            this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.9D, false));
+            this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
             this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+            this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 1.8D, 1.8D));
             this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
             this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
             this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
             this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+            this.targetSelector.addGoal(1, new VeloAttackPlayersGoal());
             this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
             this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
             //this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
@@ -339,6 +406,10 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
 
+        // welp I'm gonna have to try this out. Maybe make it update the predicate?
+
+        //findprey();
+
     }
 
 
@@ -524,6 +595,48 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
         return this.entityData.get(SITTING);
     }
 
+    class VeloAttackPlayersGoal extends NearestAttackableTargetGoal<Player> {
+        public VeloAttackPlayersGoal() {
+            super(VeloEntity.this, Player.class, 20, true, true, (Predicate<LivingEntity>)null);
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+
+            //Total velos
+            int total_velos = 0;
+            /*
+             * If this velo is a baby, or it's a tamed raptor, return false (don't attack the player)
+             * */
+            if (VeloEntity.this.isBaby() || VeloEntity.this.isTame()) {
+                return false;
+            } else {
+                if (super.canUse()) {
+                    // For every velo around, if it's not a baby, count it
+                    for(VeloEntity velo : VeloEntity.this.level.getEntitiesOfClass(VeloEntity.class, VeloEntity.this.getBoundingBox().inflate(15.0D, 8.0D, 15.0D))) {
+                        if (!velo.isBaby()) {
+                            total_velos += 1;
+                        }
+                    }
+
+                    //if there are at least 3 raptors around, attack the player
+                    //else, do not attack the player
+                    return total_velos >= 3;
+
+                }
+
+                return false;
+            }
+        }
+
+        protected double getFollowDistance() {
+            return super.getFollowDistance() * 1.4D;
+        }
+    }
+
 
     //These are for attempting to create a custom goal:
 
@@ -546,6 +659,8 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 //
 //        return animal;
 //    }
+
+    // have it return the PRAY_SELECTION based on who's around
 
 //    static class LlamaAttackWolfGoal extends NearestAttackableTargetGoal<Wolf> {
 //        public LlamaAttackWolfGoal(Llama pLlama) {

@@ -147,6 +147,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> MEG_JAW = ITEMS.register("meg_jaw",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> VELO_CLAW = ITEMS.register("velo_claw",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> BOREAL_NECK = ITEMS.register("boreal_neck",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 

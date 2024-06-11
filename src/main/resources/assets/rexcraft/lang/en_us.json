@@ -15,7 +15,9 @@
   "item.rexcraft.boreal_spawn_egg": "Borealopelta Spawn Egg",
   "item.rexcraft.styraco_spawn_egg": "Styracosaurus Spawn Egg",
   "item.rexcraft.bernis_spawn_egg": "Iguanodon Spawn Egg",
+  "item.rexcraft.velo_spawn_egg": "Velociraptor Spawn Egg",
   "item.rexcraft.meg_jaw": "Megalosaurus Dentary",
+  "item.rexcraft.velo_claw": "Velociraptor Claw",
   "item.rexcraft.styraco_horn": "Styracosaurus Horn",
   "item.rexcraft.boreal_neck": "Borealopelta Neck Vertebrae",
   "item.rexcraft.steel_ingot": "Steel Ingot",
@@ -159,6 +161,7 @@
   "entity.rexcraft.bernis": "Iguanodon bernissartensis",
   "entity.rexcraft.boreal": "Borealopelta markmitchelli",
   "entity.rexcraft.styraco": "Styracosaurus albertensis",
+  "entity.rexcraft.velo": "Velociraptor mongoliensis",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 
