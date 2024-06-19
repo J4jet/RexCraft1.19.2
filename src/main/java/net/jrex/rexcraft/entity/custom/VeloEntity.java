@@ -106,13 +106,28 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.001f;
 
+    //This velo's leader
+    public VeloEntity veloLeader = null;
+
+    //number of followers this velo has
+    public int followers = 0;
+
+    //if this velo is a leader
+    public boolean isLeader = false;
+
+    //if this velo is a follower
+    public boolean isfollower = false;
+
+    //highest number of followers a velo can have
+    public int follower_cap = 4;
+
     public static int attacknum = 3;
 
     public static float riderOffset = 0.0f;
 
     public static float step_height = 1.0F;
     
-    public static int raptor_num = choose_id();
+    public int raptor_num = choose_id();
     
     @Nullable
     private UUID persistentAngerTarget;
@@ -141,6 +156,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 
             this.goalSelector.addGoal(1, new FloatGoal(this));
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+            this.goalSelector.addGoal(2, new VeloFollowLeaderGoal(this, 1.5));
             this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 4.0F, false));
             this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
             this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
@@ -230,6 +246,35 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
             }
         }
     }
+
+    public void addFollower(){
+        this.followers += 1;
+    }
+
+    public void dropFollower(){
+        this.followers -= 1;
+    }
+
+    public void becomeLeader(){
+        this.isLeader = true;
+        this.isfollower = false;
+    }
+
+    public void stepDown(){
+        this.followers = 0;
+        this.isLeader = false;
+    }
+
+    public void becomeFollower(){
+        this.isLeader = false;
+        this.isfollower = true;
+    }
+
+    public void unfollow(){
+        this.isfollower = false;
+    }
+
+
 
     private PlayState attackPredicate(AnimationEvent event) {
 
@@ -631,29 +676,42 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
             return super.getFollowDistance() * 1.4D;
         }
     }
-    
-    class VeloFollowLeaderGoal extends FollowParentGoal {
+
+    public class VeloFollowLeaderGoal extends Goal {
+        public static final int HORIZONTAL_SCAN_RANGE = 8;
+        public static final int VERTICAL_SCAN_RANGE = 4;
+        public static final int DONT_FOLLOW_IF_CLOSER_THAN = 3;
         private final VeloEntity animal;
-        private Animal parent;
+        @javax.annotation.Nullable
+        private VeloEntity leader;
+        private final double speedModifier;
+        private int timeToRecalcPath;
 
         public VeloFollowLeaderGoal(VeloEntity pAnimal, double pSpeedModifier) {
-            super(pAnimal, pSpeedModifier);
             this.animal = pAnimal;
+            this.speedModifier = pSpeedModifier;
         }
 
-        @Override
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
         public boolean canUse() {
-            if (this.animal.getAge() <= 0) {
+
+            //If this is a leader, or it is tame, return false
+            if (this.animal.isLeader || this.animal.isTame()) {
                 return false;
             } else {
                 List<? extends VeloEntity> list = this.animal.level.getEntitiesOfClass(this.animal.getClass(), this.animal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
-                Animal animal = null;
+                VeloEntity animal = null;
                 double d0 = Double.MAX_VALUE;
 
-                for (VeloEntity animal1 : list) {
-                    if (animal1.getAge() >= 0 && raptor_num == 9) {
+                for(VeloEntity animal1 : list) {
+                    if (animal1.getAge() >= 0) {
                         double d1 = this.animal.distanceToSqr(animal1);
-                        if (!(d1 > d0)) {
+                        //if this raptor's number is smaller than the other raptor, set it as the leader
+                        // && animal1.followers < animal1.follower_cap
+                        if (!(d1 > d0) && this.animal.raptor_num < animal1.raptor_num) {
                             d0 = d1;
                             animal = animal1;
                         }
@@ -664,9 +722,89 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
                     return false;
                 } else if (d0 < 9.0D) {
                     return false;
-                } else {
-                    this.parent = animal;
+                    //if this raptor's number is smaller than the other raptor, set it as the leader
+                } //else if (animal.isfollower) {
+                    //return false;
+                    //animal.followers < animal.follower_cap
+                 else if (this.animal.raptor_num < animal.raptor_num){
+                     if (animal.isfollower){
+                         this.leader = animal.veloLeader;
+                         this.animal.veloLeader = animal.veloLeader;
+                         this.animal.becomeFollower();
+                         return true;
+                     }
+//                    //check to see if it has a leader, if that leader has a higher number, don't switch leaders!
+//                    if (this.leader != null){
+//                        if (this.leader.raptor_num > animal.raptor_num){
+//                            //Don't set new leader, but return true
+//                            System.out.println("already following");
+//                            System.out.println(this.leader.raptor_num);
+//                            return true;
+//                        }else{
+//                            if (!animal.isLeader){
+//                                animal.becomeLeader();
+//                            }
+//                            animal.unfollow();
+//                            animal.addFollower();
+//                            this.leader = animal;
+//                            this.animal.becomeFollower();
+//                            return true;
+//                        }
+//                    }
+//                    if (!animal.isLeader){
+//                        animal.becomeLeader();
+//                    }
+                    //animal.unfollow();
+                    //animal.addFollower();
+                    this.leader = animal;
+                    this.animal.becomeFollower();
+                    this.animal.veloLeader = animal;
                     return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            if (!this.leader.isAlive()) {
+                this.leader = null;
+                this.animal.veloLeader = null;
+                this.animal.unfollow();
+                return false;
+            } else if (this.animal.isTame()) {
+                return false;
+            } else {
+                double d0 = this.animal.distanceToSqr(this.leader);
+                return !(d0 < 9.0D) && !(d0 > 256.0D);
+            }
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.timeToRecalcPath = 0;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void stop() {
+            this.leader = null;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            if (--this.timeToRecalcPath <= 0) {
+                this.timeToRecalcPath = this.adjustedTickDelay(10);
+                if (this.leader != null){
+                    this.animal.getNavigation().moveTo(this.leader, this.speedModifier);
                 }
             }
         }
