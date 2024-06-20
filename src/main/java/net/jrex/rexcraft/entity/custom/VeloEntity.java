@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
@@ -380,6 +381,10 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
         return super.isImmobile();
     }
 
+    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+        return false;
+    }
+
     public void aiStep() {
         super.aiStep();
 
@@ -389,6 +394,10 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 //        else if (!this.isAngry()){
 //            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
 //        }
+        Vec3 vec3 = this.getDeltaMovement();
+        if (!this.onGround && vec3.y < 0.0D) {
+            this.setDeltaMovement(vec3.multiply(1.0D, 0.8D, 1.0D));
+        }
 
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
@@ -678,9 +687,6 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
     }
 
     public class VeloFollowLeaderGoal extends Goal {
-        public static final int HORIZONTAL_SCAN_RANGE = 8;
-        public static final int VERTICAL_SCAN_RANGE = 4;
-        public static final int DONT_FOLLOW_IF_CLOSER_THAN = 3;
         private final VeloEntity animal;
         @javax.annotation.Nullable
         private VeloEntity leader;
@@ -720,7 +726,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 
                 if (animal == null) {
                     return false;
-                } else if (d0 < 9.0D) {
+                } else if (d0 < 25.0D) {
                     return false;
                     //if this raptor's number is smaller than the other raptor, set it as the leader
                 } //else if (animal.isfollower) {
@@ -779,7 +785,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
                 return false;
             } else {
                 double d0 = this.animal.distanceToSqr(this.leader);
-                return !(d0 < 9.0D) && !(d0 > 256.0D);
+                return !(d0 < 25.0D) && !(d0 > 256.0D);
             }
         }
 
