@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
@@ -179,7 +180,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
-        if (event.isMoving()) {
+        if (event.isMoving() && this.onGround) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
             return PlayState.CONTINUE;
 
@@ -187,6 +188,23 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
         if (this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
             return PlayState.CONTINUE;
+        }
+
+        if(!this.onGround && event.getController().getCurrentAnimation() != null){
+            String name = event.getController().getCurrentAnimation().animationName;
+
+            //if that animation is anything other than falling, just override it and set it to falling
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("idle0") || name.equals("idle1") || name.equals("idle2")){
+                event.getController().markNeedsReload();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("falling", false));
+            }
+            //if it's already falling, then just wait for the current fall anim to be over and choose a random one for the next loop
+            if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
+                event.getController().markNeedsReload();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("falling", false));
+                //System.out.print(rand_int);
+            }
+
         }
 
         //if the entity is not moving or sitting, and has a current animation:
@@ -381,8 +399,12 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
         return super.isImmobile();
     }
 
-    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
-        return false;
+    //public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+        //return true;
+    //}
+
+    protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
+        return Mth.ceil((pDistance - 6.0F) * pDamageMultiplier);
     }
 
     public void aiStep() {

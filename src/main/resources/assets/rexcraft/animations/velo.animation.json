@@ -1533,7 +1533,7 @@
 			}
 		},
 		"falling": {
-			"loop": true,
+			"animation_length": 0.0417,
 			"bones": {
 				"rightLeg": {
 					"rotation": {
