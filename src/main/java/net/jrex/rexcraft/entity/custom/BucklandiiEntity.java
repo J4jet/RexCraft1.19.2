@@ -161,6 +161,11 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
+        if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
+            return PlayState.CONTINUE;
+        }
+
         if (event.isMoving()) {
             if(this.isVehicle()){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));

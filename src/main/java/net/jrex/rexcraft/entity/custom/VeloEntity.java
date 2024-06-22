@@ -180,6 +180,12 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
+        if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
+            return PlayState.CONTINUE;
+
+        }
+
         if (event.isMoving() && this.onGround) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
             return PlayState.CONTINUE;
@@ -194,7 +200,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than falling, just override it and set it to falling
-            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("idle0") || name.equals("idle1") || name.equals("idle2")){
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("idle0") || name.equals("idle1") || name.equals("idle2") || name.equals("swimming")){
                 event.getController().markNeedsReload();
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("falling", false));
             }
@@ -829,6 +835,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
+
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = this.adjustedTickDelay(10);
                 if (this.leader != null){
