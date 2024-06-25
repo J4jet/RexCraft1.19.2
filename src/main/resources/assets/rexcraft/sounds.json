@@ -135,5 +135,36 @@
     "sounds": [
       "rexcraft:styraco_angry"
     ]
+  },
+  "velo_hurt": {
+    "subtitle": "sounds.rexcraft.velo_hurt",
+    "sounds": [
+      "rexcraft:velo_hurt"
+    ]
+  },
+  "velo_death": {
+    "subtitle": "sounds.rexcraft.velo_death",
+    "sounds": [
+      "rexcraft:velo_death"
+    ]
+  },
+  "velo_idle": {
+    "subtitle": "sounds.rexcraft.velo_idle",
+    "sounds": [
+      "rexcraft:velo_idle"
+    ]
+  },
+
+  "velo_angry2": {
+    "subtitle": "sounds.rexcraft.velo_angry2",
+    "sounds": [
+      "rexcraft:velo_angry2"
+    ]
+  },
+  "velo_angry1": {
+    "subtitle": "sounds.rexcraft.velo_angry1",
+    "sounds": [
+      "rexcraft:velo_angry1"
+    ]
   }
 }

@@ -41,7 +41,7 @@ public class VeloRenderer extends GeoEntityRenderer<VeloEntity> {
     public ResourceLocation getTextureLocation(VeloEntity instance) {
 
         if (instance.isBaby()){
-            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/velo/velo_male_baby.png");
+            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/velo/velo_baby.png");
 
         }
 

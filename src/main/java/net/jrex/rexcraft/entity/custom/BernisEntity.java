@@ -259,7 +259,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     protected float getSoundVolume() {
-        return 1.5F;
+        return 1.3F;
     }
 
     protected boolean isImmobile() {

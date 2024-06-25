@@ -318,7 +318,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     }
 
     protected float getSoundVolume() {
-        return 1.4F;
+        return 1.2F;
     }
 
     protected boolean isImmobile() {

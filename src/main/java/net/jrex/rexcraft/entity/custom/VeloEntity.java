@@ -60,6 +60,11 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(VeloEntity.class, EntityDataSerializers.INT);
 
+    public static final Predicate<LivingEntity> AVOID_SELECTOR = (p_30437_) -> {
+        EntityType<?> entitytype = p_30437_.getType();
+        return entitytype == EntityType.PLAYER;
+    };
+
     //Prey for T2 packs
     public static final Predicate<LivingEntity> PREY_SELECTOR_T2 = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
@@ -158,12 +163,17 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 
             this.goalSelector.addGoal(1, new FloatGoal(this));
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
+            this.goalSelector.addGoal(1, new FollowParentGoal(this, 1.1D));
             this.goalSelector.addGoal(2, new VeloFollowLeaderGoal(this, 1.5));
             this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 4.0F, false));
-            this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
             this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
             this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+
+            //Avoids
             this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 1.8D, 1.8D));
+            this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 2.6D, 2.6D));
+            this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, StyracoEntity.class, 10.0F, 2.4D, 2.4D));
+
             this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
             this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
             this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -370,22 +380,38 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
         this.playSound(SoundEvents.GRASS_STEP, 0.15F, 4.0F);
     }
 
-    //ToDo Remember to set the velo sounds!
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.BUCKLANDII_HURT.get();
+        return ModSounds.VELO_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.BUCKLANDII_DEATH.get();
+        return ModSounds.VELO_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
 
         if(this.isAngry()){
-            return ModSounds.BUCKLANDII_ANGRY.get();
+            if(this.flip() == 0){
+                return ModSounds.VELO_ANGRY1.get();
+            }else{
+                return ModSounds.VELO_ANGRY2.get();
+            }
         }
         else {
-            return ModSounds.BUCKLANDII_GROWL.get();
+            return ModSounds.VELO_IDLE.get();
+        }
+    }
+
+    //Randomly return 1 or 0
+    protected int flip(){
+        Random rand = new Random();
+        int rand_num = rand.nextInt(2);
+
+        if (rand_num == 0){
+            return 0;
+
+        }else{
+            return 1;
         }
     }
 
@@ -398,7 +424,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
     }
 
     protected float getSoundVolume() {
-        return 0.8F;
+        return 1.0F;
     }
 
     protected boolean isImmobile() {

@@ -79,6 +79,21 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> STYRACO_ANGRY =
             registerSoundEvent("styraco_angry");
 
+    public static final RegistryObject<SoundEvent> VELO_DEATH =
+            registerSoundEvent("velo_death");
+
+    public static final RegistryObject<SoundEvent> VELO_HURT =
+            registerSoundEvent("velo_hurt");
+
+    public static final RegistryObject<SoundEvent> VELO_ANGRY1 =
+            registerSoundEvent("velo_angry1");
+
+    public static final RegistryObject<SoundEvent> VELO_ANGRY2 =
+            registerSoundEvent("velo_angry2");
+
+    public static final RegistryObject<SoundEvent> VELO_IDLE =
+            registerSoundEvent("velo_idle");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

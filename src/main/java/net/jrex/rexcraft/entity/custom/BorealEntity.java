@@ -249,7 +249,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     protected float getSoundVolume() {
-        return 0.7F;
+        return 0.5F;
     }
 
     protected boolean isImmobile() {

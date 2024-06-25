@@ -146,6 +146,12 @@
   "sounds.rexcraft.boreal_idle": "Borealopelta honking",
   "sounds.rexcraft.boreal_angry": "Borealopelta roaring",
 
+  "sounds.rexcraft.velo_hurt": "Velociraptor in pain",
+  "sounds.rexcraft.velo_death": "Velociraptor dying",
+  "sounds.rexcraft.velo_idle": "Velociraptor chirping",
+  "sounds.rexcraft.velo_angry1": "Velociraptor roaring",
+  "sounds.rexcraft.velo_angry2": "Velociraptor roaring",
+
   "sounds.rexcraft.styraco_hurt": "Styracosaurus in pain",
   "sounds.rexcraft.styraco_death": "Styracosaurus dying",
   "sounds.rexcraft.styraco_idle": "Styracosaurus bellowing",

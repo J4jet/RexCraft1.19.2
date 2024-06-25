@@ -81,7 +81,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         return entitytype == EntityType.VILLAGER || entitytype == EntityType.COW || entitytype == EntityType.SHEEP || entitytype == EntityType.PIG
                 || entitytype == EntityType.LLAMA || entitytype == EntityType.HORSE || entitytype == EntityType.CHICKEN || entitytype == ModEntityTypes.BOREAL.get() ||
                 entitytype == EntityType.PLAYER || entitytype == EntityType.DONKEY || entitytype == EntityType.MULE
-                || entitytype == EntityType.SPIDER || entitytype == EntityType.ZOMBIE || entitytype == EntityType.SKELETON;
+                || entitytype == EntityType.SPIDER || entitytype == EntityType.ZOMBIE || entitytype == EntityType.SKELETON
+                || entitytype == ModEntityTypes.VELO.get();
     };
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);
@@ -318,7 +319,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     }
 
     protected float getSoundVolume() {
-        return 0.8F;
+        return 0.6F;
     }
 
     protected boolean isImmobile() {
