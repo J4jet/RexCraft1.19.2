@@ -6,6 +6,7 @@ import net.jrex.rexcraft.entity.variant.BucklandiiVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +15,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -30,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.*;
 import net.minecraft.world.entity.player.Player;
@@ -55,13 +59,20 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+
+import static net.jrex.rexcraft.entity.custom.BucklandiiEntity.step_height;
 
 public class BernisEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.INT);
+
+    protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.BYTE);
+    protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BernisEntity.class, EntityDataSerializers.INT);
 
@@ -69,7 +80,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = 0.0f;
+    public static float speedMod = -1.0f;
 
     public static int attacknum = 3;
 
@@ -106,8 +117,8 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
-        //this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         //this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(1, new DinoOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
@@ -282,6 +293,29 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     }
 
+    protected void reassessTameGoals() {
+    }
+
+    public void setTame(boolean pTamed) {
+        byte b0 = this.entityData.get(DATA_FLAGS_ID);
+        if (pTamed) {
+            this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 4));
+        } else {
+            this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -5));
+        }
+
+        this.reassessTameGoals();
+    }
+
+    public void tame(Player pPlayer) {
+        this.setTame(true);
+        this.setOwnerUUID(pPlayer.getUUID());
+        if (pPlayer instanceof ServerPlayer) {
+            CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer)pPlayer, this);
+        }
+
+    }
+
     @Override
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -308,6 +342,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
                     if (!ForgeEventFactory.onAnimalTame(this, player)) {
                         if (!this.level.isClientSide) {
+                            this.tame(player);
                             this.setTamed(true);
                             this.spawnTamingParticles(true);
                             this.navigation.recomputePath();
@@ -377,9 +412,26 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+
+        UUID uuid;
+        if (tag.hasUUID("Owner")) {
+            uuid = tag.getUUID("Owner");
+        } else {
+            String s = tag.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
         //setSaddled(tag.getBoolean("isSaddled"));
         this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
         this.readPersistentAngerSaveData(this.level, tag);
+        if (uuid != null) {
+            try {
+                this.setOwnerUUID(uuid);
+                this.setTame(true);
+            } catch (Throwable throwable) {
+                this.setTame(false);
+            }
+        }
+
 
 //        this.readPersistentAngerSaveData(this.level, tag);
 //        if (!tag.isEmpty()) {
@@ -389,6 +441,16 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 //
       this.updateContainerEquipment();
 
+    }
+
+    @javax.annotation.Nullable
+    public LivingEntity getOwner() {
+        try {
+            UUID uuid = this.getOwnerUUID();
+            return uuid == null ? null : this.level.getPlayerByUUID(uuid);
+        } catch (IllegalArgumentException illegalargumentexception) {
+            return null;
+        }
     }
 
     @Override
@@ -414,18 +476,62 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
 
+        if (this.getOwnerUUID() != null) {
+            tag.putUUID("Owner", this.getOwnerUUID());
+        }
+
         //Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
         tag.putInt("Variant",this.getTypeVariant());
 
         this.addPersistentAngerSaveData(tag);
     }
 
+    public boolean isTame() {
+        return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
+    }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_ID_TYPE_VARIANT,0);
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
+        this.entityData.define(DATA_FLAGS_ID, (byte)0);
+        this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+    }
+
+    @javax.annotation.Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(DATA_OWNERUUID_ID).orElse((UUID)null);
+    }
+
+    public void setOwnerUUID(@javax.annotation.Nullable UUID pUuid) {
+        this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(pUuid));
+    }
+
+    public boolean isOwnedBy(LivingEntity pEntity) {
+        return pEntity == this.getOwner();
+    }
+
+    public boolean canAttack(LivingEntity pTarget) {
+        return this.isOwnedBy(pTarget) ? false : super.canAttack(pTarget);
+    }
+
+    /**
+     * Returns whether this Entity is on the same team as the given Entity.
+     */
+    public boolean isAlliedTo(Entity pEntity) {
+        if (this.isTame()) {
+            LivingEntity livingentity = this.getOwner();
+            if (pEntity == livingentity) {
+                return true;
+            }
+
+            if (livingentity != null) {
+                return livingentity.isAlliedTo(pEntity);
+            }
+        }
+
+        return super.isAlliedTo(pEntity);
     }
 
     @Override
@@ -456,6 +562,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
                 this.yHeadRot = this.yBodyRot;
                 float f = livingentity.xxa * 0.5F;
                 float f1 = livingentity.zza;
+                this.maxUpStep = step_height;
 
                 if (this.onGround) {
                     Vec3 vec3 = this.getDeltaMovement();
@@ -524,5 +631,56 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     @Override
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    public boolean wantsToAttack(LivingEntity pTarget, LivingEntity pOwner) {
+        return true;
+    }
+
+    /** OWNER HURT BY TARGET GOAL**/
+
+    public class DinoOwnerHurtByTargetGoal extends TargetGoal {
+        private final BernisEntity tameAnimal;
+        private LivingEntity ownerLastHurtBy;
+        private int timestamp;
+
+        public DinoOwnerHurtByTargetGoal(BernisEntity dino) {
+            super(dino, false);
+            this.tameAnimal = dino;
+            this.setFlags(EnumSet.of(Goal.Flag.TARGET));
+        }
+
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+            if (this.tameAnimal.isTamed()) {
+                LivingEntity livingentity = this.tameAnimal.getOwner();
+                if (livingentity == null) {
+                    return false;
+                } else {
+                    this.ownerLastHurtBy = livingentity.getLastHurtByMob();
+                    int i = livingentity.getLastHurtByMobTimestamp();
+                    return i != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT) && this.tameAnimal.wantsToAttack(this.ownerLastHurtBy, livingentity);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.mob.setTarget(this.ownerLastHurtBy);
+            LivingEntity livingentity = this.tameAnimal.getOwner();
+            if (livingentity != null) {
+                this.timestamp = livingentity.getLastHurtByMobTimestamp();
+            }
+
+            super.start();
+        }
     }
 }
