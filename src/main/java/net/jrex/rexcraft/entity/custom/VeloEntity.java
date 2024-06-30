@@ -424,7 +424,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
     }
 
     protected float getSoundVolume() {
-        return 1.0F;
+        return 1.4F;
     }
 
     protected boolean isImmobile() {

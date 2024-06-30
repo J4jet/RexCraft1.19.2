@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
 import net.minecraft.world.item.Item;
@@ -72,7 +73,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
 
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
-        return entitytype == EntityType.SPIDER;
+        return entitytype == EntityType.SPIDER || entitytype == EntityType.PLAYER ;
     };
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.INT);
@@ -122,6 +123,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
                 .add(Attributes.MAX_HEALTH, 46.0D)
                 .add(Attributes.ATTACK_DAMAGE, 10.0f)
                 .add(Attributes.ATTACK_SPEED, 1.7f)
+                .add(Attributes.FOLLOW_RANGE, 5)
                 .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
     }
 
@@ -329,7 +331,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
         super.aiStep();
 
 //        if(this.isAngry()){
-//            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+//            getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(32.0f);
 //        }
 //        else if (!this.isAngry()){
 //            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
@@ -702,67 +704,5 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
         return this.entityData.get(SADDLED);
     }
 
-    //These are for attempting to create a custom goal:
 
-//    /**
-//     * Loops through nearby animals and finds another animal of the same type that can be mated with. Returns the first
-//     * valid mate found.
-//     */
-//    @javax.annotation.Nullable
-//    private Animal getFreePartner() {
-//        List<? extends Animal> list = this.level.getNearbyEntities(this.partnerClass, PARTNER_TARGETING, this.animal, this.animal.getBoundingBox().inflate(8.0D));
-//        double d0 = Double.MAX_VALUE;
-//        Animal animal = null;
-//
-//        for(Animal animal1 : list) {
-//            if (this.animal.canMate(animal1) && this.animal.distanceToSqr(animal1) < d0) {
-//                animal = animal1;
-//                d0 = this.animal.distanceToSqr(animal1);
-//            }
-//        }
-//
-//        return animal;
-//    }
-
-//    static class LlamaAttackWolfGoal extends NearestAttackableTargetGoal<Wolf> {
-//        public LlamaAttackWolfGoal(Llama pLlama) {
-//            super(pLlama, Wolf.class, 16, false, true, (p_30845_) -> {
-//                return !((Wolf)p_30845_).isTame();
-//            });
-//        }
-//
-//        protected double getFollowDistance() {
-//            return super.getFollowDistance() * 0.25D;
-//        }
-//    }
-
-//    class PolarBearAttackPlayersGoal extends NearestAttackableTargetGoal<Player> {
-//        public PolarBearAttackPlayersGoal() {
-//            super(PolarBear.this, Player.class, 20, true, true, (Predicate<LivingEntity>)null);
-//        }
-//
-//        /**
-//         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-//         * method as well.
-//         */
-//        public boolean canUse() {
-//            if (PolarBear.this.isBaby()) {
-//                return false;
-//            } else {
-//                if (super.canUse()) {
-//                    for(PolarBear polarbear : PolarBear.this.level.getEntitiesOfClass(PolarBear.class, PolarBear.this.getBoundingBox().inflate(8.0D, 4.0D, 8.0D))) {
-//                        if (polarbear.isBaby()) {
-//                            return true;
-//                        }
-//                    }
-//                }
-//
-//                return false;
-//            }
-//        }
-//
-//        protected double getFollowDistance() {
-//            return super.getFollowDistance() * 0.5D;
-//        }
-//    }
 }
