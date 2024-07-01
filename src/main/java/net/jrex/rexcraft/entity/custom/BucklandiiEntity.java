@@ -36,6 +36,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -288,8 +290,28 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         return factory;
     }
 
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 4.0F);
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pBlock) {
+        if (!pBlock.getMaterial().isLiquid()) {
+            BlockState blockstate = this.level.getBlockState(pPos.above());
+            SoundType soundtype = pBlock.getSoundType(level, pPos, this);
+            if (blockstate.is(Blocks.SNOW)) {
+                soundtype = blockstate.getSoundType(level, pPos, this);
+            }
+
+            if (soundtype == SoundType.WOOD) {
+                this.playSound(SoundEvents.WOOD_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+            if (soundtype == SoundType.STONE) {
+                this.playSound(SoundEvents.STONE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+            if (soundtype == SoundType.NETHERITE_BLOCK) {
+                this.playSound(SoundEvents.NETHERITE_BLOCK_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }else {
+                this.playSound(SoundEvents.GRASS_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+
+        }
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
