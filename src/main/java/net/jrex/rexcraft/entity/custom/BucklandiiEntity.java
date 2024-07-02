@@ -165,8 +165,13 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
         if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
-            return PlayState.CONTINUE;
+            if (this.isVehicle()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming2", true));
+                return PlayState.CONTINUE;
+            }else{
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
+                return PlayState.CONTINUE;
+            }
         }
 
         if (event.isMoving()) {
@@ -191,7 +196,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than an idle, just override it and set it to idle0
-            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting")){
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("swimming")){
                 event.getController().markNeedsReload();
                 int rand_int = rand_num();
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
