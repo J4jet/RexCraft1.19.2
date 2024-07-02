@@ -126,7 +126,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
                 .add(Attributes.ATTACK_DAMAGE, 10.0f)
                 .add(Attributes.ATTACK_SPEED, 1.7f)
                 .add(Attributes.FOLLOW_RANGE, 5)
-                .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
     }
 
     @Override
@@ -190,7 +190,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than an idle, just override it and set it to idle0
-            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("swimming")){
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("swimming") || name.equals("swimming2")){
                 event.getController().markNeedsReload();
                 int rand_int = rand_num();
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));

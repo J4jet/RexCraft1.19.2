@@ -82,7 +82,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     public static float step_height = 2.0F;
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = -0.5f;
+    public static float speedMod = -0.7f;
 
     public static int attacknum = 3;
 
@@ -153,7 +153,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than an idle, just override it and set it to idle0
-            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("swimming")){
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("swimming") || name.equals("swimming2")){
                 event.getController().markNeedsReload();
                 int rand_int = rand_num();
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));

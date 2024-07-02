@@ -125,6 +125,15 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+
+        //if in water, use swimming anims
+
+        if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
+            return PlayState.CONTINUE;
+
+        }
+
         if (event.isMoving()) {
             if (this.isVehicle()) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
@@ -140,7 +149,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than an idle, just override it and set it to idle0
-            if(name.equals("walk") || name.equals("vehicle_walk")){
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("swimming")){
                 event.getController().markNeedsReload();
                 int rand_int = rand_num();
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
