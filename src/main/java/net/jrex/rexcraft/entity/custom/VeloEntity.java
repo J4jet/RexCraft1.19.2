@@ -192,6 +192,8 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
+        //if in water, use swimming anims
+
         if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
             return PlayState.CONTINUE;

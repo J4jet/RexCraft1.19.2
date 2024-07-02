@@ -127,6 +127,8 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
+        //if in water, use swimming anims
+
         if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
             if (this.isVehicle()){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));

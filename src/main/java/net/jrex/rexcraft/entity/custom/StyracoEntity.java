@@ -156,6 +156,18 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
+        //if in water, use swimming anims
+
+        if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
+            if (this.isVehicle()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
+                return PlayState.CONTINUE;
+            }else{
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming2", true));
+                return PlayState.CONTINUE;
+            }
+        }
+
         if (event.isMoving()) {
             if(this.isVehicle()){
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));
@@ -178,7 +190,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than an idle, just override it and set it to idle0
-            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting")){
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("swimming")){
                 event.getController().markNeedsReload();
                 int rand_int = rand_num();
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
