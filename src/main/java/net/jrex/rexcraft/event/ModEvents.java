@@ -22,6 +22,7 @@ public class ModEvents {
             event.put(ModEntityTypes.BOREAL.get(), BorealEntity.setAttributes());
             event.put(ModEntityTypes.STYRACO.get(), StyracoEntity.setAttributes());
             event.put(ModEntityTypes.VELO.get(), VeloEntity.setAttributes());
+            event.put(ModEntityTypes.DIPLO.get(), DiploEntity.setAttributes());
         }
 
     }

@@ -1,8 +1,7 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
-import net.jrex.rexcraft.entity.variant.BernisVariant;
-import net.jrex.rexcraft.entity.variant.BorealVariant;
+import net.jrex.rexcraft.entity.variant.DiploVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
@@ -18,20 +17,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -66,17 +62,17 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
-public class BorealEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
+public class DiploEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(BorealEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.INT);
 
-    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BorealEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.INT);
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(60, 90);
 
-    protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(BorealEntity.class, EntityDataSerializers.BYTE);
-    protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(BorealEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BYTE);
+    protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
@@ -88,14 +84,14 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
 
     private AnimationFactory factory = new AnimationFactory(this);
 
-    public BorealEntity(EntityType<? extends AbstractChestedHorse> pEntityType, Level pLevel) {
+    public DiploEntity(EntityType<? extends AbstractChestedHorse> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 60.0D)
+                .add(Attributes.MAX_HEALTH, 300.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0f)
                 .add(Attributes.ATTACK_SPEED, 1.5f)
                 .add(Attributes.ARMOR,16.0)
@@ -111,14 +107,14 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, BorealEntity.class));
+        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, DiploEntity.class));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 1.2D, 1.4D));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
         //this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new BorealEntity.DinoOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new DiploEntity.DinoOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
@@ -202,8 +198,8 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
-        BorealEntity baby = ModEntityTypes.BOREAL.get().create(serverLevel);
-        BorealVariant variant = Util.getRandom(BorealVariant.values(), this.random);
+        DiploEntity baby = ModEntityTypes.DIPLO.get().create(serverLevel);
+        DiploVariant variant = Util.getRandom(DiploVariant.values(), this.random);
         baby.setVariant(variant);
         return baby;
     }
@@ -444,11 +440,11 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
                 this.createInventory();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
-            //from Bernisentity, I don't want Boreal to be rideable
-//            if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
-//                this.openCustomInventoryScreen(player);
-//                return InteractionResult.sidedSuccess(this.level.isClientSide);
-//            }
+            //from Bernisentity, I do want Diplo to be rideable
+            if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
+                this.openCustomInventoryScreen(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
         }
 
         if (this.isBaby()) {
@@ -510,7 +506,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
 
     @Override
     public boolean canMate(Animal pOtherAnimal) {
-        return pOtherAnimal != this && pOtherAnimal instanceof BorealEntity && this.canParent() && ((BorealEntity)pOtherAnimal).canParent();
+        return pOtherAnimal != this && pOtherAnimal instanceof DiploEntity && this.canParent() && ((DiploEntity)pOtherAnimal).canParent();
     }
 
     public boolean canWearArmor() {
@@ -639,20 +635,20 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
                                         MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
                                         @Nullable CompoundTag p_146750_) {
-        BorealVariant variant = Util.getRandom(BorealVariant.values(), this.random);
+        DiploVariant variant = Util.getRandom(DiploVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
     }
 
-    public BorealVariant getVariant() {
-        return BorealVariant.byId(this.getTypeVariant() & 255);
+    public DiploVariant getVariant() {
+        return DiploVariant.byId(this.getTypeVariant() & 255);
     }
 
     private int getTypeVariant() {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
-    private void setVariant(BorealVariant variant) {
+    private void setVariant(DiploVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 
@@ -688,17 +684,55 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         return true;
     }
 
+    /** Extra riders **/
+
+    /** maybe use iggy instead... **/
+
+    //      if (this.hasPassenger(pPassenger)) {
+    //         float f = this.getSinglePassengerXOffset();
+    //         float f1 = (float)((this.isRemoved() ? (double)0.01F : this.getPassengersRidingOffset()) + pPassenger.getMyRidingOffset());
+    //         if (this.getPassengers().size() > 1) {
+    //            int i = this.getPassengers().indexOf(pPassenger);
+    //            if (i == 0) {
+    //               f = 0.2F;
+    //            } else {
+    //               f = -0.6F;
+    //            }
+    //
+    //            if (pPassenger instanceof Animal) {
+    //               f += 0.2F;
+    //            }
+    //         }
+
+    protected boolean canAddPassenger(Entity pPassenger) {
+        return this.getPassengers().size() < this.getMaxPassengers();
+    }
+
+    protected int getMaxPassengers() {
+        return 2;
+    }
+
+    // Forge: Fix MC-119811 by instantly completing lerp on board
+    @Override
+    protected void addPassenger(Entity passenger) {
+        super.addPassenger(passenger);
+        if (this.isControlledByLocalInstance() && this.lerpSteps > 0) {
+            this.lerpSteps = 0;
+            this.absMoveTo(this.lerpX, this.lerpY, this.lerpZ, (float)this.lerpYRot, (float)this.lerpXRot);
+        }
+    }
+
     /** OWNER HURT BY TARGET GOAL**/
 
     public class DinoOwnerHurtByTargetGoal extends TargetGoal {
-        private final BorealEntity tameAnimal;
+        private final DiploEntity tameAnimal;
         private LivingEntity ownerLastHurtBy;
         private int timestamp;
 
-        public DinoOwnerHurtByTargetGoal(BorealEntity dino) {
+        public DinoOwnerHurtByTargetGoal(DiploEntity dino) {
             super(dino, false);
             this.tameAnimal = dino;
-            this.setFlags(EnumSet.of(Goal.Flag.TARGET));
+            this.setFlags(EnumSet.of(Flag.TARGET));
         }
 
 
