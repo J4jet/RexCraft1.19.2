@@ -12,11 +12,35 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class DiploModel extends AnimatedGeoModel<DiploEntity> {
     @Override
     public ResourceLocation getModelResource(DiploEntity object) {
-        if(object.hasChest()) {
-            return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_chested.geo.json");
+        if(object.hasChest() && object.isSaddled()) {
+            if(object.isAngry()){
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_angry_chested_saddled.geo.json");
+            }else{
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_chested_saddled.geo.json");
+            }
+        }
+        else if(object.hasChest()) {
+            if(object.isAngry()){
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_angry_chested.geo.json");
+            }else{
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_chested.geo.json");
+            }
+        }
+        else if(object.isSaddled()) {
+            if(object.isAngry()){
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_angry_saddled.geo.json");
+            }else{
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_saddled.geo.json");
+            }
         }
 
-        else{return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo.geo.json");}
+        else{
+            if(object.isAngry()){
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo_angry.geo.json");
+            }else{
+                return new ResourceLocation(RexCraft.MOD_ID, "geo/diplo.geo.json");
+            }
+        }
     }
 
     @Override
