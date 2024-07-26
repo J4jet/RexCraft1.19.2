@@ -103,6 +103,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
                 .add(Attributes.MAX_HEALTH, 58.0D)
                 .add(Attributes.ATTACK_DAMAGE, 14.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 5)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
     }
 

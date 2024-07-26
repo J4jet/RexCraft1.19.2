@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
@@ -57,6 +58,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Random;
@@ -74,10 +76,16 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BYTE);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
+    public static float step_height = 5.0F;
+
+    public static float riderOffset = 5.0f;
+
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
 
     public static int attacknum = 3;
+
+    //private float deltaRotation = 0.9F;
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -96,13 +104,15 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 .add(Attributes.ATTACK_SPEED, 1.5f)
                 .add(Attributes.ARMOR,16.0)
                 .add(Attributes.ARMOR_TOUGHNESS,16.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 100)
                 .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
     }
 
     @Override
     protected void registerGoals() {
 
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        //Sauropods this large will just walk through the water
+        //this.goalSelector.addGoal(1, new FloatGoal(this));
         //this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
@@ -131,7 +141,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
         if (event.isMoving()) {
             if (this.isVehicle()) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));
                 return PlayState.CONTINUE;
             } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
@@ -219,6 +229,67 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public boolean tameItem(ItemStack pStack) {
         Item item = pStack.getItem();
         return item == ModItems.HERB_BUFF_GOLD.get() || item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
+    }
+
+    protected void clampRotation(Entity pEntityToUpdate) {
+        pEntityToUpdate.setYBodyRot(this.getYRot());
+        float f = Mth.wrapDegrees(pEntityToUpdate.getYRot() - this.getYRot());
+        float f1 = Mth.clamp(f, -105.0F, 105.0F);
+        pEntityToUpdate.yRotO += f1 - f;
+        pEntityToUpdate.setYRot(pEntityToUpdate.getYRot() + f1 - f);
+        pEntityToUpdate.setYHeadRot(pEntityToUpdate.getYRot());
+    }
+
+    @Override
+    public void positionRider(@NotNull Entity pPassenger) {
+        if (this.hasPassenger(pPassenger)) {
+            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
+            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
+
+            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + riderOffset, this.getZ() - (double)(0.3F * f));
+//            if (this.getPassengers().size() > 1) {
+//                int i = this.getPassengers().indexOf(pPassenger);
+//                if (i == 0) {
+//                    f = 0.2F;
+//                } else {
+//                    f = -0.6F;
+//                }
+//
+//                if (pPassenger instanceof Animal) {
+//                    f += 0.2F;
+//                }
+//            }
+//            Vec3 vec3 = (new Vec3((double)f, 0.0D, 0.0D)).yRot(-this.getYRot() * ((float)Math.PI / 180F) - ((float)Math.PI / 2F));
+//            pPassenger.setPos(this.getX() + vec3.x, this.getY() + (double)f1, this.getZ() + vec3.z);
+//            pPassenger.setYRot(pPassenger.getYRot() + this.deltaRotation);
+//            pPassenger.setYHeadRot(pPassenger.getYHeadRot() + this.deltaRotation);
+//            this.clampRotation(pPassenger);
+//            if (pPassenger instanceof Animal && this.getPassengers().size() == this.getMaxPassengers()) {
+//                int j = pPassenger.getId() % 2 == 0 ? 90 : 270;
+//                pPassenger.setYBodyRot(((Animal)pPassenger).yBodyRot + (float)j);
+//                pPassenger.setYHeadRot(pPassenger.getYHeadRot() + (float)j);
+//            }
+
+
+        }
+
+        /** Extra riders **/
+
+        //      if (this.hasPassenger(pPassenger)) {
+        //         float f = this.getSinglePassengerXOffset();
+        //         float f1 = (float)((this.isRemoved() ? (double)0.01F : this.getPassengersRidingOffset()) + pPassenger.getMyRidingOffset());
+//                 if (this.getPassengers().size() > 1) {
+//                    int i = this.getPassengers().indexOf(pPassenger);
+//                    if (i == 0) {
+//                       f = 0.2F;
+//                    } else {
+//                       f = -0.6F;
+//                    }
+//
+//                    if (pPassenger instanceof Animal) {
+//                       f += 0.2F;
+//                    }
+//                 }
     }
 
     @Override
@@ -336,7 +407,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     public boolean isSaddleable() {
-        return false;
+        return true;
     }
 
     protected void reassessTameGoals() {
@@ -367,7 +438,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         ItemStack itemstack = player.getItemInHand(hand);
         if (!this.isBaby()) {
             if (this.isTamed() && player.isSecondaryUseActive()) {
-                this.doPlayerRide(player);
+                this.openCustomInventoryScreen(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
 
@@ -440,7 +511,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 this.createInventory();
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
-            //from Bernisentity, I do want Diplo to be rideable
+
             if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
                 this.openCustomInventoryScreen(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
@@ -450,7 +521,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         if (this.isBaby()) {
             return super.mobInteract(player, hand);
         } else {
-            this.openCustomInventoryScreen(player);
+            this.doPlayerRide(player);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
     }
@@ -593,7 +664,13 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     }
 
     public boolean canBeLeashed(Player player) {
-        return true;
+        //can only be leashed if tamed
+        return this.isTame();
+    }
+
+    @Override
+    protected float getWaterSlowDown() {
+        return 0.0F;
     }
 
     @Override
@@ -610,11 +687,14 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 this.yHeadRot = this.yBodyRot;
                 float f = livingentity.xxa * 0.5F;
                 float f1 = livingentity.zza;
+                this.maxUpStep = step_height;
 
                 if (this.onGround) {
                     Vec3 vec3 = this.getDeltaMovement();
                     this.setDeltaMovement(vec3.x, 0, vec3.z);
                 }
+
+                //if (this.isInWater())
 
                 if (this.isControlledByLocalInstance()) {
                     this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + speedMod);
@@ -684,25 +764,6 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         return true;
     }
 
-    /** Extra riders **/
-
-    /** maybe use iggy instead... **/
-
-    //      if (this.hasPassenger(pPassenger)) {
-    //         float f = this.getSinglePassengerXOffset();
-    //         float f1 = (float)((this.isRemoved() ? (double)0.01F : this.getPassengersRidingOffset()) + pPassenger.getMyRidingOffset());
-    //         if (this.getPassengers().size() > 1) {
-    //            int i = this.getPassengers().indexOf(pPassenger);
-    //            if (i == 0) {
-    //               f = 0.2F;
-    //            } else {
-    //               f = -0.6F;
-    //            }
-    //
-    //            if (pPassenger instanceof Animal) {
-    //               f += 0.2F;
-    //            }
-    //         }
 
     protected boolean canAddPassenger(Entity pPassenger) {
         return this.getPassengers().size() < this.getMaxPassengers();

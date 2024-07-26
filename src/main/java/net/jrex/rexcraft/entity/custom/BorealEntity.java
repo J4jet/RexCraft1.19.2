@@ -100,6 +100,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
                 .add(Attributes.ATTACK_SPEED, 1.5f)
                 .add(Attributes.ARMOR,16.0)
                 .add(Attributes.ARMOR_TOUGHNESS,16.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 3)
                 .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
     }
 
@@ -327,6 +328,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         if(this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
             getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(20.0f);
         }
         else if (!this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);

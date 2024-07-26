@@ -126,6 +126,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
                 .add(Attributes.ATTACK_DAMAGE, 10.0f)
                 .add(Attributes.ATTACK_SPEED, 1.7f)
                 .add(Attributes.FOLLOW_RANGE, 5)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 3)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
     }
 
@@ -584,6 +585,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(11.5D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.5f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
 
 
@@ -591,6 +593,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(46.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.7f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
         }
     }

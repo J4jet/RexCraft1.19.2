@@ -134,6 +134,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
                 .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.ATTACK_DAMAGE, 9.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 3)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
 
@@ -578,6 +579,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(45.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
 
 
@@ -585,6 +587,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(40.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
         }
     }

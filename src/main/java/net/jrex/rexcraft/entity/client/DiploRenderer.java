@@ -29,7 +29,7 @@ public class DiploRenderer extends GeoEntityRenderer<DiploEntity> {
             });
     public DiploRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DiploModel());
-        this.shadowRadius = 0.8f;
+        this.shadowRadius = 4.8f;
     }
 
 
@@ -47,9 +47,9 @@ public class DiploRenderer extends GeoEntityRenderer<DiploEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(1.0F, 1.0F, 1.0F);
+            stack.scale(0.5F, 0.5F, 0.5F);
         } else {
-            stack.scale(2.0f, 2.0f,2.0f);
+            stack.scale(1.3f, 1.3f,1.3f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

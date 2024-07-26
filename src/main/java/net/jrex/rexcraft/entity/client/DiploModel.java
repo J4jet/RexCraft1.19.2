@@ -43,7 +43,7 @@ public class DiploModel extends AnimatedGeoModel<DiploEntity> {
         IBone neck = this.getAnimationProcessor().getBone("neck");
 
         //trying to get the neck to move too
-        IBone neck2 = this.getAnimationProcessor().getBone("neck2");
+        IBone neckagain = this.getAnimationProcessor().getBone("neckagain");
 
 
 
@@ -59,9 +59,9 @@ public class DiploModel extends AnimatedGeoModel<DiploEntity> {
             neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
         }
 
-        if(neck2 != null){
-            neck2.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
-            neck2.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+        if(neckagain != null){
+            neckagain.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+            neckagain.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
         }
     }
 }
