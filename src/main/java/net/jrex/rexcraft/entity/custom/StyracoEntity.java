@@ -146,7 +146,7 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
             this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
             this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
-            //this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
             //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Cow.class, true));
             //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, true));
             //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Sheep.class, true));

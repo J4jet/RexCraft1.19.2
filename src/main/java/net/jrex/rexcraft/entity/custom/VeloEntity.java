@@ -185,6 +185,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
             this.targetSelector.addGoal(1, new VeloAttackEntitiesT1Goal());
             this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
             this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
             this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
             this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }

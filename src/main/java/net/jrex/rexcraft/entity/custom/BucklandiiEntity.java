@@ -154,6 +154,8 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
             this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
             this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
             this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+            //This target is for when it's mad at the player, without this it will not fight back
+            //ok maybe not
             //this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
             //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Cow.class, true));
             //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Pig.class, true));
