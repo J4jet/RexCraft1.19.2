@@ -60,10 +60,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 
-import java.util.EnumSet;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class DiploEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
 
@@ -79,7 +76,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     public static float step_height = 5.0F;
 
-    public static float riderOffset = 5.0f;
+    public static float riderOffset = 3.0f;
 
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
@@ -102,7 +99,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 300.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0f)
-                .add(Attributes.ATTACK_SPEED, 1.5f)
+                .add(Attributes.ATTACK_SPEED, 0.3f)
                 .add(Attributes.ARMOR,16.0)
                 .add(Attributes.ARMOR_TOUGHNESS,16.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
@@ -179,11 +176,11 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         Random rand = new Random();
         int rand_num = rand.nextInt(10);
 
-        if(rand_num > 6){
-            return 1;
+        if(rand_num > 8){
+            return 0;
         }
         else{
-            return 0;
+            return 1;
         }
     }
 
@@ -672,7 +669,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     protected float getWaterSlowDown() {
-        return 0.0F;
+        return -1.0F;
     }
 
     @Override
@@ -695,8 +692,6 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                     Vec3 vec3 = this.getDeltaMovement();
                     this.setDeltaMovement(vec3.x, 0, vec3.z);
                 }
-
-                //if (this.isInWater())
 
                 if (this.isControlledByLocalInstance()) {
                     this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + speedMod);
@@ -829,6 +824,137 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
             }
 
             super.start();
+        }
+    }
+
+    public class DiploFollowLeaderGoal extends Goal {
+        private final VeloEntity animal;
+        @javax.annotation.Nullable
+        private VeloEntity leader;
+        private final double speedModifier;
+        private int timeToRecalcPath;
+
+        public DiploFollowLeaderGoal(VeloEntity pAnimal, double pSpeedModifier) {
+            this.animal = pAnimal;
+            this.speedModifier = pSpeedModifier;
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+
+            //If this is a leader, or it is tame, return false
+            if (this.animal.isLeader || this.animal.isTame()) {
+                return false;
+            } else {
+                List<? extends VeloEntity> list = this.animal.level.getEntitiesOfClass(this.animal.getClass(), this.animal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
+                VeloEntity animal = null;
+                double d0 = Double.MAX_VALUE;
+
+                for(VeloEntity animal1 : list) {
+                    if (animal1.getAge() >= 0) {
+                        double d1 = this.animal.distanceToSqr(animal1);
+                        //if this raptor's number is smaller than the other raptor, set it as the leader
+                        // && animal1.followers < animal1.follower_cap
+                        if (!(d1 > d0) && this.animal.raptor_num < animal1.raptor_num) {
+                            d0 = d1;
+                            animal = animal1;
+                        }
+                    }
+                }
+
+                if (animal == null) {
+                    return false;
+                } else if (d0 < 25.0D) {
+                    return false;
+                    //if this raptor's number is smaller than the other raptor, set it as the leader
+                } //else if (animal.isfollower) {
+                //return false;
+                //animal.followers < animal.follower_cap
+                else if (this.animal.raptor_num < animal.raptor_num){
+                    if (animal.isfollower){
+                        this.leader = animal.veloLeader;
+                        this.animal.veloLeader = animal.veloLeader;
+                        this.animal.becomeFollower();
+                        return true;
+                    }
+//                    //check to see if it has a leader, if that leader has a higher number, don't switch leaders!
+//                    if (this.leader != null){
+//                        if (this.leader.raptor_num > animal.raptor_num){
+//                            //Don't set new leader, but return true
+//                            System.out.println("already following");
+//                            System.out.println(this.leader.raptor_num);
+//                            return true;
+//                        }else{
+//                            if (!animal.isLeader){
+//                                animal.becomeLeader();
+//                            }
+//                            animal.unfollow();
+//                            animal.addFollower();
+//                            this.leader = animal;
+//                            this.animal.becomeFollower();
+//                            return true;
+//                        }
+//                    }
+//                    if (!animal.isLeader){
+//                        animal.becomeLeader();
+//                    }
+                    //animal.unfollow();
+                    //animal.addFollower();
+                    this.leader = animal;
+                    this.animal.becomeFollower();
+                    this.animal.veloLeader = animal;
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            if (!this.leader.isAlive()) {
+                this.leader = null;
+                this.animal.veloLeader = null;
+                this.animal.unfollow();
+                return false;
+            } else if (this.animal.isTame()) {
+                return false;
+            } else {
+                double d0 = this.animal.distanceToSqr(this.leader);
+                return !(d0 < 60.0D) && !(d0 > 256.0D);
+            }
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.timeToRecalcPath = 0;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void stop() {
+            this.leader = null;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+
+            if (--this.timeToRecalcPath <= 0) {
+                this.timeToRecalcPath = this.adjustedTickDelay(10);
+                if (this.leader != null){
+                    this.animal.getNavigation().moveTo(this.leader, this.speedModifier);
+                }
+            }
         }
     }
 }

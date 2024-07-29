@@ -73,8 +73,10 @@ public class DiploModel extends AnimatedGeoModel<DiploEntity> {
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         if (head != null) {
-            head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
-            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+            // up and down
+            head.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+            //left and right
+            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
         }
 
         //WWWWWOOOOOOOO YYYYEEEEAAAAHHHH BABY THAT'S WHAT I'VE BEEN WAITIN FOR
