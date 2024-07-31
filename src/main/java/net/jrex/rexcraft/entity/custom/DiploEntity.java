@@ -85,6 +85,26 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     //private float deltaRotation = 0.9F;
 
+    //This diplo's leader, stolen from velo
+    public DiploEntity veloLeader = null;
+
+    //number of followers this diplo has
+    public int followers = 0;
+
+    //if this diplo is a leader
+    public boolean isLeader = false;
+
+    //if this diplo is a follower
+    public boolean isfollower = false;
+
+    public int raptor_num = choose_id();
+
+    //Chooses a number for the id
+    public static int choose_id(){
+        Random rand = new Random();
+        return rand.nextInt(100000);
+    }
+
     @Nullable
     private UUID persistentAngerTarget;
 
@@ -98,8 +118,8 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 300.0D)
-                .add(Attributes.ATTACK_DAMAGE, 8.0f)
-                .add(Attributes.ATTACK_SPEED, 0.3f)
+                .add(Attributes.ATTACK_DAMAGE, 30.0f)
+                .add(Attributes.ATTACK_SPEED, 0.1f)
                 .add(Attributes.ARMOR,16.0)
                 .add(Attributes.ARMOR_TOUGHNESS,16.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
@@ -114,6 +134,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         //this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
+        this.goalSelector.addGoal(2, new DiploFollowLeaderGoal(this, 1.5));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, DiploEntity.class));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
@@ -806,6 +827,15 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         }
     }
 
+    public void becomeFollower(){
+        this.isLeader = false;
+        this.isfollower = true;
+    }
+
+    public void unfollow(){
+        this.isfollower = false;
+    }
+
     /** OWNER HURT BY TARGET GOAL**/
 
     public class DinoOwnerHurtByTargetGoal extends TargetGoal {
@@ -854,13 +884,13 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     }
 
     public class DiploFollowLeaderGoal extends Goal {
-        private final VeloEntity animal;
+        private final DiploEntity animal;
         @javax.annotation.Nullable
-        private VeloEntity leader;
+        private DiploEntity leader;
         private final double speedModifier;
         private int timeToRecalcPath;
 
-        public DiploFollowLeaderGoal(VeloEntity pAnimal, double pSpeedModifier) {
+        public DiploFollowLeaderGoal(DiploEntity pAnimal, double pSpeedModifier) {
             this.animal = pAnimal;
             this.speedModifier = pSpeedModifier;
         }
@@ -875,11 +905,11 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
             if (this.animal.isLeader || this.animal.isTame()) {
                 return false;
             } else {
-                List<? extends VeloEntity> list = this.animal.level.getEntitiesOfClass(this.animal.getClass(), this.animal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
-                VeloEntity animal = null;
+                List<? extends DiploEntity> list = this.animal.level.getEntitiesOfClass(this.animal.getClass(), this.animal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
+                DiploEntity animal = null;
                 double d0 = Double.MAX_VALUE;
 
-                for(VeloEntity animal1 : list) {
+                for(DiploEntity animal1 : list) {
                     if (animal1.getAge() >= 0) {
                         double d1 = this.animal.distanceToSqr(animal1);
                         //if this raptor's number is smaller than the other raptor, set it as the leader
@@ -893,7 +923,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
                 if (animal == null) {
                     return false;
-                } else if (d0 < 25.0D) {
+                } else if (d0 < 200.0D) {
                     return false;
                     //if this raptor's number is smaller than the other raptor, set it as the leader
                 } //else if (animal.isfollower) {
@@ -952,7 +982,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 return false;
             } else {
                 double d0 = this.animal.distanceToSqr(this.leader);
-                return !(d0 < 60.0D) && !(d0 > 256.0D);
+                return !(d0 < 250.0D) && !(d0 > 600.0D);
             }
         }
 

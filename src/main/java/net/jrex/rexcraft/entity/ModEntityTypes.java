@@ -72,7 +72,7 @@ public class ModEntityTypes {
             ENTITY_TYPES.register("diplo",
                     () -> EntityType.Builder.of(DiploEntity::new, MobCategory.CREATURE)
                             //Hitbox Size!
-                            .sized(6.0f, 5.2f)
+                            .sized(5.4f, 5.1f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "diplo").toString()));
 
     public static void register(IEventBus eventBus) {
