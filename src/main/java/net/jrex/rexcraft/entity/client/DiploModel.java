@@ -57,37 +57,36 @@ public class DiploModel extends AnimatedGeoModel<DiploEntity> {
             else{return new ResourceLocation(RexCraft.MOD_ID, "animations/diplo.animation.json");}
     }
     //Look at the player!
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void setLivingAnimations(DiploEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("head");
-
-        //trying to get the neck to move too
-        IBone neck = this.getAnimationProcessor().getBone("neck");
-
-        //trying to get the neck to move too
-        IBone neckagain = this.getAnimationProcessor().getBone("neckagain");
-
-
-
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        if (head != null) {
-            // up and down
-            head.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
-            //left and right
-            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
-        }
-
-        //WWWWWOOOOOOOO YYYYEEEEAAAAHHHH BABY THAT'S WHAT I'VE BEEN WAITIN FOR
-        if(neck != null){
-            neck.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
-            neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
-        }
-
-        if(neckagain != null){
-            neckagain.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
-            neckagain.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
-        }
-    }
+//    @Override
+//    public void setLivingAnimations(DiploEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
+//        super.setLivingAnimations(entity, uniqueID, customPredicate);
+//        IBone head = this.getAnimationProcessor().getBone("head");
+//
+//        //trying to get the neck to move too
+//        IBone neck = this.getAnimationProcessor().getBone("neck");
+//
+//        //trying to get the neck to move too
+//        IBone neckagain = this.getAnimationProcessor().getBone("neckagain");
+//
+//
+//
+//        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
+//        if (head != null) {
+//            // up and down
+//            head.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+//            //left and right
+//            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+//        }
+//
+//        //WWWWWOOOOOOOO YYYYEEEEAAAAHHHH BABY THAT'S WHAT I'VE BEEN WAITIN FOR
+//        if(neck != null){
+//            neck.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+//            neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+//        }
+//
+//        if(neckagain != null){
+//            neckagain.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+//            neckagain.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+//        }
+//    }
 }

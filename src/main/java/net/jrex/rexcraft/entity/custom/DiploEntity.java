@@ -176,11 +176,37 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         Random rand = new Random();
         int rand_num = rand.nextInt(10);
 
-        if(rand_num > 8){
+        //if it's angry, just use either idle 1 or 2
+        if (this.isAngry()){
+            if(rand_num > 8){
+                return 0;
+            }
+            else{
+                return 1;
+            }
+        }
+
+        //if it's not angry, use idles 0-6
+        if(rand_num >= 6){
+            return 1;
+        }
+        else if(rand_num == 0){
             return 0;
         }
-        else{
-            return 1;
+        else if(rand_num == 1){
+            return 2;
+        }
+        else if(rand_num == 2){
+            return 3;
+        }
+        else if(rand_num == 3){
+            return 4;
+        }
+        else if(rand_num == 4){
+            return 5;
+        }
+        else {
+            return 6;
         }
     }
 
