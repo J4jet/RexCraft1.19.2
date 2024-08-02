@@ -17,9 +17,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -39,12 +41,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -74,9 +78,9 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BYTE);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    public static float step_height = 5.0F;
+    public static float step_height = 3.0F;
 
-    public static float riderOffset = 3.0f;
+    public static float riderOffset = 1.0f;
 
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
@@ -98,6 +102,10 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public boolean isfollower = false;
 
     public int raptor_num = choose_id();
+
+    private int destroyBlocksTick;
+
+    public boolean inWall;
 
     //Chooses a number for the id
     public static int choose_id(){
@@ -203,6 +211,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 return 0;
             }
             else{
+
                 return 1;
             }
         }
@@ -447,6 +456,10 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
         if (!this.level.isClientSide) {
             this.updatePersistentAnger((ServerLevel)this.level, true);
+        }
+
+        if (!this.level.isClientSide) {
+            this.inWall = this.checkWalls(this.getBoundingBox());
         }
 
     }
@@ -827,6 +840,80 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         }
     }
 
+    //Breaking things
+
+    private boolean checkWalls(AABB pArea) {
+        int i = Mth.floor(pArea.minX);
+        int j = Mth.floor(pArea.minY);
+        int k = Mth.floor(pArea.minZ);
+        int l = Mth.floor(pArea.maxX);
+        int i1 = Mth.floor(pArea.maxY);
+        int j1 = Mth.floor(pArea.maxZ);
+        boolean flag = false;
+        boolean flag1 = false;
+
+        for(int k1 = i; k1 <= l; ++k1) {
+            for(int l1 = j; l1 <= i1; ++l1) {
+                for(int i2 = k; i2 <= j1; ++i2) {
+                    BlockPos blockpos = new BlockPos(k1, l1, i2);
+                    BlockState blockstate = this.level.getBlockState(blockpos);
+                    if (!blockstate.isAir() && !blockstate.is(BlockTags.DRAGON_TRANSPARENT)) {
+                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(BlockTags.DRAGON_IMMUNE)) {
+                            flag1 = this.level.removeBlock(blockpos, false) || flag1;
+                        } else {
+                            flag = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (flag1) {
+            BlockPos blockpos1 = new BlockPos(i + this.random.nextInt(l - i + 1), j + this.random.nextInt(i1 - j + 1), k + this.random.nextInt(j1 - k + 1));
+            this.level.levelEvent(2008, blockpos1, 0);
+        }
+
+        return flag;
+    }
+    @Override
+    protected void customServerAiStep() {
+            super.customServerAiStep();
+
+            if (this.destroyBlocksTick > 0) {
+                --this.destroyBlocksTick;
+                if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                    int j1 = Mth.floor(this.getY());
+                    int i2 = Mth.floor(this.getX());
+                    int j2 = Mth.floor(this.getZ());
+                    boolean flag = false;
+
+                    for(int j = -1; j <= 1; ++j) {
+                        for(int k2 = -1; k2 <= 1; ++k2) {
+                            for(int k = 0; k <= 3; ++k) {
+                                int l2 = i2 + j;
+                                int l = j1 + k;
+                                int i1 = j2 + k2;
+                                BlockPos blockpos = new BlockPos(l2, l, i1);
+                                BlockState blockstate = this.level.getBlockState(blockpos);
+                                if (blockstate.canEntityDestroy(this.level, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                                    flag = this.level.destroyBlock(blockpos, true, this) || flag;
+                                }
+                            }
+                        }
+                    }
+
+                    if (flag) {
+                        this.level.levelEvent((Player)null, 1022, this.blockPosition(), 0);
+                    }
+                }
+            }
+
+            if (this.tickCount % 20 == 0) {
+                this.heal(1.0F);
+            }
+    }
+
+
     public void becomeFollower(){
         this.isLeader = false;
         this.isfollower = true;
@@ -923,7 +1010,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
                 if (animal == null) {
                     return false;
-                } else if (d0 < 200.0D) {
+                } else if (d0 < 250.0D) {
                     return false;
                     //if this raptor's number is smaller than the other raptor, set it as the leader
                 } //else if (animal.isfollower) {
@@ -982,7 +1069,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 return false;
             } else {
                 double d0 = this.animal.distanceToSqr(this.leader);
-                return !(d0 < 250.0D) && !(d0 > 600.0D);
+                return !(d0 < 300.0D) && !(d0 > 1000.0D);
             }
         }
 
