@@ -80,7 +80,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     public static float step_height = 3.0F;
 
-    public static float riderOffset = 1.0f;
+    public static float riderOffset = 1.4f;
 
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
@@ -729,7 +729,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     protected float getWaterSlowDown() {
-        return -1.0F;
+        return 0.0F;
     }
 
     @Override
