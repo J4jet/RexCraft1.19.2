@@ -446,6 +446,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
             }
             this.followMommy();
         }
+
         if(this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
             getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
@@ -729,7 +730,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     protected float getWaterSlowDown() {
-        return 0.0F;
+        return 0.96F;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class DiploRenderer extends GeoEntityRenderer<DiploEntity> {
             });
     public DiploRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DiploModel());
-        this.shadowRadius = 4.8f;
+        this.shadowRadius = 2.5f;
     }
 
 
