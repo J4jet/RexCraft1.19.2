@@ -50,6 +50,7 @@ public class DiploRenderer extends GeoEntityRenderer<DiploEntity> {
             stack.scale(0.5F, 0.5F, 0.5F);
         } else {
             stack.scale(1.0f, 1.0f,1.0f);
+            //stack.scale(1.0f, 1.0f,1.0f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

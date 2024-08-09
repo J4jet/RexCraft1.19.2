@@ -80,10 +80,10 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     public static float step_height = 3.0F;
 
-    public static float riderOffset = 1.3f;
+    public static float riderOffset = 1.2f;
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = 0.0f;
+    public static float speedMod = -0.5f;
 
     public static int attacknum = 3;
 
@@ -125,13 +125,13 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 300.0D)
+                .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.ATTACK_DAMAGE, 30.0f)
-                .add(Attributes.ATTACK_SPEED, 0.1f)
-                .add(Attributes.ARMOR,16.0)
-                .add(Attributes.ARMOR_TOUGHNESS,16.0)
+                .add(Attributes.ATTACK_SPEED, 0.05f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
-                .add(Attributes.MOVEMENT_SPEED, 0.15f).build();
+                .add(Attributes.ARMOR,5.0)
+                .add(Attributes.ARMOR_TOUGHNESS,5.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
     }
 
     @Override
@@ -166,7 +166,8 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
                 return PlayState.CONTINUE;
             }else{
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle0", true));
+                int rand_int = rand_num();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
                 return PlayState.CONTINUE;
             }
 
@@ -288,7 +289,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     //taming item
     public boolean tameItem(ItemStack pStack) {
         Item item = pStack.getItem();
-        return item == ModItems.HERB_BUFF_GOLD.get() || item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
+        return item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
     }
 
     protected void clampRotation(Entity pEntityToUpdate) {
@@ -447,17 +448,18 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         super.aiStep();
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
-                this.heal(2.0F);
+                this.heal(5.0F);
             }
             this.followMommy();
         }
 
         if(this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
-            getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
+            getAttribute(Attributes.ARMOR).setBaseValue(17.0f);
         }
         else if (!this.isAngry()){
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.ARMOR).setBaseValue(17.0f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
         }
 
         if (!this.level.isClientSide) {
@@ -735,7 +737,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     protected float getWaterSlowDown() {
-        return 0.90F;
+        return 0.91F;
     }
 
     @Override
@@ -864,7 +866,8 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
                     if (!blockstate.isAir() && !blockstate.is(BlockTags.DRAGON_TRANSPARENT)) {
-                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(BlockTags.DRAGON_IMMUNE)) {
+                        //&& !blockstate.is(BlockTags.DRAGON_IMMUNE)
+                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this)) {
                             flag1 = this.level.removeBlock(blockpos, false) || flag1;
                         } else {
                             flag = true;
