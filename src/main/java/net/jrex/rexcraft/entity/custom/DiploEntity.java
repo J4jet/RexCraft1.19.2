@@ -80,7 +80,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     public static float step_height = 3.0F;
 
-    public static float riderOffset = 1.4f;
+    public static float riderOffset = 1.3f;
 
     //speed modifier of the entity when being ridden
     public static float speedMod = 0.0f;
@@ -131,7 +131,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 .add(Attributes.ARMOR,16.0)
                 .add(Attributes.ARMOR_TOUGHNESS,16.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
-                .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.15f).build();
     }
 
     @Override
@@ -162,8 +162,13 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         //if in water, use swimming anims
 
         if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
-            return PlayState.CONTINUE;
+            if(event.isMoving()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
+                return PlayState.CONTINUE;
+            }else{
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle0", true));
+                return PlayState.CONTINUE;
+            }
 
         }
 
@@ -730,7 +735,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     protected float getWaterSlowDown() {
-        return 0.96F;
+        return 0.90F;
     }
 
     @Override
