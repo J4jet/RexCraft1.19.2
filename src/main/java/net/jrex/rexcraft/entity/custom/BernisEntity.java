@@ -21,6 +21,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Container;
@@ -60,10 +61,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.EnumSet;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 
 public class BernisEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
@@ -100,11 +98,17 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 58.0D)
+                .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.ATTACK_DAMAGE, 14.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 5)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
+    }
+
+    //no randomized attributes!
+    @Override
+    protected void randomizeAttributes(RandomSource p_218803_) {
+        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(600);
     }
 
     @Override
@@ -336,6 +340,7 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     @Override
     public void aiStep() {
         super.aiStep();
+
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(1.0F);

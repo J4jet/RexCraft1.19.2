@@ -19,6 +19,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.Difficulty;
@@ -125,13 +126,18 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 100.0D)
-                .add(Attributes.ATTACK_DAMAGE, 30.0f)
+                .add(Attributes.MAX_HEALTH, 350.0D)
+                .add(Attributes.ATTACK_DAMAGE, 20.0f)
                 .add(Attributes.ATTACK_SPEED, 0.05f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
                 .add(Attributes.ARMOR,5.0)
                 .add(Attributes.ARMOR_TOUGHNESS,5.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
+    }
+    //no randomized attributes!
+    @Override
+    protected void randomizeAttributes(RandomSource p_218803_) {
+        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(600);
     }
 
     @Override
@@ -446,6 +452,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     @Override
     public void aiStep() {
         super.aiStep();
+        System.out.println(this.getHealth());
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(5.0F);
@@ -456,10 +463,12 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         if(this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
             getAttribute(Attributes.ARMOR).setBaseValue(17.0f);
+            getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(17.0f);
         }
         else if (!this.isAngry()){
-            getAttribute(Attributes.ARMOR).setBaseValue(17.0f);
+            getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
+            getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(5.0f);
         }
 
         if (!this.level.isClientSide) {
@@ -797,9 +806,6 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 
-
-    //left off here, seems since it's not TamableAnimal it doesn't sit or follow.
-
     @Override
     public int getRemainingPersistentAngerTime() {
         return this.entityData.get(DATA_REMAINING_ANGER_TIME);
@@ -839,14 +845,14 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     }
 
     // Forge: Fix MC-119811 by instantly completing lerp on board
-    @Override
-    protected void addPassenger(Entity passenger) {
-        super.addPassenger(passenger);
-        if (this.isControlledByLocalInstance() && this.lerpSteps > 0) {
-            this.lerpSteps = 0;
-            this.absMoveTo(this.lerpX, this.lerpY, this.lerpZ, (float)this.lerpYRot, (float)this.lerpXRot);
-        }
-    }
+//    @Override
+//    protected void addPassenger(Entity passenger) {
+//        super.addPassenger(passenger);
+//        if (this.isControlledByLocalInstance() && this.lerpSteps > 0) {
+//            this.lerpSteps = 0;
+//            this.absMoveTo(this.lerpX, this.lerpY, this.lerpZ, (float)this.lerpYRot, (float)this.lerpXRot);
+//        }
+//    }
 
     //Breaking things
 

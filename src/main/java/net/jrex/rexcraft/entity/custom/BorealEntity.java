@@ -19,6 +19,7 @@ import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
@@ -58,10 +59,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.EnumSet;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class BorealEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
 
@@ -92,13 +90,19 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 60.0D)
+                .add(Attributes.MAX_HEALTH, 30.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0f)
                 .add(Attributes.ATTACK_SPEED, 1.5f)
                 .add(Attributes.ARMOR,16.0)
                 .add(Attributes.ARMOR_TOUGHNESS,16.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3)
                 .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
+    }
+
+    //no randomized attributes!
+    @Override
+    protected void randomizeAttributes(RandomSource p_218803_) {
+        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(600);
     }
 
     @Override
@@ -317,6 +321,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     @Override
     public void aiStep() {
         super.aiStep();
+
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(2.0F);
@@ -325,11 +330,13 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         }
         if(this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
-            getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
+            getAttribute(Attributes.ARMOR).setBaseValue(20.0f);
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(20.0f);
         }
         else if (!this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.ARMOR).setBaseValue(16.0f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3.0f);
         }
 
         if (!this.level.isClientSide) {
