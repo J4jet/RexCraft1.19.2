@@ -84,7 +84,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public static float riderOffset = 1.2f;
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = -0.5f;
+    public float speedMod;
 
     public static int attacknum = 3;
 
@@ -464,11 +464,13 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
             getAttribute(Attributes.ARMOR).setBaseValue(17.0f);
             getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(17.0f);
+            this.speedMod = 0;
         }
         else if (!this.isAngry()){
             getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
             getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(5.0f);
+            this.speedMod = -0.5f;
         }
 
         if (!this.level.isClientSide) {
@@ -597,8 +599,12 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         if (this.isBaby()) {
             return super.mobInteract(player, hand);
         } else {
-            this.doPlayerRide(player);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            if (this.isTame() || this.isTamed()){
+                this.doPlayerRide(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }else{
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
         }
     }
 

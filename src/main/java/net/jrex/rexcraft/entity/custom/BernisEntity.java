@@ -465,8 +465,12 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
         if (this.isBaby()) {
             return super.mobInteract(player, hand);
         } else {
-            this.doPlayerRide(player);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            if (this.isTame() || this.isTamed()){
+                this.doPlayerRide(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }else{
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
         }
     }
 
