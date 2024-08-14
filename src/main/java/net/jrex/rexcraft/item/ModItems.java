@@ -156,6 +156,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> STYRACO_HORN = ITEMS.register("styraco_horn",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> DIPLO_SCAP = ITEMS.register("diplo_scap",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> GECKO_TAIL = ITEMS.register("gecko_tail",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
@@ -181,7 +184,7 @@ import net.minecraftforge.registries.RegistryObject;
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> DIPLO_SPAWN_EGG = ITEMS.register("diplo_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.DIPLO, 0x358243, 0xEDF5EF,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.DIPLO, 0x39419a, 0xa2aabc,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> HEDGY_SPAWN_EGG = ITEMS.register("hedgy_spawn_egg",

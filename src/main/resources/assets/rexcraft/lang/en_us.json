@@ -12,11 +12,13 @@
   "item.rexcraft.hedgy_spawn_egg": "Hedgehog Spawn Egg",
   "item.rexcraft.cricket_spawn_egg": "Cricket Spawn Egg",
   "item.rexcraft.bucklandii_spawn_egg": "Megalosaurus Spawn Egg",
+  "item.rexcraft.diplo_spawn_egg": "Diplodocus Spawn Egg",
   "item.rexcraft.boreal_spawn_egg": "Borealopelta Spawn Egg",
   "item.rexcraft.styraco_spawn_egg": "Styracosaurus Spawn Egg",
   "item.rexcraft.bernis_spawn_egg": "Iguanodon Spawn Egg",
   "item.rexcraft.velo_spawn_egg": "Velociraptor Spawn Egg",
   "item.rexcraft.meg_jaw": "Megalosaurus Dentary",
+  "item.rexcraft.diplo_scap": "Diplodocus scapula",
   "item.rexcraft.velo_claw": "Velociraptor Claw",
   "item.rexcraft.styraco_horn": "Styracosaurus Horn",
   "item.rexcraft.boreal_neck": "Borealopelta Neck Vertebrae",
@@ -168,6 +170,7 @@
   "entity.rexcraft.boreal": "Borealopelta markmitchelli",
   "entity.rexcraft.styraco": "Styracosaurus albertensis",
   "entity.rexcraft.velo": "Velociraptor mongoliensis",
+  "entity.rexcraft.diplo": "Diplodocus carnegii",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 
