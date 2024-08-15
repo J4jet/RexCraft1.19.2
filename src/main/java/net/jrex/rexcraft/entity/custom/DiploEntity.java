@@ -391,6 +391,11 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     }
 
     @Override
+    protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
+        return Mth.ceil((pDistance * 85.0F) * pDamageMultiplier);
+    }
+
+    @Override
     protected void playStepSound(BlockPos pPos, BlockState pBlock) {
         if (!pBlock.getMaterial().isLiquid()) {
             BlockState blockstate = this.level.getBlockState(pPos.above());
