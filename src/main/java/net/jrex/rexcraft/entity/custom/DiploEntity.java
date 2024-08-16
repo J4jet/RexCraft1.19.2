@@ -392,7 +392,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
-        return Mth.ceil((pDistance * 85.0F) * pDamageMultiplier);
+        return Mth.ceil((pDistance * 75.0F) * pDamageMultiplier);
     }
 
     @Override

@@ -11,16 +11,16 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 25.0,
-                "min": 5.0
+                "max": 100.0,
+                "min": 10.0
               },
               "function": "minecraft:set_count"
             },
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max": 50.0,
-                "min": 10.0
+                "max": 150.0,
+                "min": 20.0
               },
               "function": "minecraft:looting_enchant"
             }
@@ -40,16 +40,16 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 25.0,
-                "min": 5.0
+                "max": 125.0,
+                "min": 55.0
               },
               "function": "minecraft:set_count"
             },
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max": 50.0,
-                "min": 10.0
+                "max": 175.0,
+                "min": 75.0
               },
               "function": "minecraft:looting_enchant"
             }

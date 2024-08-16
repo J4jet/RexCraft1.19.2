@@ -47,7 +47,7 @@ public class DiploRenderer extends GeoEntityRenderer<DiploEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(0.5F, 0.5F, 0.5F);
+            stack.scale(0.3F, 0.3F, 0.3F);
         } else {
             stack.scale(1.0f, 1.0f,1.0f);
             //stack.scale(1.0f, 1.0f,1.0f);
