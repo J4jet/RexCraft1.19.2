@@ -159,6 +159,11 @@
   "sounds.rexcraft.styraco_idle": "Styracosaurus bellowing",
   "sounds.rexcraft.styraco_angry": "Styracosaurus roaring",
 
+  "sounds.rexcraft.diplo_hurt": "Diplodocus in pain",
+  "sounds.rexcraft.diplo_death": "Diplodocus dying",
+  "sounds.rexcraft.diplo_idle": "Diplodocus calling",
+  "sounds.rexcraft.diplo_angry": "Diplodocus roaring",
+
 
 
   "effect.rexcraft.bleed": "Bleeding",

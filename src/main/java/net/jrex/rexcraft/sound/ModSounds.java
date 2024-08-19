@@ -94,6 +94,18 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> VELO_IDLE =
             registerSoundEvent("velo_idle");
 
+    public static final RegistryObject<SoundEvent> DIPLO_DEATH =
+            registerSoundEvent("diplo_death");
+
+    public static final RegistryObject<SoundEvent> DIPLO_HURT =
+            registerSoundEvent("diplo_hurt");
+
+    public static final RegistryObject<SoundEvent> DIPLO_IDLE =
+            registerSoundEvent("diplo_idle");
+
+    public static final RegistryObject<SoundEvent> DIPLO_ANGRY =
+            registerSoundEvent("diplo_angry");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

@@ -1,4 +1,4 @@
-{
+ {
   "hedgy_idle": {
     "subtitle": "sounds.rexcraft.hedgy_idle",
     "sounds": [
@@ -136,6 +136,31 @@
       "rexcraft:styraco_angry"
     ]
   },
+   "diplo_hurt": {
+     "subtitle": "sounds.rexcraft.diplo_hurt",
+     "sounds": [
+       "rexcraft:diplo_hurt"
+     ]
+   },
+   "diplo_death": {
+     "subtitle": "sounds.rexcraft.diplo_death",
+     "sounds": [
+       "rexcraft:diplo_death"
+     ]
+   },
+   "diplo_idle": {
+     "subtitle": "sounds.rexcraft.diplo_idle",
+     "sounds": [
+       "rexcraft:diplo_idle"
+     ]
+   },
+
+   "diplo_angry": {
+     "subtitle": "sounds.rexcraft.diplo_angry",
+     "sounds": [
+       "rexcraft:diplo_angry"
+     ]
+   },
   "velo_hurt": {
     "subtitle": "sounds.rexcraft.velo_hurt",
     "sounds": [

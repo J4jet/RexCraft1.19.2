@@ -420,19 +420,19 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.BOREAL_HURT.get();
+        return ModSounds.DIPLO_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.BOREAL_DEATH.get();
+        return ModSounds.DIPLO_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
 
         if (this.isAngry()) {
-            return ModSounds.BOREAL_ANGRY.get();
+            return ModSounds.DIPLO_ANGRY.get();
         } else {
-            return ModSounds.BOREAL_IDLE.get();
+            return ModSounds.DIPLO_IDLE.get();
         }
     }
 
