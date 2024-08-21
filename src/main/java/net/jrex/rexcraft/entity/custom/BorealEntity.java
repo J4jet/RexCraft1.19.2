@@ -106,6 +106,11 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     @Override
+    protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
+        return Mth.ceil((pDistance * 8.0F) * pDamageMultiplier);
+    }
+
+    @Override
     protected void registerGoals() {
 
         this.goalSelector.addGoal(1, new FloatGoal(this));

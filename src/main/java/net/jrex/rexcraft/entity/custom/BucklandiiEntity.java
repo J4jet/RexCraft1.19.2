@@ -410,6 +410,11 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
         return null;
     }
 
+    @Override
+    protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
+        return Mth.ceil((pDistance * 8.0F) * pDamageMultiplier);
+    }
+
     @javax.annotation.Nullable
     private Vec3 getDismountLocationInDirection(Vec3 pDirection, LivingEntity pPassenger) {
         double d0 = this.getX() + pDirection.x;

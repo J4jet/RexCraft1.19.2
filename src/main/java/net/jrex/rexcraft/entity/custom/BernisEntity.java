@@ -475,6 +475,11 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
     }
 
     @Override
+    protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
+        return Mth.ceil((pDistance * 9.0F) * pDamageMultiplier);
+    }
+
+    @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
 
