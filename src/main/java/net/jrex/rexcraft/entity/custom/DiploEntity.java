@@ -132,7 +132,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
                 .add(Attributes.ARMOR,5.0)
                 .add(Attributes.ARMOR_TOUGHNESS,5.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.171f).build();
     }
     //no randomized attributes!
     @Override
@@ -392,7 +392,11 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
-        return Mth.ceil((pDistance * 75.0F) * pDamageMultiplier);
+        if (pDistance < 3.5){
+            return 0;
+        }else{
+            return Mth.ceil((pDistance * 65.0F) * pDamageMultiplier);
+        }
     }
 
     @Override
