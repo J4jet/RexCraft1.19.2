@@ -126,8 +126,8 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 350.0D)
-                .add(Attributes.ATTACK_DAMAGE, 20.0f)
+                .add(Attributes.MAX_HEALTH, 200.0D)
+                .add(Attributes.ATTACK_DAMAGE, 15.0f)
                 .add(Attributes.ATTACK_SPEED, 0.05f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
                 .add(Attributes.ARMOR,5.0)
@@ -295,7 +295,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     //taming item
     public boolean tameItem(ItemStack pStack) {
         Item item = pStack.getItem();
-        return item == ModItems.HERB_BUFF_NETH.get();
+        return item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
     }
 
     protected void clampRotation(Entity pEntityToUpdate) {
