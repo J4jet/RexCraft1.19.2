@@ -295,7 +295,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     //taming item
     public boolean tameItem(ItemStack pStack) {
         Item item = pStack.getItem();
-        return item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
+        return item == ModItems.HERB_BUFF_NETH.get();
     }
 
     protected void clampRotation(Entity pEntityToUpdate) {
