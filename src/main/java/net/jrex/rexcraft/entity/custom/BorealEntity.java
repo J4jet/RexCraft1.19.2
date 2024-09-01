@@ -90,11 +90,11 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.MAX_HEALTH, 25.0D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0f)
                 .add(Attributes.ATTACK_SPEED, 1.5f)
-                .add(Attributes.ARMOR,16.0)
-                .add(Attributes.ARMOR_TOUGHNESS,16.0)
+                .add(Attributes.ARMOR,5.0)
+                .add(Attributes.ARMOR_TOUGHNESS,5.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3)
                 .add(Attributes.MOVEMENT_SPEED, 0.16f).build();
     }
@@ -335,12 +335,12 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         }
         if(this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
-            getAttribute(Attributes.ARMOR).setBaseValue(20.0f);
+            getAttribute(Attributes.ARMOR).setBaseValue(16.0f);
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(20.0f);
         }
         else if (!this.isAngry()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
-            getAttribute(Attributes.ARMOR).setBaseValue(16.0f);
+            getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3.0f);
         }
 
