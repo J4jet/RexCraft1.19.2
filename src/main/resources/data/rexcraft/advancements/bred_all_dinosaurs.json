@@ -43,6 +43,20 @@
       },
       "trigger": "minecraft:bred_animals"
     },
+    "rexcraft:diplo": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:diplo"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
     "rexcraft:boreal": {
       "conditions": {
         "child": [
@@ -92,6 +106,12 @@
     ],
     [
       "rexcraft:boreal"
+    ],
+    [
+      "rexcraft:velo"
+    ],
+    [
+      "rexcraft:diplo"
     ],
     [
       "rexcraft:styraco"

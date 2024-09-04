@@ -29,6 +29,20 @@
       },
       "trigger": "minecraft:player_killed_entity"
     },
+    "rexcraft:diplo": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:diplo"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
     "rexcraft:velo": {
       "conditions": {
         "entity": [
@@ -93,6 +107,12 @@
     ],
     [
       "rexcraft:boreal"
+    ],
+    [
+      "rexcraft:velo"
+    ],
+    [
+      "rexcraft:diplo"
     ],
     [
       "rexcraft:styraco"
