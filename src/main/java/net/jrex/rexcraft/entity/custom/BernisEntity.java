@@ -269,15 +269,15 @@ public class BernisEntity extends AbstractChestedHorse implements IAnimatable, N
             }
 
             if (soundtype == SoundType.WOOD) {
-                this.playSound(SoundEvents.WOOD_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+                this.playSound(SoundEvents.WOOD_STEP, soundtype.getVolume() * 0.30F, soundtype.getPitch() - 0.6f);
             }
             if (soundtype == SoundType.STONE) {
-                this.playSound(SoundEvents.STONE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+                this.playSound(SoundEvents.STONE_STEP, soundtype.getVolume() * 0.30F, soundtype.getPitch()- 0.6f);
             }
             if (soundtype == SoundType.NETHERITE_BLOCK) {
-                this.playSound(SoundEvents.NETHERITE_BLOCK_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+                this.playSound(SoundEvents.NETHERITE_BLOCK_STEP, soundtype.getVolume() * 0.30F, soundtype.getPitch()- 0.6f);
             }else {
-                this.playSound(SoundEvents.GRASS_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+                this.playSound(SoundEvents.GRASS_STEP, soundtype.getVolume() * 0.30F, soundtype.getPitch()- 0.6f);
             }
 
         }
