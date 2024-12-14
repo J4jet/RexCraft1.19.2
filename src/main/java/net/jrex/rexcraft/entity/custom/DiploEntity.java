@@ -126,7 +126,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 200.0D)
+                .add(Attributes.MAX_HEALTH, 260.0D)
                 .add(Attributes.ATTACK_DAMAGE, 15.0f)
                 .add(Attributes.ATTACK_SPEED, 0.05f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
@@ -137,7 +137,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     //no randomized attributes!
     @Override
     protected void randomizeAttributes(RandomSource p_218803_) {
-        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(600);
+        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(260);
     }
 
     @Override
@@ -461,9 +461,9 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     @Override
     public void aiStep() {
         super.aiStep();
-        System.out.println(this.getHealth());
+        //System.out.println(this.getHealth());
         if (!this.level.isClientSide && this.isAlive()) {
-            if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
+            if (this.random.nextInt(900) == 0 && this.deathTime == 0 && this.getHealth() < 200) {
                 this.heal(5.0F);
             }
             this.followMommy();

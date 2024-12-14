@@ -369,6 +369,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
 //        }
 
         if (!this.level.isClientSide && this.isAlive()) {
+            //System.out.println(this.getHealth());
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(1.0F);
             }

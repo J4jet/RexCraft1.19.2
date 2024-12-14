@@ -98,6 +98,7 @@ public class RexCraft
             EntityRenderers.register(ModEntityTypes.STYRACO.get(), StyracoRenderer::new);
             EntityRenderers.register(ModEntityTypes.VELO.get(), VeloRenderer::new);
             EntityRenderers.register(ModEntityTypes.DIPLO.get(), DiploRenderer::new);
+            EntityRenderers.register(ModEntityTypes.ORO.get(), OroRenderer::new);
             //ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUEBERRY_CROP.get(), RenderType.cutout());
             //ItemBlockRenderTypes.setRenderLayer(ModBlocks.ZUCC_CROP.get(), RenderType.cutout());
 

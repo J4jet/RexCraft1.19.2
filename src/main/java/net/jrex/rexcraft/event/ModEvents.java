@@ -23,6 +23,7 @@ public class ModEvents {
             event.put(ModEntityTypes.STYRACO.get(), StyracoEntity.setAttributes());
             event.put(ModEntityTypes.VELO.get(), VeloEntity.setAttributes());
             event.put(ModEntityTypes.DIPLO.get(), DiploEntity.setAttributes());
+            event.put(ModEntityTypes.ORO.get(), OroEntity.setAttributes());
         }
 
     }
