@@ -34,8 +34,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.scores.Team;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -49,7 +51,9 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.EnumSet;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class OroEntity extends TamableAnimal implements IAnimatable {
 
@@ -66,6 +70,9 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
     public boolean isDigging(){
         return isDigging;
     }
+
+    private int eatAnimationTick;
+    private EatBlockGoal eatBlockGoal;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
@@ -91,6 +98,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
     @Override
     protected void registerGoals() {
+        this.eatBlockGoal = new EatBlockGoal(this);
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
@@ -98,6 +106,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(3, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
+        this.goalSelector.addGoal(4, this.eatBlockGoal);
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
 
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.5D, 2.5D));
@@ -244,12 +253,16 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
     }
 
     public void aiStep() {
-        BlockPos blockpos = this.blockPosition();
-        BlockPos blockpos1 = blockpos.below();
-        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && this.onGround && this.level.getBlockState(blockpos1).is(Blocks.GRASS_BLOCK) && --this.digTime <= 0) {
-            this.handle_digging();
-            System.out.println(this.isDigging());
-        }
+//        BlockPos blockpos = this.blockPosition();
+//        BlockPos blockpos1 = blockpos.below();
+//        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && this.onGround && this.level.getBlockState(blockpos1).is(Blocks.GRASS_BLOCK) && --this.digTime <= 0) {
+//            this.handle_digging();
+//            System.out.println(this.isDigging());
+//        }
+//
+//        if (this.level.isClientSide) {
+//            this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
+//        }
 
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
@@ -397,4 +410,118 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
     private void setVariant(OroVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
+
+    public void handleEntityEvent(byte pId) {
+        if (pId == 10) {
+            this.eatAnimationTick = 40;
+        } else {
+            super.handleEntityEvent(pId);
+        }
+
+    }
+
+    protected void customServerAiStep() {
+        this.eatAnimationTick = this.eatBlockGoal.getEatAnimationTick();
+        super.customServerAiStep();
+    }
+
+
+
+    public class EatBlockGoal extends Goal {
+        private static final int EAT_ANIMATION_TICKS = 40;
+        private static final Predicate<BlockState> IS_TALL_GRASS = BlockStatePredicate.forBlock(Blocks.GRASS);
+        /** The entity owner of this AITask */
+        private final Mob mob;
+        /** The world the grass eater entity is eating from */
+        private final Level level;
+        /** Number of ticks since the entity started to eat grass */
+        private int eatAnimationTick;
+
+        public EatBlockGoal(Mob pMob) {
+            this.mob = pMob;
+            this.level = pMob.level;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+            if (this.mob.getRandom().nextInt(this.mob.isBaby() ? 50 : 1000) != 0) {
+                return false;
+            } else {
+                BlockPos blockpos = this.mob.blockPosition();
+                if (IS_TALL_GRASS.test(this.level.getBlockState(blockpos))) {
+                    return true;
+                } else {
+                    return this.level.getBlockState(blockpos.below()).is(Blocks.GRASS_BLOCK);
+                }
+            }
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.eatAnimationTick = this.adjustedTickDelay(40);
+            this.level.broadcastEntityEvent(this.mob, (byte)10);
+            this.mob.getNavigation().stop();
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void stop() {
+            this.eatAnimationTick = 0;
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            return this.eatAnimationTick > 0;
+        }
+
+        /**
+         * Number of ticks since the entity started to eat grass
+         */
+        public int getEatAnimationTick() {
+            return this.eatAnimationTick;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+            this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
+            if (this.eatAnimationTick == this.adjustedTickDelay(4)) {
+                BlockPos blockpos = this.mob.blockPosition();
+                if (IS_TALL_GRASS.test(this.level.getBlockState(blockpos))) {
+                    if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
+                        this.level.destroyBlock(blockpos, false);
+                        //mob.playSound(SoundEvents.GRASS_BREAK, 1.0F, (mob.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+                        mob.spawnAtLocation(Items.EGG);
+                        mob.gameEvent(GameEvent.ENTITY_PLACE);
+                    }
+
+                    this.mob.ate();
+                } else {
+                    BlockPos blockpos1 = blockpos.below();
+                    if (this.level.getBlockState(blockpos1).is(Blocks.GRASS_BLOCK)) {
+                        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
+                            this.level.levelEvent(2001, blockpos1, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
+                            this.level.setBlock(blockpos1, Blocks.DIRT.defaultBlockState(), 2);
+                            mob.spawnAtLocation(Items.EGG);
+                            mob.gameEvent(GameEvent.ENTITY_PLACE);
+                        }
+
+                        this.mob.ate();
+                    }
+                }
+
+            }
+        }
+    }
+
 }
