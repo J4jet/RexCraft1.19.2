@@ -65,11 +65,6 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
     public int digTime = this.random.nextInt(100) + 100;
     public boolean isDigging = false;
-    //public boolean isWalking;
-
-    public boolean isDigging(){
-        return isDigging;
-    }
 
     private int eatAnimationTick;
     private EatBlockGoal eatBlockGoal;
@@ -125,8 +120,10 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!event.isMoving() && this.isDigging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.death", false));
+
+        // if the entity is digging, play the digging animation.
+        if (this.eatAnimationTick > 0) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
             return PlayState.CONTINUE;
         }
 
@@ -220,49 +217,60 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         return 0.8F;
     }
 
-
-    public int handle_random_item(){
+    //helper method to determine what item is found by the entity
+    public Item handle_random_item(){
         // just get a random value and return an item based on that value
         Random rand = new Random();
-        int rand_num = rand.nextInt(10);
-        if (rand_num > 1){
-            return 0;
+
+        //oro can "find" these items at these %s:
+        //snowballs, ice - 50%
+        //sticks, seeds - 30%
+        //iron nuggets, copper nuggets - 15%
+        //raw iron, raw copper, coal - 5%
+
+        int rand_num = rand.nextInt(100);
+        // between 0-25
+        if (rand_num > 0 && rand_num <= 25){
+            return Items.SNOWBALL;
+        }
+        //between 26-50
+        if (rand_num > 25 && rand_num <= 50){
+            return Items.ICE;
+        }
+        //between 51-65
+        if (rand_num > 50 && rand_num <= 65){
+            return Items.STICK;
+        }
+        //between 66-80
+        if (rand_num > 65 && rand_num <= 80){
+            return Items.WHEAT_SEEDS;
+        }
+        //between 81-88
+        if (rand_num > 80 && rand_num <= 88){
+            return Items.IRON_NUGGET;
+        }
+        //between 89-95
+        if (rand_num > 80 && rand_num <= 95){
+            return Items.RAW_COPPER;
+        }
+        //between 96-97
+        if (rand_num > 96 && rand_num <= 98){
+            return Items.COAL;
+        }
+        //between 98-99
+        if (rand_num == 99){
+            return Items.RAW_COPPER;
         }
         else{
-            return 1;
+            return Items.RAW_IRON;
         }
-    }
-
-    public void handle_digging(){
-        //can't move while digging
-        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
-        this.isDigging = true;
-
-        this.playSound(SoundEvents.GRASS_BREAK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-        if (handle_random_item() == 0){
-            this.spawnAtLocation(Items.STICK);
-        }
-        else{
-            this.spawnAtLocation(Items.IRON_INGOT);
-        }
-
-        this.gameEvent(GameEvent.ENTITY_PLACE);
-        this.digTime = this.random.nextInt(100) + 100;
-        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
-        //this.isDigging = false;
     }
 
     public void aiStep() {
-//        BlockPos blockpos = this.blockPosition();
-//        BlockPos blockpos1 = blockpos.below();
-//        if (!this.level.isClientSide && this.isAlive() && !this.isBaby() && this.onGround && this.level.getBlockState(blockpos1).is(Blocks.GRASS_BLOCK) && --this.digTime <= 0) {
-//            this.handle_digging();
-//            System.out.println(this.isDigging());
-//        }
-//
-//        if (this.level.isClientSide) {
-//            this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
-//        }
+
+        if (this.level.isClientSide) {
+            this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
+        }
 
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
@@ -500,8 +508,8 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
                 if (IS_TALL_GRASS.test(this.level.getBlockState(blockpos))) {
                     if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
                         this.level.destroyBlock(blockpos, false);
-                        //mob.playSound(SoundEvents.GRASS_BREAK, 1.0F, (mob.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-                        mob.spawnAtLocation(Items.EGG);
+                        net.minecraft.world.item.Item item = handle_random_item();
+                        mob.spawnAtLocation(item);
                         mob.gameEvent(GameEvent.ENTITY_PLACE);
                     }
 
@@ -512,7 +520,8 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
                         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
                             this.level.levelEvent(2001, blockpos1, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
                             this.level.setBlock(blockpos1, Blocks.DIRT.defaultBlockState(), 2);
-                            mob.spawnAtLocation(Items.EGG);
+                            net.minecraft.world.item.Item item = handle_random_item();
+                            mob.spawnAtLocation(item);
                             mob.gameEvent(GameEvent.ENTITY_PLACE);
                         }
 
