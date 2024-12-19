@@ -45,8 +45,8 @@ public class OroRenderer extends GeoEntityRenderer<OroEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(OroEntity instance) {
-        String s = ChatFormatting.stripFormatting(instance.getName().getString());
-        if (s != null && "Nova".equals(s)) {
+        //String s = ChatFormatting.stripFormatting(instance.getName().getString());
+        if (instance.isDigging()) {
             return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/nova.png");
 
         } else {

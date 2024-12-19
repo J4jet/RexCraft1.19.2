@@ -56,39 +56,60 @@ import java.util.EnumSet;
 import java.util.Random;
 import java.util.function.Predicate;
 
-public class OroEntity extends TamableAnimal implements IAnimatable {
+// just oro, but missing
+//getbreedoffspring
+//setAttributes()
+//attackPredicate
+//PlayState predicate
+//getOroType
+//registerControllers
+//all of the varient stuff under "/VARIANTS/"
+//"tag.putInt("Variant",this.getTypeVariant());" in addadditionlSaveData
+
+
+public abstract class AbstractDiggingDino extends TamableAnimal implements IAnimatable {
 
     private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(OroEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(AbstractDiggingDino.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Boolean> DIGGING =
-            SynchedEntityData.defineId(OroEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(AbstractDiggingDino.class, EntityDataSerializers.BOOLEAN);
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(OroEntity.class, EntityDataSerializers.INT);
+            SynchedEntityData.defineId(AbstractDiggingDino.class, EntityDataSerializers.INT);
 
-    private int eatAnimationTick;
-    private EatBlockGoal eatBlockGoal;
+    private int digAnimationTick;
+    private DigBlockGoal digBlockGoal;
+
+    public Block dig_block;
+
+    public Item tame_item;
+
+    // the different items this entity can find when digging
+    public Item item_t1_1;
+    public Item item_t1_2;
+    public Item item_t2_1;
+    public Item item_t2_2;
+    public Item item_t3_1;
+    public Item item_t3_2;
+    public Item item_t4_1;
+    public Item item_t4_2;
+    public Item item_t4_3;
 
     private AnimationFactory factory = new AnimationFactory(this);
 
+    public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
+        EntityType<?> entitytype = p_30437_.getType();
+        return false;
+    };
 
-    public OroEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
+    public AbstractDiggingDino(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-    }
-
-    public static AttributeSupplier setAttributes() {
-
-        return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 8.0D)
-                .add(Attributes.ATTACK_DAMAGE, 2.0f)
-                .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
     }
 
     @Override
     protected void registerGoals() {
-        this.eatBlockGoal = new EatBlockGoal(this);
+        this.digBlockGoal = new DigBlockGoal(this);
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
@@ -96,8 +117,8 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(3, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(4, this.eatBlockGoal);
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
+        this.goalSelector.addGoal(4, this.digBlockGoal);
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(this.isTempt()), false));
 
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.5D, 2.5D));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, VeloEntity.class, 8.0F, 2.5D, 2.5D));
@@ -106,56 +127,12 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
 
-    }
-
-
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-
-        // if the entity is digging, play the digging animation.
-        if (this.eatAnimationTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
-            return PlayState.CONTINUE;
-        }
-
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.walk", true));
-            return PlayState.CONTINUE;
-        }
-
-        //if(this.isSprinting())
-
-        if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
-            return PlayState.CONTINUE;
-        }
-
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.idle", true));
-        return PlayState.CONTINUE;
-    }
-
-    private PlayState attackPredicate(AnimationEvent event) {
-
-        if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
-            event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.attack", false));
-            this.swinging = false;
-        }
-
-        return PlayState.CONTINUE;
     }
 
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
-        OroEntity baby = ModEntityTypes.ORO.get().create(serverLevel);
-        OroVariant variant = Util.getRandom(OroVariant.values(), this.random);
-        baby.setVariant(variant);
-        return baby;
-    }
-
-    @Override
-    public boolean isFood(ItemStack pStack){
+    public boolean isFood(ItemStack pStack) {
         return pStack.getItem() == ModItems.DUBIA.get();
     }
 
@@ -164,17 +141,9 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         return pStack.getItem() == ModItems.CRICKET_ITEM.get();
     }
 
-    //DATA_ID_TYPE_VARIANT
-    public int getOroType() {
-        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-    }
-
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this,"controller",0,this::predicate));
-        data.addAnimationController(new AnimationController(this,"attackController",0,this::attackPredicate));
-
+    //Used as the tempting item, in the case of the gecko it's a mealworm
+    public Item isTempt(){
+        return ModItems.CRICKET_ITEM.get();
     }
 
 
@@ -223,45 +192,45 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         int rand_num = rand.nextInt(100);
         // between 0-25
         if (rand_num > 0 && rand_num <= 25){
-            return Items.SNOWBALL;
+            return this.item_t1_1;
         }
         //between 26-50
         if (rand_num > 25 && rand_num <= 50){
-            return Items.ICE;
+            return this.item_t1_2;
         }
         //between 51-65
         if (rand_num > 50 && rand_num <= 65){
-            return Items.STICK;
+            return this.item_t2_1;
         }
         //between 66-80
         if (rand_num > 65 && rand_num <= 80){
-            return Items.WHEAT_SEEDS;
+            return this.item_t2_2;
         }
         //between 81-88
         if (rand_num > 80 && rand_num <= 88){
-            return Items.IRON_NUGGET;
+            return this.item_t3_1;
         }
         //between 89-95
         if (rand_num > 80 && rand_num <= 95){
-            return Items.RAW_COPPER;
+            return this.item_t3_2;
         }
         //between 96-97
         if (rand_num > 96 && rand_num <= 98){
-            return Items.COAL;
+            return this.item_t4_1;
         }
         //between 98-99
         if (rand_num == 99){
-            return Items.RAW_COPPER;
+            return this.item_t4_2;
         }
         else{
-            return Items.RAW_IRON;
+            return this.item_t4_3;
         }
     }
 
     public void aiStep() {
 
         if (this.level.isClientSide) {
-            this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
+            this.digAnimationTick = Math.max(0, this.digAnimationTick - 1);
         }
 
         if (!this.level.isClientSide && this.isAlive()) {
@@ -281,7 +250,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
-        Item itemForTaming = ModItems.WORM.get();
+        Item itemForTaming = this.tame_item;
 
         //if the item "isFood", just use for taming
         if(isFood(itemstack)){
@@ -355,7 +324,6 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("isSitting", this.isSitting());
         tag.putBoolean("isDigging", this.isDigging());
-        tag.putInt("Variant",this.getTypeVariant());
     }
 
 
@@ -410,30 +378,9 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         }
     }
 
-    /* VARIANTS */
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
-                                        MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
-                                        @Nullable CompoundTag p_146750_) {
-        OroVariant variant = Util.getRandom(OroVariant.values(), this.random);
-        setVariant(variant);
-        return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
-    }
-
-    public OroVariant getVariant() {
-        return OroVariant.byId(this.getTypeVariant() & 255);
-    }
-
-    private int getTypeVariant() {
-        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-    }
-
-    private void setVariant(OroVariant variant) {
-        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
-    }
-
     public void handleEntityEvent(byte pId) {
         if (pId == 10) {
-            this.eatAnimationTick = 40;
+            this.digAnimationTick = 40;
         } else {
             super.handleEntityEvent(pId);
         }
@@ -441,23 +388,23 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
     }
 
     protected void customServerAiStep() {
-        this.eatAnimationTick = this.eatBlockGoal.getEatAnimationTick();
+        this.digAnimationTick = this.digBlockGoal.getdigAnimationTick();
         super.customServerAiStep();
     }
 
 
 
-    public class EatBlockGoal extends Goal {
+    public class DigBlockGoal extends Goal {
         private static final int EAT_ANIMATION_TICKS = 40;
-        private static final Predicate<BlockState> IS_SNOW = BlockStatePredicate.forBlock(Blocks.SNOW);
+        private static final Predicate<BlockState> IS_ALT_BLOCK = BlockStatePredicate.forBlock(Blocks.GRASS);
         /** The entity owner of this AITask */
-        private final OroEntity mob;
-        /** The world the grass eater entity is eating from */
+        private final AbstractDiggingDino mob;
+        /** The world the digging entity is digging from */
         private final Level level;
-        /** Number of ticks since the entity started to eat grass */
-        private int eatAnimationTick;
+        /** Number of ticks since the entity started to dig */
+        private int digAnimationTick;
 
-        public EatBlockGoal(OroEntity pMob) {
+        public DigBlockGoal(AbstractDiggingDino pMob) {
             this.mob = pMob;
             this.level = pMob.level;
             this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
@@ -472,10 +419,10 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
                 return false;
             } else {
                 BlockPos blockpos = this.mob.blockPosition();
-                if (IS_SNOW.test(this.level.getBlockState(blockpos))) {
+                if (IS_ALT_BLOCK.test(this.level.getBlockState(blockpos))) {
                     return true;
                 } else {
-                    return this.level.getBlockState(blockpos.below()).is(Blocks.SNOW_BLOCK);
+                    return this.level.getBlockState(blockpos.below()).is(mob.dig_block);
                 }
             }
         }
@@ -484,7 +431,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
          * Execute a one shot task or start executing a continuous task
          */
         public void start() {
-            this.eatAnimationTick = this.adjustedTickDelay(40);
+            this.digAnimationTick = this.adjustedTickDelay(40);
             this.level.broadcastEntityEvent(this.mob, (byte)10);
             this.mob.getNavigation().stop();
         }
@@ -493,31 +440,31 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
          * Reset the task's internal state. Called when this task is interrupted by another one
          */
         public void stop() {
-            this.eatAnimationTick = 0;
+            this.digAnimationTick = 0;
         }
 
         /**
          * Returns whether an in-progress EntityAIBase should continue executing
          */
         public boolean canContinueToUse() {
-            return this.eatAnimationTick > 0;
+            return this.digAnimationTick > 0;
         }
 
         /**
-         * Number of ticks since the entity started to eat grass
+         * Number of ticks since the entity started to dig
          */
-        public int getEatAnimationTick() {
-            return this.eatAnimationTick;
+        public int getdigAnimationTick() {
+            return this.digAnimationTick;
         }
 
         /**
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
-            this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
-            if (this.eatAnimationTick == this.adjustedTickDelay(4)) {
+            this.digAnimationTick = Math.max(0, this.digAnimationTick - 1);
+            if (this.digAnimationTick == this.adjustedTickDelay(4)) {
                 BlockPos blockpos = this.mob.blockPosition();
-                if (IS_SNOW.test(this.level.getBlockState(blockpos))) {
+                if (IS_ALT_BLOCK.test(this.level.getBlockState(blockpos))) {
                     if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
                         this.level.destroyBlock(blockpos, false);
                         net.minecraft.world.item.Item item = handle_random_item();
@@ -528,9 +475,9 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
                     this.mob.ate();
                 } else {
                     BlockPos blockpos1 = blockpos.below();
-                    if (this.level.getBlockState(blockpos1).is(Blocks.SNOW_BLOCK)) {
+                    if (this.level.getBlockState(blockpos1).is(mob.dig_block)) {
                         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                            this.level.levelEvent(2001, blockpos1, Block.getId(Blocks.SNOW_BLOCK.defaultBlockState()));
+                            this.level.levelEvent(2001, blockpos1, Block.getId(mob.dig_block.defaultBlockState()));
                             this.level.setBlock(blockpos1, Blocks.SNOW.defaultBlockState(), 2);
                             net.minecraft.world.item.Item item = handle_random_item();
                             mob.spawnAtLocation(item);

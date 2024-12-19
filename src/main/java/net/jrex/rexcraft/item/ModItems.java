@@ -171,6 +171,10 @@ import net.minecraftforge.registries.RegistryObject;
                 () -> new ForgeSpawnEggItem(ModEntityTypes.GECKO, 0xFFD133, 0x25241F,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_MISC)));
 
+        public static final RegistryObject<Item> ORO_SPAWN_EGG = ITEMS.register("oro_spawn_egg",
+                () -> new ForgeSpawnEggItem(ModEntityTypes.ORO, 0xFFD133, 0x25241F,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> BUCKLANDII_SPAWN_EGG = ITEMS.register("bucklandii_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.BUCKLANDII, 0x25241F, 0xFFD133,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
