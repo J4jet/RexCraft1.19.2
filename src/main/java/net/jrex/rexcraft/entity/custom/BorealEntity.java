@@ -102,7 +102,7 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
     //no randomized attributes!
     @Override
     protected void randomizeAttributes(RandomSource p_218803_) {
-        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(600);
+        Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(25.0);
     }
 
     @Override
