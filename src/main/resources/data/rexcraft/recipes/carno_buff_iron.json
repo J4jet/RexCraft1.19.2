@@ -2,25 +2,25 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "rexcraft:beefstack"
+      "item": "minecraft:beef"
     },
     "$": {
-      "item": "rexcraft:chickenstack"
+      "item": "minecraft:chicken"
     },
     "&": {
-      "item": "rexcraft:porkstack"
+      "item": "minecraft:porkchop"
     },
     "*": {
-      "item": "rexcraft:bonestack"
+      "item": "minecraft:bone"
     },
     "%": {
-      "item": "rexcraft:muttonstack"
+      "item": "minecraft:mutton"
     },
     "!": {
-      "item": "rexcraft:salmonstack"
+      "item": "minecraft:salmon"
     },
     "^": {
-      "item": "rexcraft:codstack"
+      "item": "minecraft:cod"
     },
     "@": {
       "item": "rexcraft:iron_bowl"

@@ -11,6 +11,7 @@
   "item.rexcraft.gecko_spawn_egg": "Leopard Gecko Spawn Egg",
   "item.rexcraft.hedgy_spawn_egg": "Hedgehog Spawn Egg",
   "item.rexcraft.cricket_spawn_egg": "Cricket Spawn Egg",
+  "item.rexcraft.oro_spawn_egg": "Orodromeus Spawn Egg",
   "item.rexcraft.bucklandii_spawn_egg": "Megalosaurus Spawn Egg",
   "item.rexcraft.diplo_spawn_egg": "Diplodocus Spawn Egg",
   "item.rexcraft.boreal_spawn_egg": "Borealopelta Spawn Egg",
@@ -93,6 +94,7 @@
 
 
   "item.rexcraft.gecko_tail": "Gecko Tail",
+  "item.rexcraft.oro_foot": "Orodromeus Foot",
   "item.rexcraft.hedgehog_quill": "Hedgehog Quill",
 
   "item.rexcraft.steel_diamond_helmet": "Diamond Plate Helmet",
@@ -176,6 +178,7 @@
   "entity.rexcraft.styraco": "Styracosaurus albertensis",
   "entity.rexcraft.velo": "Velociraptor mongoliensis",
   "entity.rexcraft.diplo": "Diplodocus carnegii",
+  "entity.rexcraft.oro": "Orodromeus makelai",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 

@@ -24,10 +24,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
-import net.minecraft.world.entity.monster.Endermite;
-import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -80,18 +76,17 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 8.0D)
-                .add(Attributes.ATTACK_DAMAGE, 2.0f)
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.ATTACK_DAMAGE, 0.5f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.25f).build();
     }
 
     @Override
     protected void registerGoals() {
         this.eatBlockGoal = new EatBlockGoal(this);
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
@@ -99,13 +94,14 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(4, this.eatBlockGoal);
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
 
-        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.5D, 2.5D));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.0D, 2.0D));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, VeloEntity.class, 8.0F, 2.5D, 2.5D));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 8.0F, 2.5D, 2.5D));
+
 
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
 
     }
 
@@ -258,6 +254,11 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         }
     }
 
+    @Override
+    public boolean canFreeze() {
+        return false;
+    }
+
     public void aiStep() {
 
         if (this.level.isClientSide) {
@@ -398,15 +399,17 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.16f);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(11.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.5D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25f);
+
+
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.16f);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.5D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25f);
         }
     }
 
