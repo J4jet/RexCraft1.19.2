@@ -13,7 +13,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class OroModel extends AnimatedGeoModel<OroEntity> {
     @Override
     public ResourceLocation getModelResource(OroEntity object) {
-        return new ResourceLocation(RexCraft.MOD_ID, "geo/gecko.geo.json");
+        return new ResourceLocation(RexCraft.MOD_ID, "geo/oro.geo.json");
     }
 
     @Override
@@ -24,15 +24,8 @@ public class OroModel extends AnimatedGeoModel<OroEntity> {
     @Override
     public ResourceLocation getAnimationResource(OroEntity animatable) {
 
-        //the string s is being used to store the name of the gecko
-        String s = ChatFormatting.stripFormatting(animatable.getName().getString());
+        return new ResourceLocation(RexCraft.MOD_ID, "animations/oro.animation.json");
 
-        //if it's name is "cursed" use this set of animations instead
-        if ("cursed".equals(s)) {
-            return new ResourceLocation(RexCraft.MOD_ID, "animations/mildgeck.animation.json");
-        } else {
-            return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
-        }
         //return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
     }
     //Look at the player!
@@ -43,7 +36,7 @@ public class OroModel extends AnimatedGeoModel<OroEntity> {
         IBone head = this.getAnimationProcessor().getBone("head");
 
         //experimental, trying to get the neck to move too
-        //IBone neck = this.getAnimationProcessor().getBone("neck2");
+        IBone neck = this.getAnimationProcessor().getBone("neck3");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         if (head != null) {
@@ -52,9 +45,9 @@ public class OroModel extends AnimatedGeoModel<OroEntity> {
         }
 
         //WWWWWOOOOOOOO YYYYEEEEAAAAHHHH BABY THAT'S WHAT I'VE BEEN WAITIN FOR
-//        if(neck != null){
-//            neck.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
-//            neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
-//        }
+        if(neck != null){
+            neck.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
+            neck.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+        }
     }
 }

@@ -112,25 +112,25 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
         // if the entity is digging, play the digging animation.
         if (this.eatAnimationTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", false));
             return PlayState.CONTINUE;
         }
 
         //if in water, use swimming anims
 
         if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
             return PlayState.CONTINUE;
 
         }
 
         if (event.isMoving() && this.onGround) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
             return PlayState.CONTINUE;
 
         }
         if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
             return PlayState.CONTINUE;
         }
 
@@ -138,14 +138,14 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than falling, just override it and set it to falling
-            if(name.equals("animation.gecko.walk") || name.equals("animation.gecko.vehicle_walk") || name.equals("animation.gecko.sitting") || name.equals("animation.gecko.idle0") || name.equals("animation.gecko.idle1") || name.equals("animation.gecko.idle") || name.equals("animation.gecko.swimming")){
+            if(name.equals("walk") || name.equals("sitting") || name.equals("idle0") || name.equals("idle1") || name.equals("idle") || name.equals("swimming")){
                 event.getController().markNeedsReload();
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.falling", false));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("falling", false));
             }
             //if it's already falling, then just wait for the current fall anim to be over and choose a random one for the next loop
             if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
                 event.getController().markNeedsReload();
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.falling", false));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("falling", false));
                 //System.out.print(rand_int);
             }
 
@@ -157,10 +157,10 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
             String name = event.getController().getCurrentAnimation().animationName;
 
             //if that animation is anything other than an idle, just override it and set it to idle0
-            if(name.equals("animation.gecko.walk") || name.equals("animation.gecko.vehicle_walk") || name.equals("animation.gecko.sitting")){
+            if(name.equals("walk") || name.equals("sitting")){
                 event.getController().markNeedsReload();
                 int rand_int = rand_num();
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.idle" + rand_int, false));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
             }
             //if it's already idling, then just wait for the current idle anim to be over and choose a random one for the next loop
             if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
@@ -169,7 +169,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
                 //a random number is chosen between 0 and 2, then added to the end of "idle" to get a random idle animation!
                 int rand_int = rand_num();
 
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.idle" + rand_int, false));
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
                 //System.out.print(rand_int);
             }
 
@@ -188,7 +188,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
             return 0;
         }
         if(rand_num > 6){
-            return 2;
+            return 1;
         }
         else{
             return 1;
@@ -199,7 +199,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
         if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
             event.getController().markNeedsReload();
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.attack", false));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack", false));
             this.swinging = false;
         }
 

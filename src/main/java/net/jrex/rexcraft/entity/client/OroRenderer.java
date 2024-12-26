@@ -25,15 +25,9 @@ public class OroRenderer extends GeoEntityRenderer<OroEntity> {
     public static final Map<OroVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(OroVariant.class), (p_114874_) -> {
                 p_114874_.put(OroVariant.DOTTED,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/dotted.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/oro/male_2.png"));
                 p_114874_.put(OroVariant.DOTLESS,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/dotless.png"));
-                p_114874_.put(OroVariant.TANGE,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/tange.png"));
-                p_114874_.put(OroVariant.TANGE_2,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/tange_2.png"));
-                p_114874_.put(OroVariant.INF,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/inferno.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/oro/fem_2.png"));
 
             });
     public OroRenderer(EntityRendererProvider.Context renderManager) {
@@ -45,13 +39,8 @@ public class OroRenderer extends GeoEntityRenderer<OroEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(OroEntity instance) {
-        //String s = ChatFormatting.stripFormatting(instance.getName().getString());
-        if (instance.isDigging()) {
-            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/gecko/nova.png");
 
-        } else {
-            return LOCATION_BY_VARIANT.get(instance.getVariant());
-        }
+        return LOCATION_BY_VARIANT.get(instance.getVariant());
 
     }
 
@@ -64,7 +53,7 @@ public class OroRenderer extends GeoEntityRenderer<OroEntity> {
         if(animatable.isBaby()) {
             stack.scale(0.05F, 0.05F, 0.05F);
         } else {
-            stack.scale(0.15f, 0.15f, 0.15f);
+            stack.scale(0.2f, 0.2f, 0.2f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

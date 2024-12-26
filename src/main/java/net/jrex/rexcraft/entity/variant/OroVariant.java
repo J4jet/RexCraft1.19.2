@@ -6,10 +6,7 @@ import java.util.Comparator;
 public enum OroVariant {
 
     DOTTED(0),
-    DOTLESS(1),
-    TANGE(2),
-    INF(3),
-    TANGE_2(4);
+    DOTLESS(1);
 
     private static final OroVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
             comparingInt(OroVariant::getId)).toArray(OroVariant[]::new);
