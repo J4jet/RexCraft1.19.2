@@ -33,6 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -115,20 +116,83 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
             return PlayState.CONTINUE;
         }
 
-        if (event.isMoving()) {
+        //if in water, use swimming anims
+
+        if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.walk", true));
             return PlayState.CONTINUE;
+
         }
 
-        //if(this.isSprinting())
+        if (event.isMoving() && this.onGround) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.walk", true));
+            return PlayState.CONTINUE;
 
+        }
         if (this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.sitting", true));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.idle", true));
+        if(!this.onGround && event.getController().getCurrentAnimation() != null){
+            String name = event.getController().getCurrentAnimation().animationName;
+
+            //if that animation is anything other than falling, just override it and set it to falling
+            if(name.equals("animation.gecko.walk") || name.equals("animation.gecko.vehicle_walk") || name.equals("animation.gecko.sitting") || name.equals("animation.gecko.idle0") || name.equals("animation.gecko.idle1") || name.equals("animation.gecko.idle") || name.equals("animation.gecko.swimming")){
+                event.getController().markNeedsReload();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.falling", false));
+            }
+            //if it's already falling, then just wait for the current fall anim to be over and choose a random one for the next loop
+            if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
+                event.getController().markNeedsReload();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.falling", false));
+                //System.out.print(rand_int);
+            }
+
+        }
+
+        //if the entity is not moving or sitting, and has a current animation:
+
+        if(!event.isMoving() && !this.isSitting() && event.getController().getCurrentAnimation() != null){
+            String name = event.getController().getCurrentAnimation().animationName;
+
+            //if that animation is anything other than an idle, just override it and set it to idle0
+            if(name.equals("animation.gecko.walk") || name.equals("animation.gecko.vehicle_walk") || name.equals("animation.gecko.sitting")){
+                event.getController().markNeedsReload();
+                int rand_int = rand_num();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.idle" + rand_int, false));
+            }
+            //if it's already idling, then just wait for the current idle anim to be over and choose a random one for the next loop
+            if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
+                event.getController().markNeedsReload();
+
+                //a random number is chosen between 0 and 2, then added to the end of "idle" to get a random idle animation!
+                int rand_int = rand_num();
+
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gecko.idle" + rand_int, false));
+                //System.out.print(rand_int);
+            }
+
+        }
+
         return PlayState.CONTINUE;
+    }
+
+    /** Chooses a random number between 0 and 9, then returns 0 or 1 based on that. For Velo, 0 and 2 are the ones I want to loop more often**/
+    /** 012 / 3456 / 789 **/
+    protected int rand_num(){
+        Random rand = new Random();
+        int rand_num = rand.nextInt(10);
+
+        if(rand_num > 2 && rand_num < 6){
+            return 0;
+        }
+        if(rand_num > 6){
+            return 2;
+        }
+        else{
+            return 1;
+        }
     }
 
     private PlayState attackPredicate(AnimationEvent event) {
@@ -180,8 +244,28 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
     }
 
 
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 1.0F);
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pBlock) {
+        if (!pBlock.getMaterial().isLiquid()) {
+            BlockState blockstate = this.level.getBlockState(pPos.above());
+            SoundType soundtype = pBlock.getSoundType(level, pPos, this);
+            if (blockstate.is(Blocks.SNOW)) {
+                soundtype = blockstate.getSoundType(level, pPos, this);
+            }
+
+            if (soundtype == SoundType.WOOD) {
+                this.playSound(SoundEvents.WOOD_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+            if (soundtype == SoundType.STONE) {
+                this.playSound(SoundEvents.STONE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+            if (soundtype == SoundType.NETHERITE_BLOCK) {
+                this.playSound(SoundEvents.NETHERITE_BLOCK_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }else {
+                this.playSound(SoundEvents.GRASS_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+
+        }
     }
 
 

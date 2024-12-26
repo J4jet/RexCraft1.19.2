@@ -82,6 +82,13 @@ public class ModEntityTypes {
                             .sized(0.4f, 0.3f)
                             .build(new ResourceLocation(RexCraft.MOD_ID, "oro").toString()));
 
+    public static final RegistryObject<EntityType<ProtoEntity>> PROTO =
+            ENTITY_TYPES.register("proto",
+                    () -> EntityType.Builder.of(ProtoEntity::new, MobCategory.CREATURE)
+                            //Hitbox Size!
+                            .sized(0.8f, 0.8f)
+                            .build(new ResourceLocation(RexCraft.MOD_ID, "proto").toString()));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }

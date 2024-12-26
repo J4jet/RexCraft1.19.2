@@ -84,7 +84,7 @@ public class BucklandiiEntity extends TamableAnimal implements IAnimatable, Neut
                 || entitytype == EntityType.LLAMA || entitytype == EntityType.HORSE || entitytype == EntityType.CHICKEN || entitytype == ModEntityTypes.BOREAL.get() ||
                 entitytype == EntityType.PLAYER || entitytype == EntityType.DONKEY || entitytype == EntityType.MULE
                 || entitytype == EntityType.SPIDER || entitytype == EntityType.ZOMBIE || entitytype == EntityType.SKELETON
-                || entitytype == ModEntityTypes.VELO.get();
+                || entitytype == ModEntityTypes.VELO.get() || entitytype == ModEntityTypes.PROTO.get() || entitytype == ModEntityTypes.ORO.get();
     };
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(BucklandiiEntity.class, EntityDataSerializers.INT);

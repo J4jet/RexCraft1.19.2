@@ -95,6 +95,7 @@
 
   "item.rexcraft.gecko_tail": "Gecko Tail",
   "item.rexcraft.oro_foot": "Orodromeus Foot",
+  "item.rexcraft.proto_frill": "Protoceratops Frill",
   "item.rexcraft.hedgehog_quill": "Hedgehog Quill",
 
   "item.rexcraft.steel_diamond_helmet": "Diamond Plate Helmet",
@@ -179,6 +180,7 @@
   "entity.rexcraft.velo": "Velociraptor mongoliensis",
   "entity.rexcraft.diplo": "Diplodocus carnegii",
   "entity.rexcraft.oro": "Orodromeus makelai",
+  "entity.rexcraft.proto": "Protoceratops andrewsi",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 

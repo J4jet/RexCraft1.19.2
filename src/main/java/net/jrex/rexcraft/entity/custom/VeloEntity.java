@@ -91,7 +91,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
                     entitytype == ModEntityTypes.HEDGY.get() || entitytype == EntityType.PLAYER || entitytype == EntityType.COW ||
                     entitytype == EntityType.HORSE || entitytype == EntityType.LLAMA || entitytype == EntityType.DONKEY ||
                     entitytype == EntityType.WOLF || entitytype == EntityType.TURTLE || entitytype == EntityType.EGG ||
-                    entitytype == EntityType.PILLAGER || entitytype == EntityType.FOX || entitytype == EntityType.MULE;
+                    entitytype == EntityType.PILLAGER || entitytype == EntityType.FOX || entitytype == EntityType.MULE || entitytype == ModEntityTypes.PROTO.get();
     };
 
     //Base prey for single raptors
@@ -99,7 +99,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
         EntityType<?> entitytype = p_30437_.getType();
         return  entitytype == EntityType.ENDERMITE || entitytype == EntityType.SILVERFISH || entitytype == EntityType.AXOLOTL ||
                 entitytype == EntityType.TADPOLE || entitytype == EntityType.CAT || entitytype == EntityType.CHICKEN ||
-                entitytype == EntityType.FROG || entitytype == EntityType.RABBIT || entitytype == ModEntityTypes.GECKO.get() || entitytype == ModEntityTypes.HEDGY.get();
+                entitytype == EntityType.FROG || entitytype == EntityType.RABBIT || entitytype == ModEntityTypes.GECKO.get() || entitytype == ModEntityTypes.HEDGY.get() || entitytype == ModEntityTypes.ORO.get();
     };
     
     //Chooses a number for the id

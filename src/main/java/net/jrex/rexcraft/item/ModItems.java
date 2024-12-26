@@ -47,6 +47,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> ORO_FOOT = ITEMS.register("oro_foot",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> PROTO_FRILL = ITEMS.register("proto_frill",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> CARNO_BUFF_IRON = ITEMS.register("carno_buff_iron",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(5).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
 
@@ -176,6 +179,10 @@ import net.minecraftforge.registries.RegistryObject;
 
         public static final RegistryObject<Item> ORO_SPAWN_EGG = ITEMS.register("oro_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.ORO, 0xeffaf9, 0xb6bdbc,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> PROTO_SPAWN_EGG = ITEMS.register("proto_spawn_egg",
+                () -> new ForgeSpawnEggItem(ModEntityTypes.PROTO, 0xeffaf9, 0xb6bdbc,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> BUCKLANDII_SPAWN_EGG = ITEMS.register("bucklandii_spawn_egg",

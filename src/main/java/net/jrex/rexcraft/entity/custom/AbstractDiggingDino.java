@@ -37,6 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -59,7 +60,7 @@ import java.util.function.Predicate;
 // just oro, but missing
 //getbreedoffspring
 //setAttributes()
-//attackPredicate
+//attackPredicat
 //PlayState predicate
 //getOroType
 //registerControllers
@@ -67,7 +68,7 @@ import java.util.function.Predicate;
 //"tag.putInt("Variant",this.getTypeVariant());" in addadditionlSaveData
 
 
-public abstract class AbstractDiggingDino extends TamableAnimal implements IAnimatable {
+public abstract class AbstractDiggingDino extends TamableAnimal implements IAnimatable, NeutralMob {
 
     private static final EntityDataAccessor<Boolean> SITTING =
             SynchedEntityData.defineId(AbstractDiggingDino.class, EntityDataSerializers.BOOLEAN);
@@ -75,33 +76,20 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
     private static final EntityDataAccessor<Boolean> DIGGING =
             SynchedEntityData.defineId(AbstractDiggingDino.class, EntityDataSerializers.BOOLEAN);
 
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+    public static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(AbstractDiggingDino.class, EntityDataSerializers.INT);
 
-    private int digAnimationTick;
+    public int digAnimationTick;
     private DigBlockGoal digBlockGoal;
 
-    public Block dig_block;
+    public Block dig_block = this.getdiggingblock();
+    public Block alt_dig_block = this.getALTdiggingblock();
+    public boolean has_placeable_block = this.does_have_placeable_block();
+    public Block placeable_block = this.get_placable_block();
 
-    public Item tame_item;
-
-    // the different items this entity can find when digging
-    public Item item_t1_1;
-    public Item item_t1_2;
-    public Item item_t2_1;
-    public Item item_t2_2;
-    public Item item_t3_1;
-    public Item item_t3_2;
-    public Item item_t4_1;
-    public Item item_t4_2;
-    public Item item_t4_3;
+    public Item tame_item = this.gettameitem();
 
     private AnimationFactory factory = new AnimationFactory(this);
-
-    public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
-        EntityType<?> entitytype = p_30437_.getType();
-        return false;
-    };
 
     public AbstractDiggingDino(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -109,41 +97,57 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
 
     @Override
     protected void registerGoals() {
-        this.digBlockGoal = new DigBlockGoal(this);
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.digBlockGoal = new AbstractDiggingDino.DigBlockGoal(this);
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 2.0D, false));
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(4, this.digBlockGoal);
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(this.isTempt()), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
 
-        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.5D, 2.5D));
-        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, VeloEntity.class, 8.0F, 2.5D, 2.5D));
 
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
 
     }
 
     @Override
     public boolean isFood(ItemStack pStack) {
-        return pStack.getItem() == ModItems.DUBIA.get();
+        return pStack.getItem() == ModItems.SWEETBERRY_STACK.get() || pStack.getItem() == ModItems.BEET_STACK.get() || pStack.getItem() == ModItems.BLUEBERRY_STACK.get()
+                || pStack.getItem() == ModItems.CARROT_STACK.get() || pStack.getItem() == ModItems.POTATO_STACK.get() || pStack.getItem() == ModItems.ZUCC_STACK.get() || pStack.getItem() == Items.HAY_BLOCK;
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket
     public boolean isHeal(ItemStack pStack){
-        return pStack.getItem() == ModItems.CRICKET_ITEM.get();
+        return pStack.getItem() == ModItems.ZUCC.get() || pStack.getItem() == ModItems.BLUEBERRY.get() || pStack.getItem() == Items.WHEAT;
     }
 
     //Used as the tempting item, in the case of the gecko it's a mealworm
     public Item isTempt(){
-        return ModItems.CRICKET_ITEM.get();
+        return Items.APPLE;
+    }
+
+    public Item gettameitem(){
+        return ModItems.HERB_BUFF_NETH_IRON.get();
+    }
+
+    public Block getdiggingblock(){
+        return Blocks.GRASS_BLOCK;
+    }
+
+    public Block getALTdiggingblock(){
+        return Blocks.GRASS;
+    }
+
+    public boolean does_have_placeable_block(){
+        return true;
+    }
+
+    public Block get_placable_block(){
+        return Blocks.GRASS_BLOCK;
     }
 
 
@@ -153,8 +157,28 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
     }
 
 
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.GRASS_STEP, 0.15F, 1.0F);
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pBlock) {
+        if (!pBlock.getMaterial().isLiquid()) {
+            BlockState blockstate = this.level.getBlockState(pPos.above());
+            SoundType soundtype = pBlock.getSoundType(level, pPos, this);
+            if (blockstate.is(Blocks.SNOW)) {
+                soundtype = blockstate.getSoundType(level, pPos, this);
+            }
+
+            if (soundtype == SoundType.WOOD) {
+                this.playSound(SoundEvents.WOOD_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+            if (soundtype == SoundType.STONE) {
+                this.playSound(SoundEvents.STONE_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+            if (soundtype == SoundType.NETHERITE_BLOCK) {
+                this.playSound(SoundEvents.NETHERITE_BLOCK_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }else {
+                this.playSound(SoundEvents.GRASS_STEP, soundtype.getVolume() * 0.15F, soundtype.getPitch());
+            }
+
+        }
     }
 
 
@@ -182,6 +206,16 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
     public Item handle_random_item(){
         // just get a random value and return an item based on that value
         Random rand = new Random();
+        // the different items this entity can find when digging
+        Item item_t1_1 = Blocks.DIRT.asItem();
+        Item item_t1_2 = Blocks.DIRT.asItem();
+        Item item_t2_1 = Blocks.DIRT.asItem();
+        Item item_t2_2 = Blocks.DIRT.asItem();
+        Item item_t3_1 = Blocks.DIRT.asItem();
+        Item item_t3_2 = Blocks.DIRT.asItem();
+        Item item_t4_1 = Blocks.DIRT.asItem();
+        Item item_t4_2 = Blocks.DIRT.asItem();
+        Item item_t4_3 = Blocks.DIRT.asItem();
 
         //oro can "find" these items at these %s:
         //snowballs, ice - 50%
@@ -192,38 +226,38 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
         int rand_num = rand.nextInt(100);
         // between 0-25
         if (rand_num > 0 && rand_num <= 25){
-            return this.item_t1_1;
+            return item_t1_1;
         }
         //between 26-50
         if (rand_num > 25 && rand_num <= 50){
-            return this.item_t1_2;
+            return item_t1_2;
         }
         //between 51-65
         if (rand_num > 50 && rand_num <= 65){
-            return this.item_t2_1;
+            return item_t2_1;
         }
         //between 66-80
         if (rand_num > 65 && rand_num <= 80){
-            return this.item_t2_2;
+            return item_t2_2;
         }
         //between 81-88
         if (rand_num > 80 && rand_num <= 88){
-            return this.item_t3_1;
+            return item_t3_1;
         }
         //between 89-95
         if (rand_num > 80 && rand_num <= 95){
-            return this.item_t3_2;
+            return item_t3_2;
         }
         //between 96-97
         if (rand_num > 96 && rand_num <= 98){
-            return this.item_t4_1;
+            return item_t4_1;
         }
         //between 98-99
         if (rand_num == 99){
-            return this.item_t4_2;
+            return item_t4_2;
         }
         else{
-            return this.item_t4_3;
+            return item_t4_3;
         }
     }
 
@@ -396,13 +430,12 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
 
     public class DigBlockGoal extends Goal {
         private static final int EAT_ANIMATION_TICKS = 40;
-        private static final Predicate<BlockState> IS_ALT_BLOCK = BlockStatePredicate.forBlock(Blocks.GRASS);
-        /** The entity owner of this AITask */
         private final AbstractDiggingDino mob;
         /** The world the digging entity is digging from */
         private final Level level;
         /** Number of ticks since the entity started to dig */
         private int digAnimationTick;
+
 
         public DigBlockGoal(AbstractDiggingDino pMob) {
             this.mob = pMob;
@@ -415,14 +448,15 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
          * method as well.
          */
         public boolean canUse() {
-            if ((this.mob.getRandom().nextInt(this.mob.isBaby() ? 50 : 1000) != 0) || !(mob.isTame()) || !mob.isDigging()) {
+            Predicate<BlockState> IS_ALT_BLOCK = BlockStatePredicate.forBlock(this.mob.alt_dig_block);
+            if ((this.mob.getRandom().nextInt(this.mob.isBaby() ? 50 : 1000) != 0) || !(this.mob.isTame()) || !this.mob.isDigging()) {
                 return false;
             } else {
                 BlockPos blockpos = this.mob.blockPosition();
                 if (IS_ALT_BLOCK.test(this.level.getBlockState(blockpos))) {
                     return true;
                 } else {
-                    return this.level.getBlockState(blockpos.below()).is(mob.dig_block);
+                    return this.level.getBlockState(blockpos.below()).is(this.mob.dig_block);
                 }
             }
         }
@@ -461,6 +495,7 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
          * Keep ticking a continuous task that has already been started
          */
         public void tick() {
+            Predicate<BlockState> IS_ALT_BLOCK = BlockStatePredicate.forBlock(this.mob.alt_dig_block);
             this.digAnimationTick = Math.max(0, this.digAnimationTick - 1);
             if (this.digAnimationTick == this.adjustedTickDelay(4)) {
                 BlockPos blockpos = this.mob.blockPosition();
@@ -468,20 +503,24 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
                     if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
                         this.level.destroyBlock(blockpos, false);
                         net.minecraft.world.item.Item item = handle_random_item();
-                        mob.spawnAtLocation(item);
-                        mob.gameEvent(GameEvent.ENTITY_PLACE);
+                        this.mob.spawnAtLocation(item);
+                        this.mob.gameEvent(GameEvent.ENTITY_PLACE);
                     }
 
                     this.mob.ate();
                 } else {
                     BlockPos blockpos1 = blockpos.below();
-                    if (this.level.getBlockState(blockpos1).is(mob.dig_block)) {
+                    if (this.level.getBlockState(blockpos1).is(this.mob.dig_block)) {
                         if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this.mob)) {
-                            this.level.levelEvent(2001, blockpos1, Block.getId(mob.dig_block.defaultBlockState()));
-                            this.level.setBlock(blockpos1, Blocks.SNOW.defaultBlockState(), 2);
+                            this.level.levelEvent(2001, blockpos1, Block.getId(this.mob.dig_block.defaultBlockState()));
+
+                            if (this.mob.has_placeable_block){
+                                this.level.setBlock(blockpos1, this.mob.placeable_block.defaultBlockState(), 2);
+                            }
+
                             net.minecraft.world.item.Item item = handle_random_item();
-                            mob.spawnAtLocation(item);
-                            mob.gameEvent(GameEvent.ENTITY_PLACE);
+                            this.mob.spawnAtLocation(item);
+                            this.mob.gameEvent(GameEvent.ENTITY_PLACE);
                         }
 
                         this.mob.ate();
