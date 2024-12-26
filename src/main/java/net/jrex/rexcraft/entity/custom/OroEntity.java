@@ -80,7 +80,25 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
                 .add(Attributes.MAX_HEALTH, 10.0D)
                 .add(Attributes.ATTACK_DAMAGE, 0.5f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.25f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.22f).build();
+    }
+
+    @Override
+    public void setTame(boolean tamed) {
+        super.setTame(tamed);
+        if (tamed) {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(11.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.5D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22f);
+
+
+        } else {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.5D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22f);
+        }
     }
 
     @Override
@@ -477,24 +495,6 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
     public boolean canBeLeashed(Player player) {
         return true;
-    }
-
-    @Override
-    public void setTame(boolean tamed) {
-        super.setTame(tamed);
-        if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(11.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.5D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25f);
-
-
-        } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.5D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25f);
-        }
     }
 
     /* VARIANTS */

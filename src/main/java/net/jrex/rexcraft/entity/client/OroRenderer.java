@@ -51,7 +51,7 @@ public class OroRenderer extends GeoEntityRenderer<OroEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(0.05F, 0.05F, 0.05F);
+            stack.scale(0.08F, 0.08F, 0.08F);
         } else {
             stack.scale(0.2f, 0.2f, 0.2f);
         }
