@@ -405,7 +405,7 @@
 				},
 				{
 					"name": "saddle",
-					"parent": "meg",
+					"parent": "body",
 					"pivot": [0, 67, 9],
 					"cubes": [
 						{"origin": [-9.25, 65, 0], "size": [18.5, 3.75, 19], "uv": [0, 232]},
