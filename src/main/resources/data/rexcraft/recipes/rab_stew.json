@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "!": {
+      "item": "minecraft:rabbit"
+    },
+    "^": {
+      "item": "minecraft:sweet_berries"
+    },
+    "*": {
+      "item": "minecraft:glow_berries"
+    },
+    "@": {
+      "item": "rexcraft:gold_bowl"
+    }
+  },
+  "pattern": [
+    "^^^",
+    "!!!",
+    "*@*"
+  ],
+  "result": {
+    "item": "rexcraft:rab_stew",
+    "count": 1
+  }
+}

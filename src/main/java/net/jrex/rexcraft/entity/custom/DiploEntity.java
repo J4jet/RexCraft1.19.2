@@ -283,8 +283,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     @Override
     public boolean isFood(ItemStack pStack) {
-        Item item = pStack.getItem();
-        return item == ModItems.ZUCC_STACK.get() || item == ModItems.BEET_STACK.get() || item == ModItems.CARROT_STACK.get() || item == ModItems.POTATO_STACK.get();
+        return pStack.getItem() == ModItems.RAB_STEW.get();
     }
 
     public boolean isHeal(ItemStack pStack) {

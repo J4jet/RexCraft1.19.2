@@ -111,7 +111,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(4, this.eatBlockGoal);
-        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.WORM.get()), false));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 1.25D, Ingredient.of(ModItems.HERB_BUFF_NETH_IRON.get()), false));
 
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.0D, 2.0D));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, VeloEntity.class, 8.0F, 2.5D, 2.5D));
@@ -234,7 +234,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
     @Override
     public boolean isFood(ItemStack pStack){
-        return pStack.getItem() == ModItems.DUBIA.get();
+        return pStack.getItem() == ModItems.RAB_STEW.get();
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket

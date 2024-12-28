@@ -279,9 +279,8 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     }
 
     @Override
-    public boolean isFood(ItemStack pStack){
-        Item item = pStack.getItem();
-        return item == ModItems.ZUCC_STACK.get() || item == ModItems.BEET_STACK.get() || item == ModItems.CARROT_STACK.get() || item == ModItems.POTATO_STACK.get();
+    public boolean isFood(ItemStack pStack) {
+        return pStack.getItem() == ModItems.RAB_STEW.get();
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket

@@ -50,6 +50,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> PROTO_FRILL = ITEMS.register("proto_frill",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> RAB_STEW = ITEMS.register("rab_stew",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(5).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 700, 0), 0.65F).meat().build())));
+
         public static final RegistryObject<Item> CARNO_BUFF_IRON = ITEMS.register("carno_buff_iron",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(5).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
 

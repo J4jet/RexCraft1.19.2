@@ -354,7 +354,7 @@ public class VeloEntity extends TamableAnimal implements IAnimatable, NeutralMob
     @Override
     public boolean isFood(ItemStack pStack){
         Item item = pStack.getItem();
-        return item == ModItems.BEEFSTACK.get() || item == ModItems.PORKSTACK.get() || item == ModItems.CHICKENSTACK.get() || item == ModItems.MUTTONSTACK.get();
+        return item == ModItems.RAB_STEW.get();
     }
 
     //Used as the healing item, in the case of the gecko it's a cricket

@@ -116,13 +116,16 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
 
     @Override
     public boolean isFood(ItemStack pStack) {
-        return pStack.getItem() == ModItems.SWEETBERRY_STACK.get() || pStack.getItem() == ModItems.BEET_STACK.get() || pStack.getItem() == ModItems.BLUEBERRY_STACK.get()
-                || pStack.getItem() == ModItems.CARROT_STACK.get() || pStack.getItem() == ModItems.POTATO_STACK.get() || pStack.getItem() == ModItems.ZUCC_STACK.get() || pStack.getItem() == Items.HAY_BLOCK;
+//        return pStack.getItem() == ModItems.SWEETBERRY_STACK.get() || pStack.getItem() == ModItems.BEET_STACK.get() || pStack.getItem() == ModItems.BLUEBERRY_STACK.get()
+//                || pStack.getItem() == ModItems.CARROT_STACK.get() || pStack.getItem() == ModItems.POTATO_STACK.get() || pStack.getItem() == ModItems.ZUCC_STACK.get() || pStack.getItem() == Items.HAY_BLOCK;
+        return pStack.getItem() == ModItems.RAB_STEW.get();
     }
+
 
     //Used as the healing item, in the case of the gecko it's a cricket
     public boolean isHeal(ItemStack pStack){
-        return pStack.getItem() == ModItems.ZUCC.get() || pStack.getItem() == ModItems.BLUEBERRY.get() || pStack.getItem() == Items.WHEAT;
+        return pStack.getItem() == ModItems.BEET_STACK.get() || pStack.getItem() == ModItems.BLUEBERRY_STACK.get()
+                || pStack.getItem() == ModItems.CARROT_STACK.get() || pStack.getItem() == ModItems.POTATO_STACK.get() || pStack.getItem() == ModItems.ZUCC_STACK.get() || pStack.getItem() == Items.HAY_BLOCK;
     }
 
     //Used as the tempting item, in the case of the gecko it's a mealworm
