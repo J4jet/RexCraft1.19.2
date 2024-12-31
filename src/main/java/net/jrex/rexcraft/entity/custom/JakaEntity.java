@@ -1,10 +1,10 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
-import net.jrex.rexcraft.entity.variant.ProtoVariant;
-import net.jrex.rexcraft.item.ModItems;
+import net.jrex.rexcraft.entity.variant.JakaVariant;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
+import net.minecraft.client.gui.font.glyphs.BakedGlyph;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,13 +19,12 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.*;
-import net.minecraft.world.entity.animal.PolarBear;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -43,9 +42,9 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class ProtoEntity extends AbstractDiggingDino{
+public class JakaEntity extends AbstractDiggingDino{
 
-    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(ProtoEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(JakaEntity.class, EntityDataSerializers.INT);
 
     // ____ ANGRY STUFF _____ //
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
@@ -53,7 +52,7 @@ public class ProtoEntity extends AbstractDiggingDino{
         return entitytype == ModEntityTypes.VELO.get();
     };
 
-    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(60, 70);
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(65, 80);
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -62,15 +61,15 @@ public class ProtoEntity extends AbstractDiggingDino{
 
     public static int attacknum = 3;
 
-    public ProtoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
+    public JakaEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.ATTACK_DAMAGE, 3.0f)
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.ATTACK_DAMAGE, 0.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
     }
@@ -94,7 +93,7 @@ public class ProtoEntity extends AbstractDiggingDino{
         Item item_t4_2 = Items.RAW_GOLD;
         Item item_t4_3 = Items.FLINT;
 
-        //oro can "find" these items at these %s:
+        //jaka can "find" these items at these %s:
         //snowballs, ice - 50%
         //sticks, seeds - 30%
         //iron nuggets, copper nuggets - 15%
@@ -140,7 +139,7 @@ public class ProtoEntity extends AbstractDiggingDino{
 
     @Override
     public Block getdiggingblock(){
-        return Blocks.SAND;
+        return Blocks.RED_SAND;
     }
 
     @Override
@@ -150,22 +149,22 @@ public class ProtoEntity extends AbstractDiggingDino{
 
     @Override
     public Block get_placable_block(){
-        return Blocks.SAND;
+        return Blocks.RED_SAND;
     }
 
     @Override
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(22.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.5D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(35.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
         }
@@ -178,7 +177,6 @@ public class ProtoEntity extends AbstractDiggingDino{
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 2.5D, 2.5D));
 
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new ProtoEntity.ProtoAttackPlayersGoal());
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
@@ -213,7 +211,7 @@ public class ProtoEntity extends AbstractDiggingDino{
 
         // if the entity is digging, play the digging animation.
         if (this.digAnimationTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
             return PlayState.CONTINUE;
         }
 
@@ -299,8 +297,8 @@ public class ProtoEntity extends AbstractDiggingDino{
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob pOtherParent) {
-        ProtoEntity baby = ModEntityTypes.PROTO.get().create(serverLevel);
-        ProtoVariant variant = Util.getRandom(ProtoVariant.values(), this.random);
+        JakaEntity baby = ModEntityTypes.JAKA.get().create(serverLevel);
+        JakaVariant variant = Util.getRandom(JakaVariant.values(), this.random);
         baby.setVariant(variant);
         return baby;
     }
@@ -309,20 +307,20 @@ public class ProtoEntity extends AbstractDiggingDino{
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
                                         MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_,
                                         @Nullable CompoundTag p_146750_) {
-        ProtoVariant variant = Util.getRandom(ProtoVariant.values(), this.random);
+        JakaVariant variant = Util.getRandom(JakaVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
     }
 
-    public ProtoVariant getVariant() {
-        return ProtoVariant.byId(this.getTypeVariant() & 255);
+    public JakaVariant getVariant() {
+        return JakaVariant.byId(this.getTypeVariant() & 255);
     }
 
     private int getTypeVariant() {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
-    private void setVariant(ProtoVariant variant) {
+    private void setVariant(JakaVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 
@@ -336,7 +334,7 @@ public class ProtoEntity extends AbstractDiggingDino{
     }
 
     //DATA_ID_TYPE_VARIANT
-    public int getProtoType() {
+    public int getJakaType() {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
@@ -406,47 +404,34 @@ public class ProtoEntity extends AbstractDiggingDino{
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
 
-    // Modifying aiStep to add in the angry stuff //
+    // GIVING EFFECTS TO OWNERS //
 
     @Override
     public void aiStep() {
+
+        if (this.isTame()) {
+            LivingEntity player = this.getOwner();
+            if (player != null && this.distanceToSqr(player) < 100.0D)
+                player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 100));
+        }
+
         if (!this.level.isClientSide) {
             this.updatePersistentAnger((ServerLevel)this.level, true);
         }
+
+        if(this.isAngry()){
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+            getAttribute(Attributes.ARMOR).setBaseValue(16.0f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(5.0f);
+        }
+        else if (!this.isAngry()){
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
+            getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3.0f);
+        }
+
         super.aiStep();
-    }
 
-
-    //This is just PolarBearAttackPlayersGoal but for Proto
-
-    class ProtoAttackPlayersGoal extends NearestAttackableTargetGoal<Player> {
-        public ProtoAttackPlayersGoal() {
-            super(ProtoEntity.this, Player.class, 20, true, true, (Predicate<LivingEntity>)null);
-        }
-
-        /**
-         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
-         * method as well.
-         */
-        public boolean canUse() {
-            if (ProtoEntity.this.isBaby()) {
-                return false;
-            } else {
-                if (super.canUse()) {
-                    for(ProtoEntity proto : ProtoEntity.this.level.getEntitiesOfClass(ProtoEntity.class, ProtoEntity.this.getBoundingBox().inflate(8.0D, 4.0D, 8.0D))) {
-                        if (proto.isBaby()) {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-        }
-
-        protected double getFollowDistance() {
-            return super.getFollowDistance() * 0.5D;
-        }
     }
 
 
