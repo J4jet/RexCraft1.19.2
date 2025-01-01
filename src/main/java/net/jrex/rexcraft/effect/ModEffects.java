@@ -17,6 +17,9 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> BLEED = MOB_EFFECTS.register("bleed",
             () -> new BleedEffect(MobEffectCategory.HARMFUL, 9643043));
 
+    public static final RegistryObject<MobEffect> ANTIFREEZE = MOB_EFFECTS.register("antifreeze",
+            () -> new AntiFreezeEffect(MobEffectCategory.BENEFICIAL, 9643043));
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

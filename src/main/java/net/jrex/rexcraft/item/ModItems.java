@@ -185,11 +185,11 @@ import net.minecraftforge.registries.RegistryObject;
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> JAKA_SPAWN_EGG = ITEMS.register("jaka_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.JAKA, 0xeffaf9, 0xb6bdbc,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.JAKA, 0x61462e, 0x444444,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> PROTO_SPAWN_EGG = ITEMS.register("proto_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.PROTO, 0xeffaf9, 0xb6bdbc,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.PROTO, 0xe0c57d, 0xa72626,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> BUCKLANDII_SPAWN_EGG = ITEMS.register("bucklandii_spawn_egg",

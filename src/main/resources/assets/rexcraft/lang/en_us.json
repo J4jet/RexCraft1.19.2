@@ -14,6 +14,7 @@
   "item.rexcraft.cricket_spawn_egg": "Cricket Spawn Egg",
   "item.rexcraft.proto_spawn_egg": "Protoceratops Spawn Egg",
   "item.rexcraft.oro_spawn_egg": "Orodromeus Spawn Egg",
+  "item.rexcraft.jaka_spawn_egg": "Jakapil Spawn Egg",
   "item.rexcraft.bucklandii_spawn_egg": "Megalosaurus Spawn Egg",
   "item.rexcraft.diplo_spawn_egg": "Diplodocus Spawn Egg",
   "item.rexcraft.boreal_spawn_egg": "Borealopelta Spawn Egg",
@@ -172,6 +173,7 @@
 
 
   "effect.rexcraft.bleed": "Bleeding",
+  "effect.rexcraft.antifreeze": "Anti-Freeze",
 
   "entity.rexcraft.gecko": "Leopard Gecko",
   "entity.rexcraft.hedgy": "Hedgehog",
