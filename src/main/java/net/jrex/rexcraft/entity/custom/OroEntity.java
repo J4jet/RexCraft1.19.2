@@ -1,5 +1,6 @@
 package net.jrex.rexcraft.entity.custom;
 
+import net.jrex.rexcraft.effect.ModEffects;
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.variant.GeckoVariant;
 import net.jrex.rexcraft.entity.variant.OroVariant;
@@ -19,6 +20,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -367,6 +370,12 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
             this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
         }
 
+        if (this.isTame()) {
+            LivingEntity player = this.getOwner();
+            if (player != null && this.distanceToSqr(player) < 100.0D)
+                player.addEffect(new MobEffectInstance(ModEffects.ANTIFREEZE.get(), 100));
+        }
+
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(1.0F);
@@ -531,6 +540,8 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         this.eatAnimationTick = this.eatBlockGoal.getEatAnimationTick();
         super.customServerAiStep();
     }
+
+
 
 
 

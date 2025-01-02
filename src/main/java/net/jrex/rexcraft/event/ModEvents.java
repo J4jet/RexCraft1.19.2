@@ -26,6 +26,7 @@ public class ModEvents {
             event.put(ModEntityTypes.ORO.get(), OroEntity.setAttributes());
             event.put(ModEntityTypes.PROTO.get(), ProtoEntity.setAttributes());
             event.put(ModEntityTypes.JAKA.get(), JakaEntity.setAttributes());
+            event.put(ModEntityTypes.SINO.get(), SinoEntity.setAttributes());
         }
 
     }
