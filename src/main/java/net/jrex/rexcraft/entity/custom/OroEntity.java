@@ -364,6 +364,10 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         return false;
     }
 
+    public Item gettameitem(){
+        return ModItems.HERB_BUFF_NETH_IRON.get();
+    }
+
     public void aiStep() {
 
         if (this.level.isClientSide) {
@@ -393,7 +397,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
-        Item itemForTaming = ModItems.WORM.get();
+        Item itemForTaming = this.gettameitem();
 
         //if the item "isFood", just use for taming
         if(isFood(itemstack)){

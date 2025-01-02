@@ -97,7 +97,7 @@ public class ModEntityTypes {
                             .build(new ResourceLocation(RexCraft.MOD_ID, "jaka").toString()));
 
     public static final RegistryObject<EntityType<SinoEntity>> SINO =
-            ENTITY_TYPES.register("jaka",
+            ENTITY_TYPES.register("sino",
                     () -> EntityType.Builder.of(SinoEntity::new, MobCategory.CREATURE)
                             //Hitbox Size!
                             .sized(0.8f, 0.8f)

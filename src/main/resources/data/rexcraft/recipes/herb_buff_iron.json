@@ -2,28 +2,28 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "minecraft:hay_block"
+      "item": "minecraft:wheat"
     },
     "$": {
-      "item": "rexcraft:beet_stack"
+      "item": "minecraft:beetroot"
     },
     "&": {
-      "item": "minecraft:melon"
+      "item": "minecraft:melon_slice"
     },
     "*": {
-      "item": "rexcraft:blueberry_stack"
+      "item": "rexcraft:blueberry"
     },
     "%": {
-      "item": "rexcraft:potato_stack"
+      "item": "minecraft:potato"
     },
     "!": {
-      "item": "rexcraft:sweetberry_stack"
+      "item": "minecraft:sweet_berries"
     },
     "^": {
-      "item": "rexcraft:zucc_stack"
+      "item": "rexcraft:zucc"
     },
     "+": {
-      "item": "rexcraft:carrot_stack"
+      "item": "minecraft:carrot"
     },
     "@": {
       "item": "rexcraft:iron_bowl"

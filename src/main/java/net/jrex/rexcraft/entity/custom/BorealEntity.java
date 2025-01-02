@@ -179,6 +179,10 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
         Random rand = new Random();
         int rand_num = rand.nextInt(10);
 
+        if (this.isAngry()){
+            return 0;
+        }
+
         if(rand_num > 6){
             return 1;
         }
@@ -200,8 +204,12 @@ public class BorealEntity extends AbstractChestedHorse implements IAnimatable, N
 
             int rand_int = rand.nextInt(upperbound);
 
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
-
+            if(rand_int == 0){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + "1", false));
+            }
+            else{
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
+            }
             this.swinging = false;
         }
 

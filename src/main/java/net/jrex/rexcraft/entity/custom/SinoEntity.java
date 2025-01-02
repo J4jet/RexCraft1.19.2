@@ -3,6 +3,7 @@ package net.jrex.rexcraft.entity.custom;
 import net.jrex.rexcraft.effect.ModEffects;
 import net.jrex.rexcraft.entity.ModEntityTypes;
 import net.jrex.rexcraft.entity.variant.SinoVariant;
+import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -132,6 +134,17 @@ public class SinoEntity extends AbstractDiggingDino {
             return item_t4_3;
         }
 
+    }
+    @Override
+    public Item gettameitem(){
+        return ModItems.CARNO_BUFF_IRON.get();
+    }
+
+    @Override
+    //Used as the healing item, in the case of the gecko it's a cricket
+    public boolean isHeal(ItemStack pStack){
+        return pStack.getItem() == ModItems.CRICKET_ITEM.get() || pStack.getItem() == ModItems.WORM.get()
+                || pStack.getItem() == ModItems.DUBIA.get() || pStack.getItem() == ModItems.CAT_TREAT.get();
     }
 
     @Override
