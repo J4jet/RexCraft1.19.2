@@ -23,7 +23,10 @@ public class ProtoModel extends AnimatedGeoModel<ProtoEntity> {
     @Override
     public ResourceLocation getAnimationResource(ProtoEntity animatable) {
 
-            if(animatable.isAngry()){
+            if(animatable.isDigging()){
+                return new ResourceLocation(RexCraft.MOD_ID, "animations/proto.digging.animation.json");
+            }
+            else if(animatable.isAngry()){
                 return new ResourceLocation(RexCraft.MOD_ID, "animations/styraco_angry.animation.json");
             }
             else{return new ResourceLocation(RexCraft.MOD_ID, "animations/styraco.animation.json");}

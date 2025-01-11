@@ -24,8 +24,12 @@ public class OroModel extends AnimatedGeoModel<OroEntity> {
     @Override
     public ResourceLocation getAnimationResource(OroEntity animatable) {
 
-        return new ResourceLocation(RexCraft.MOD_ID, "animations/oro.animation.json");
-
+        if(animatable.isDigging()){
+            return new ResourceLocation(RexCraft.MOD_ID, "animations/oro.digging.animation.json");
+        }
+        else {
+            return new ResourceLocation(RexCraft.MOD_ID, "animations/oro.animation.json");
+        }
         //return new ResourceLocation(RexCraft.MOD_ID, "animations/gecko.animation.json");
     }
     //Look at the player!
