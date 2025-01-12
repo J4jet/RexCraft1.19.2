@@ -5,10 +5,8 @@ import java.util.Comparator;
 
 public enum ProtoVariant {
 
-    M1(0),
-    F1(1),
-    M2(2),
-    F2(3);
+    M(0),
+    F(1);
 
     private static final ProtoVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
             comparingInt(ProtoVariant::getId)).toArray(ProtoVariant[]::new);

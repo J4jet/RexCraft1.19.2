@@ -12,7 +12,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class ProtoModel extends AnimatedGeoModel<ProtoEntity> {
     @Override
     public ResourceLocation getModelResource(ProtoEntity object) {
-        return new ResourceLocation(RexCraft.MOD_ID, "geo/styraco.geo.json");
+        return new ResourceLocation(RexCraft.MOD_ID, "geo/proto.geo.json");
     }
 
     @Override
@@ -27,16 +27,16 @@ public class ProtoModel extends AnimatedGeoModel<ProtoEntity> {
                 return new ResourceLocation(RexCraft.MOD_ID, "animations/proto.digging.animation.json");
             }
             else if(animatable.isAngry()){
-                return new ResourceLocation(RexCraft.MOD_ID, "animations/styraco_angry.animation.json");
+                return new ResourceLocation(RexCraft.MOD_ID, "animations/proto_angry.animation.json");
             }
-            else{return new ResourceLocation(RexCraft.MOD_ID, "animations/styraco.animation.json");}
+            else{return new ResourceLocation(RexCraft.MOD_ID, "animations/proto.animation.json");}
     }
     //Look at the player!
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void setLivingAnimations(ProtoEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("hhead");
+        IBone head = this.getAnimationProcessor().getBone("head");
 
         IBone neck = this.getAnimationProcessor().getBone("neck");
 

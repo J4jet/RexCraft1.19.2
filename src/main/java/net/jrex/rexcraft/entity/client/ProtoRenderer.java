@@ -24,14 +24,10 @@ public class ProtoRenderer extends GeoEntityRenderer<ProtoEntity> {
 
     public static final Map<ProtoVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(ProtoVariant.class), (p_114874_) -> {
-                p_114874_.put(ProtoVariant.F1,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_m1.png"));
-                p_114874_.put(ProtoVariant.M1,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_f1.png"));
-                p_114874_.put(ProtoVariant.F2,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_m2.png"));
-                p_114874_.put(ProtoVariant.M2,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_f2.png"));
+                p_114874_.put(ProtoVariant.F,
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/proto/proto_m.png"));
+                p_114874_.put(ProtoVariant.M,
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/proto/proto_f.png"));
 
             });
     public ProtoRenderer(EntityRendererProvider.Context renderManager) {
@@ -43,12 +39,7 @@ public class ProtoRenderer extends GeoEntityRenderer<ProtoEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(ProtoEntity instance) {
-        if (instance.isDigging()) {
-            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_oldbuck.png");
-
-        } else {
-            return LOCATION_BY_VARIANT.get(instance.getVariant());
-        }
+        return LOCATION_BY_VARIANT.get(instance.getVariant());
 
     }
 

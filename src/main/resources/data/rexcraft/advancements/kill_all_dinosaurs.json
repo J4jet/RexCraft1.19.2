@@ -29,6 +29,34 @@
       },
       "trigger": "minecraft:player_killed_entity"
     },
+    "rexcraft:oro": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:oro"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "rexcraft:proto": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:proto"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
     "rexcraft:diplo": {
       "conditions": {
         "entity": [
@@ -101,6 +129,12 @@
   "requirements": [
     [
       "rexcraft:bucklandii"
+    ],
+    [
+      "rexcraft:oro"
+    ],
+    [
+      "rexcraft:proto"
     ],
     [
       "rexcraft:bernis"
