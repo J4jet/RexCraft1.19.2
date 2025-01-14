@@ -24,9 +24,9 @@ public class JakaRenderer extends GeoEntityRenderer<JakaEntity> {
     public static final Map<JakaVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(JakaVariant.class), (p_114874_) -> {
                 p_114874_.put(JakaVariant.F,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/boreal/boreal_f.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/jaka/jaka_f.png"));
                 p_114874_.put(JakaVariant.M,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/boreal/boreal_m.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/jaka/jaka_m.png"));
 
             });
     public JakaRenderer(EntityRendererProvider.Context renderManager) {
@@ -49,9 +49,9 @@ public class JakaRenderer extends GeoEntityRenderer<JakaEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(0.50F, 0.50F, 0.50F);
+            stack.scale(0.1F, 0.1F, 0.1F);
         } else {
-            stack.scale(1.0f, 1.0f,1.0f);
+            stack.scale(0.2f, 0.2f,0.2f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

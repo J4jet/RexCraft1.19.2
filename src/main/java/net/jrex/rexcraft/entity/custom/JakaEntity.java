@@ -425,7 +425,7 @@ public class JakaEntity extends AbstractDiggingDino{
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(5.0f);
         }
         else if (!this.isAngry()){
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
             getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3.0f);
         }

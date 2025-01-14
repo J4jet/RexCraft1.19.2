@@ -13,7 +13,7 @@ public class JakaModel extends AnimatedGeoModel<JakaEntity> {
     @Override
     public ResourceLocation getModelResource(JakaEntity object) {
 
-        return new ResourceLocation(RexCraft.MOD_ID, "geo/boreal.geo.json");
+        return new ResourceLocation(RexCraft.MOD_ID, "geo/jaka.geo.json");
     }
 
     @Override
@@ -28,18 +28,18 @@ public class JakaModel extends AnimatedGeoModel<JakaEntity> {
             return new ResourceLocation(RexCraft.MOD_ID, "animations/jaka.digging.animation.json");
         }
         else if(animatable.isAngry()){
-            return new ResourceLocation(RexCraft.MOD_ID, "animations/boreal_angry.animation.json");
+            return new ResourceLocation(RexCraft.MOD_ID, "animations/jaka_angry.animation.json");
         }
-        else{return new ResourceLocation(RexCraft.MOD_ID, "animations/boreal.animation.json");}
+        else{return new ResourceLocation(RexCraft.MOD_ID, "animations/jaka.animation.json");}
     }
     //Look at the player!
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void setLivingAnimations(JakaEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("head");
+        IBone head = this.getAnimationProcessor().getBone("hhead");
 
-        IBone neck = this.getAnimationProcessor().getBone("neck");
+        IBone neck = this.getAnimationProcessor().getBone("neck3");
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         if (head != null) {
