@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -361,11 +362,19 @@ public class ProtoEntity extends AbstractDiggingDino{
     protected SoundEvent getAmbientSound() {
 
         if(this.isAngry()){
-            return ModSounds.VELO_ANGRY1.get();
+            return ModSounds.PROTO_ANGRY.get();
         }
         else {
-            return ModSounds.VELO_IDLE.get();
+            return ModSounds.PROTO_IDLE.get();
         }
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.PROTO_HURT.get();
+    }
+
+    protected SoundEvent getDeathSound() {
+        return ModSounds.PROTO_DEATH.get();
     }
 
     @Override

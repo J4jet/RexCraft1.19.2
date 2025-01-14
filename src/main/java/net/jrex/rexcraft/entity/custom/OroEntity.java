@@ -264,6 +264,11 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         return factory;
     }
 
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSounds.ORO_IDLE.get();
+    }
+
 
     @Override
     protected void playStepSound(BlockPos pPos, BlockState pBlock) {
@@ -291,11 +296,11 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.GECKO_HURT.get();
+        return ModSounds.ORO_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.GECKO_DEATH.get();
+        return ModSounds.ORO_DEATH.get();
     }
 
     protected SoundEvent getSwimSound() {

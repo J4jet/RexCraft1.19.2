@@ -106,6 +106,27 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> DIPLO_ANGRY =
             registerSoundEvent("diplo_angry");
 
+    public static final RegistryObject<SoundEvent> PROTO_DEATH =
+            registerSoundEvent("proto_death");
+
+    public static final RegistryObject<SoundEvent> PROTO_HURT =
+            registerSoundEvent("proto_hurt");
+
+    public static final RegistryObject<SoundEvent> PROTO_IDLE =
+            registerSoundEvent("proto_idle");
+
+    public static final RegistryObject<SoundEvent> PROTO_ANGRY =
+            registerSoundEvent("proto_angry");
+
+    public static final RegistryObject<SoundEvent> ORO_DEATH =
+            registerSoundEvent("oro_death");
+
+    public static final RegistryObject<SoundEvent> ORO_HURT =
+            registerSoundEvent("oro_hurt");
+
+    public static final RegistryObject<SoundEvent> ORO_IDLE =
+            registerSoundEvent("oro_idle");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

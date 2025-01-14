@@ -191,5 +191,47 @@
     "sounds": [
       "rexcraft:velo_angry1"
     ]
-  }
-}
+  },
+   "proto_hurt": {
+     "subtitle": "sounds.rexcraft.proto_hurt",
+     "sounds": [
+       "rexcraft:proto_hurt"
+     ]
+   },
+   "proto_death": {
+     "subtitle": "sounds.rexcraft.proto_death",
+     "sounds": [
+       "rexcraft:proto_death"
+     ]
+   },
+   "proto_idle": {
+     "subtitle": "sounds.rexcraft.proto_idle",
+     "sounds": [
+       "rexcraft:proto_idle"
+     ]
+   },
+   "proto_angry": {
+     "subtitle": "sounds.rexcraft.proto_angry",
+     "sounds": [
+       "rexcraft:proto_angry"
+     ]
+   },
+   "oro_hurt": {
+     "subtitle": "sounds.rexcraft.oro_hurt",
+     "sounds": [
+       "rexcraft:oro_hurt"
+     ]
+   },
+   "oro_death": {
+     "subtitle": "sounds.rexcraft.oro_death",
+     "sounds": [
+       "rexcraft:oro_death"
+     ]
+   },
+   "oro_idle": {
+     "subtitle": "sounds.rexcraft.oro_idle",
+     "sounds": [
+       "rexcraft:oro_idle"
+     ]
+   }
+ }

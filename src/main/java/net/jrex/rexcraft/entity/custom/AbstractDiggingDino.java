@@ -185,14 +185,6 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
     }
 
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.GECKO_HURT.get();
-    }
-
-    protected SoundEvent getDeathSound() {
-        return ModSounds.GECKO_DEATH.get();
-    }
-
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
     }
@@ -204,6 +196,7 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
     protected float getSoundVolume() {
         return 0.8F;
     }
+
 
     //helper method to determine what item is found by the entity
     public Item handle_random_item(){
