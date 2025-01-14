@@ -24,11 +24,12 @@ public class JakaModel extends AnimatedGeoModel<JakaEntity> {
     @Override
     public ResourceLocation getAnimationResource(JakaEntity animatable) {
 
-        if(animatable.isDigging()){
-            return new ResourceLocation(RexCraft.MOD_ID, "animations/jaka.digging.animation.json");
-        }
-        else if(animatable.isAngry()){
+        if(animatable.isAngry()){
             return new ResourceLocation(RexCraft.MOD_ID, "animations/jaka_angry.animation.json");
+        }
+
+        else if(animatable.isDigging()){
+            return new ResourceLocation(RexCraft.MOD_ID, "animations/jaka.digging.animation.json");
         }
         else{return new ResourceLocation(RexCraft.MOD_ID, "animations/jaka.animation.json");}
     }

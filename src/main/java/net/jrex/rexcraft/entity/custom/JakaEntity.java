@@ -173,7 +173,7 @@ public class JakaEntity extends AbstractDiggingDino{
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
+        //this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 2.5D, 2.5D));
 
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
