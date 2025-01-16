@@ -127,6 +127,15 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> ORO_IDLE =
             registerSoundEvent("oro_idle");
 
+    public static final RegistryObject<SoundEvent> JAKA_DEATH =
+            registerSoundEvent("jaka_death");
+
+    public static final RegistryObject<SoundEvent> JAKA_HURT =
+            registerSoundEvent("jaka_hurt");
+
+    public static final RegistryObject<SoundEvent> JAKA_IDLE =
+            registerSoundEvent("jaka_idle");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {

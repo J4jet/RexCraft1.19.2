@@ -31,7 +31,7 @@ public class JakaRenderer extends GeoEntityRenderer<JakaEntity> {
             });
     public JakaRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new JakaModel());
-        this.shadowRadius = 0.8f;
+        this.shadowRadius = 0.15f;
     }
 
 
@@ -49,9 +49,9 @@ public class JakaRenderer extends GeoEntityRenderer<JakaEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(0.1F, 0.1F, 0.1F);
+            stack.scale(0.5F, 0.5F, 0.5F);
         } else {
-            stack.scale(0.2f, 0.2f,0.2f);
+            stack.scale(0.13f, 0.13f,0.13f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

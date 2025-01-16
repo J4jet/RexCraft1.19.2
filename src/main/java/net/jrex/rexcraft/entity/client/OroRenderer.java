@@ -32,7 +32,7 @@ public class OroRenderer extends GeoEntityRenderer<OroEntity> {
             });
     public OroRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OroModel());
-        this.shadowRadius = 0.1f;
+        this.shadowRadius = 0.3f;
     }
 
 

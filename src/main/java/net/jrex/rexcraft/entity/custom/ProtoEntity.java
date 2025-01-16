@@ -70,8 +70,8 @@ public class ProtoEntity extends AbstractDiggingDino{
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.ATTACK_DAMAGE, 3.0f)
+                .add(Attributes.MAX_HEALTH, 15.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
     }
@@ -158,15 +158,15 @@ public class ProtoEntity extends AbstractDiggingDino{
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(22.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.5D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(16.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(15.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
         }

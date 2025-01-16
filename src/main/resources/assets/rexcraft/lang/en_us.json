@@ -26,6 +26,7 @@
   "item.rexcraft.velo_claw": "Velociraptor Claw",
   "item.rexcraft.styraco_horn": "Styracosaurus Horn",
   "item.rexcraft.boreal_neck": "Borealopelta Neck Vertebrae",
+  "item.rexcraft.jaka_scute": "Jakapil Osteoderm",
   "item.rexcraft.steel_ingot": "Steel Ingot",
   "item.rexcraft.poleaxe": "Poleaxe",
   "item.rexcraft.diamond_poleaxe": "Diamond Poleaxe",
@@ -170,7 +171,18 @@
   "sounds.rexcraft.diplo_idle": "Diplodocus calling",
   "sounds.rexcraft.diplo_angry": "Diplodocus roaring",
 
+  "sounds.rexcraft.jaka_hurt": "Jakapil in pain",
+  "sounds.rexcraft.jaka_death": "Jakapil dying",
+  "sounds.rexcraft.jaka_idle": "Jakapil... making whatever that noise is...",
 
+  "sounds.rexcraft.oro_hurt": "Orodromeus in pain",
+  "sounds.rexcraft.oro_death": "Orodromeus dying",
+  "sounds.rexcraft.oro_idle": "Orodromeus calling",
+
+  "sounds.rexcraft.proto_hurt": "Protoceratops in pain",
+  "sounds.rexcraft.proto_death": "Protoceratops dying",
+  "sounds.rexcraft.proto_idle": "Protoceratops calling",
+  "sounds.rexcraft.proto_angry": "Protoceratops roaring",
 
   "effect.rexcraft.bleed": "Bleeding",
   "effect.rexcraft.antifreeze": "Anti-Freeze",
@@ -185,6 +197,7 @@
   "entity.rexcraft.diplo": "Diplodocus carnegii",
   "entity.rexcraft.oro": "Orodromeus makelai",
   "entity.rexcraft.proto": "Protoceratops andrewsi",
+  "entity.rexcraft.Jaka": "Jakapil kaniukura",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 

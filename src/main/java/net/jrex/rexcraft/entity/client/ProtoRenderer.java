@@ -32,7 +32,7 @@ public class ProtoRenderer extends GeoEntityRenderer<ProtoEntity> {
             });
     public ProtoRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new ProtoModel());
-        this.shadowRadius = 0.2f;
+        this.shadowRadius = 0.5f;
     }
 
 

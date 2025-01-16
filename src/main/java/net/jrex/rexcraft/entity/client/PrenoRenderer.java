@@ -29,7 +29,7 @@ public class PrenoRenderer extends GeoEntityRenderer<PrenoEntity> {
             });
     public PrenoRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new PrenoModel());
-        this.shadowRadius = 0.2f;
+        this.shadowRadius = 0.3f;
     }
 
 

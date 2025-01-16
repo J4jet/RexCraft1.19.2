@@ -228,6 +228,24 @@
        "rexcraft:oro_death"
      ]
    },
+   "jaka_idle": {
+     "subtitle": "sounds.rexcraft.jaka_idle",
+     "sounds": [
+       "rexcraft:jaka_idle"
+     ]
+   },
+   "jaka_hurt": {
+     "subtitle": "sounds.rexcraft.jaka_hurt",
+     "sounds": [
+       "rexcraft:jaka_hurt"
+     ]
+   },
+   "jaka_death": {
+     "subtitle": "sounds.rexcraft.jaka_death",
+     "sounds": [
+       "rexcraft:jaka_death"
+     ]
+   },
    "oro_idle": {
      "subtitle": "sounds.rexcraft.oro_idle",
      "sounds": [

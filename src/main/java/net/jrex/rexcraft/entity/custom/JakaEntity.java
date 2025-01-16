@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -46,12 +47,6 @@ public class JakaEntity extends AbstractDiggingDino{
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(JakaEntity.class, EntityDataSerializers.INT);
 
-    // ____ ANGRY STUFF _____ //
-    public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
-        EntityType<?> entitytype = p_30437_.getType();
-        return entitytype == ModEntityTypes.VELO.get();
-    };
-
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(65, 80);
 
     @Nullable
@@ -68,7 +63,7 @@ public class JakaEntity extends AbstractDiggingDino{
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.MAX_HEALTH, 15.0D)
                 .add(Attributes.ATTACK_DAMAGE, 0.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
@@ -156,17 +151,17 @@ public class JakaEntity extends AbstractDiggingDino{
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(35.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(15.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(30.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(15.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
         }
     }
 
@@ -175,12 +170,13 @@ public class JakaEntity extends AbstractDiggingDino{
         super.registerGoals();
         //this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 2.5D, 2.5D));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, VeloEntity.class, 10.0F, 2.5D, 2.5D));
 
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
+        //this.targetSelector.addGoal(4, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
 
     }
@@ -357,13 +353,17 @@ public class JakaEntity extends AbstractDiggingDino{
     // Override the amb sounds to get different sounds when angry
     @Override
     protected SoundEvent getAmbientSound() {
+        return ModSounds.JAKA_IDLE.get();
+    }
 
-        if(this.isAngry()){
-            return ModSounds.VELO_ANGRY1.get();
-        }
-        else {
-            return ModSounds.VELO_IDLE.get();
-        }
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.JAKA_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.JAKA_DEATH.get();
     }
 
     @Override
