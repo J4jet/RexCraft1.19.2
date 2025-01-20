@@ -246,6 +246,24 @@
        "rexcraft:jaka_death"
      ]
    },
+   "sino_idle": {
+     "subtitle": "sounds.rexcraft.sino_idle",
+     "sounds": [
+       "rexcraft:sino_idle"
+     ]
+   },
+   "sino_hurt": {
+     "subtitle": "sounds.rexcraft.sino_hurt",
+     "sounds": [
+       "rexcraft:sino_hurt"
+     ]
+   },
+   "sino_death": {
+     "subtitle": "sounds.rexcraft.sino_death",
+     "sounds": [
+       "rexcraft:sino_death"
+     ]
+   },
    "oro_idle": {
      "subtitle": "sounds.rexcraft.oro_idle",
      "sounds": [

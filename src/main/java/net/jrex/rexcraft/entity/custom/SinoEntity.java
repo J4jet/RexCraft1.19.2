@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -422,13 +423,15 @@ public class SinoEntity extends AbstractDiggingDino {
     // Override the amb sounds to get different sounds when angry
     @Override
     protected SoundEvent getAmbientSound() {
-
-        if(this.isAngry()){
-            return ModSounds.VELO_ANGRY1.get();
-        }
-        else {
-            return ModSounds.VELO_IDLE.get();
-        }
+        return ModSounds.SINO_IDLE.get();
+    }
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.SINO_HURT.get();
+    }
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.SINO_DEATH.get();
     }
 
     @Override

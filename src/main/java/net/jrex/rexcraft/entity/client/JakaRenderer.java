@@ -49,7 +49,7 @@ public class JakaRenderer extends GeoEntityRenderer<JakaEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(0.5F, 0.5F, 0.5F);
+            stack.scale(0.06F, 0.06F, 0.06F);
         } else {
             stack.scale(0.13f, 0.13f,0.13f);
         }

@@ -179,6 +179,14 @@
   "sounds.rexcraft.oro_death": "Orodromeus dying",
   "sounds.rexcraft.oro_idle": "Orodromeus calling",
 
+  "sounds.rexcraft.sino_hurt": "Sinosauropteryx in pain",
+  "sounds.rexcraft.sino_death": "Sinosauropteryx dying",
+  "sounds.rexcraft.sino_idle": "Sinosauropteryx calling",
+
+  "sounds.rexcraft.preno_hurt": "Prenocephale in pain",
+  "sounds.rexcraft.preno_death": "Prenocephale dying",
+  "sounds.rexcraft.preno_idle": "Prenocephale calling",
+
   "sounds.rexcraft.proto_hurt": "Protoceratops in pain",
   "sounds.rexcraft.proto_death": "Protoceratops dying",
   "sounds.rexcraft.proto_idle": "Protoceratops calling",
@@ -197,7 +205,9 @@
   "entity.rexcraft.diplo": "Diplodocus carnegii",
   "entity.rexcraft.oro": "Orodromeus makelai",
   "entity.rexcraft.proto": "Protoceratops andrewsi",
-  "entity.rexcraft.Jaka": "Jakapil kaniukura",
+  "entity.rexcraft.jaka": "Jakapil kaniukura",
+  "entity.rexcraft.sino": "Sinosauropteryx prima",
+  "entity.rexcraft.preno": "Prenocephale prenes",
 
   "block.rexcraft.blueberry_crop": "Blueberry Bush",
 

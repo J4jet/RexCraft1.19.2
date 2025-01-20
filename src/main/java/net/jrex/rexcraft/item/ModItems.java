@@ -47,6 +47,12 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> JAKA_SCUTE = ITEMS.register("jaka_scute",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> SINO_TAIL = ITEMS.register("sino_tail",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> PRENO_DOME = ITEMS.register("preno_dome",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> ORO_FOOT = ITEMS.register("oro_foot",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 

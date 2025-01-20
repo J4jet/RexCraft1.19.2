@@ -136,6 +136,15 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> JAKA_IDLE =
             registerSoundEvent("jaka_idle");
 
+    public static final RegistryObject<SoundEvent> SINO_DEATH =
+            registerSoundEvent("sino_death");
+
+    public static final RegistryObject<SoundEvent> SINO_HURT =
+            registerSoundEvent("sino_hurt");
+
+    public static final RegistryObject<SoundEvent> SINO_IDLE =
+            registerSoundEvent("sino_idle");
+
 
 
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
