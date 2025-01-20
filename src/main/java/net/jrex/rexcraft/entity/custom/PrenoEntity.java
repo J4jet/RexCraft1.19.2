@@ -61,10 +61,10 @@ public class PrenoEntity extends AbstractDiggingDino{
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.MAX_HEALTH, 12.0D)
                 .add(Attributes.ATTACK_DAMAGE, 3.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.18f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
 
     @Override
@@ -149,31 +149,31 @@ public class PrenoEntity extends AbstractDiggingDino{
     public void setTame(boolean tamed) {
         super.setTame(tamed);
         if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(22.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(13.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.5D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
         }
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
+        //this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 2.5D, 2.5D));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, VeloEntity.class, 10.0F, 2.5D, 2.5D));
 
-        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        //this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        //this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        //this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+        //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
 
     }

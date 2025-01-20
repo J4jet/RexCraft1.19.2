@@ -22,9 +22,9 @@ public class PrenoRenderer extends GeoEntityRenderer<PrenoEntity> {
     public static final Map<PrenoVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(PrenoVariant.class), (p_114874_) -> {
                 p_114874_.put(PrenoVariant.F,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_m1.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/preno/preno_m.png"));
                 p_114874_.put(PrenoVariant.M,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_f1.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/preno/preno_f.png"));
 
             });
     public PrenoRenderer(EntityRendererProvider.Context renderManager) {
@@ -36,12 +36,7 @@ public class PrenoRenderer extends GeoEntityRenderer<PrenoEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(PrenoEntity instance) {
-        if (instance.isDigging()) {
-            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/styraco/styraco_oldbuck.png");
-
-        } else {
-            return LOCATION_BY_VARIANT.get(instance.getVariant());
-        }
+        return LOCATION_BY_VARIANT.get(instance.getVariant());
 
     }
 
@@ -52,9 +47,9 @@ public class PrenoRenderer extends GeoEntityRenderer<PrenoEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(0.2F, 0.2F, 0.2F);
+            stack.scale(0.1F, 0.1F, 0.1F);
         } else {
-            stack.scale(0.7f, 0.7f,0.7f);
+            stack.scale(0.25f, 0.25f,0.25f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
