@@ -43,6 +43,48 @@
       },
       "trigger": "minecraft:player_killed_entity"
     },
+    "rexcraft:preno": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:preno"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "rexcraft:jaka": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:jaka"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "rexcraft:sino": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:sino"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
     "rexcraft:proto": {
       "conditions": {
         "entity": [
@@ -132,6 +174,15 @@
     ],
     [
       "rexcraft:oro"
+    ],
+    [
+      "rexcraft:preno"
+    ],
+    [
+      "rexcraft:jaka"
+    ],
+    [
+      "rexcraft:sino"
     ],
     [
       "rexcraft:proto"

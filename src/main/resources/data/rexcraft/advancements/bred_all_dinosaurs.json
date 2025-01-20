@@ -29,6 +29,34 @@
       },
       "trigger": "minecraft:bred_animals"
     },
+    "rexcraft:sino": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:sino"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
+    "rexcraft:preno": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:preno"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
     "rexcraft:velo": {
       "conditions": {
         "child": [
@@ -71,6 +99,48 @@
       },
       "trigger": "minecraft:bred_animals"
     },
+    "rexcraft:proto": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:proto"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
+    "rexcraft:oro": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:oro"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
+    "rexcraft:jaka": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:jaka"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
     "rexcraft:styraco": {
       "conditions": {
         "child": [
@@ -100,6 +170,15 @@
   "requirements": [
     [
       "rexcraft:bucklandii"
+    ],
+    [
+      "rexcraft:preno"
+    ],
+    [
+      "rexcraft:sino"
+    ],
+    [
+      "rexcraft:jaka"
     ],
     [
       "rexcraft:oro"
