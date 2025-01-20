@@ -794,7 +794,7 @@
 				},
 				"hhead": {
 					"rotation": {
-						"vector": [35, 0, 0]
+						"vector": [7.5, 0, 0]
 					}
 				},
 				"tail1": {
@@ -829,7 +829,7 @@
 				},
 				"neck3": {
 					"rotation": {
-						"vector": [-27.5, 0, 0]
+						"vector": [-10, 0, 0]
 					}
 				},
 				"undefined": {

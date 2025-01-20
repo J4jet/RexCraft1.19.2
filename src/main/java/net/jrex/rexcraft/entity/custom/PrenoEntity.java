@@ -64,7 +64,7 @@ public class PrenoEntity extends AbstractDiggingDino{
                 .add(Attributes.MAX_HEALTH, 12.0D)
                 .add(Attributes.ATTACK_DAMAGE, 3.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
+                .add(Attributes.MOVEMENT_SPEED, 0.22f).build();
     }
 
     @Override
@@ -73,17 +73,17 @@ public class PrenoEntity extends AbstractDiggingDino{
         // just get a random value and return an item based on that value
         Random rand = new Random();
         // the different items this entity can find when digging
-        Item item_t1_1 = Blocks.SAND.asItem();
+        Item item_t1_1 = Blocks.DIRT.asItem();
         Item item_t1_2 = Items.STICK;
 
         Item item_t2_1 = Items.STICK;
-        Item item_t2_2 = Blocks.DEAD_BUSH.asItem();
+        Item item_t2_2 = Blocks.POPPY.asItem();
 
-        Item item_t3_1 = Blocks.SANDSTONE.asItem();
-        Item item_t3_2 = Blocks.SAND.asItem();
+        Item item_t3_1 = Items.WHEAT_SEEDS;
+        Item item_t3_2 = Items.OAK_SAPLING;
 
-        Item item_t4_1 = Items.GOLD_NUGGET;
-        Item item_t4_2 = Items.RAW_GOLD;
+        Item item_t4_1 = Items.IRON_NUGGET;
+        Item item_t4_2 = Items.CHARCOAL;
         Item item_t4_3 = Items.FLINT;
 
         //oro can "find" these items at these %s:
@@ -132,17 +132,17 @@ public class PrenoEntity extends AbstractDiggingDino{
 
     @Override
     public Block getdiggingblock(){
-        return Blocks.SAND;
+        return Blocks.GRASS_BLOCK;
     }
 
     @Override
     public Block getALTdiggingblock(){
-        return Blocks.DEAD_BUSH;
+        return Blocks.TALL_GRASS;
     }
 
     @Override
     public Block get_placable_block(){
-        return Blocks.SAND;
+        return Blocks.GRASS_BLOCK;
     }
 
     @Override
@@ -152,14 +152,14 @@ public class PrenoEntity extends AbstractDiggingDino{
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(13.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.5D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22f);
 
 
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22f);
         }
     }
 

@@ -39,8 +39,8 @@ public class PrenoModel extends AnimatedGeoModel<PrenoEntity> {
 
         EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
         if (head != null) {
-            head.setRotationX(extraData.headPitch * ((float) Math.PI / 360F));
-            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 360F));
+            head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
+            head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
         }
 
         if(neck != null){
