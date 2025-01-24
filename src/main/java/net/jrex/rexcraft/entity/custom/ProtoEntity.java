@@ -214,7 +214,7 @@ public class ProtoEntity extends AbstractDiggingDino{
 
         // if the entity is digging, play the digging animation.
         if (this.digAnimationTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", false));
             return PlayState.CONTINUE;
         }
 
@@ -356,6 +356,10 @@ public class ProtoEntity extends AbstractDiggingDino{
     }
 
     // ____ ANGRY STUFF _____ //
+    @Override
+    protected float getSoundVolume() {
+        return 0.2F;
+    }
 
     // Override the amb sounds to get different sounds when angry
     @Override

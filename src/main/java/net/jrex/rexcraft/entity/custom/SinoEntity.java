@@ -54,7 +54,7 @@ public class SinoEntity extends AbstractDiggingDino {
     // ____ ANGRY STUFF _____ //
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
-        return entitytype == ModEntityTypes.HEDGY.get() || entitytype == ModEntityTypes.GECKO.get();
+        return entitytype == EntityType.SILVERFISH || entitytype == EntityType.ENDERMITE || entitytype == ModEntityTypes.CRICKET.get();
     };
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(60, 70);
@@ -74,7 +74,7 @@ public class SinoEntity extends AbstractDiggingDino {
 
         return TamableAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 8.0D)
-                .add(Attributes.ATTACK_DAMAGE, 2.0f)
+                .add(Attributes.ATTACK_DAMAGE, 3.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.2f).build();
     }
@@ -223,14 +223,14 @@ public class SinoEntity extends AbstractDiggingDino {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(11.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.5D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.21f);
 
 
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(8.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.21f);
         }
     }
 
@@ -239,6 +239,7 @@ public class SinoEntity extends AbstractDiggingDino {
         super.registerGoals();
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.5D, false));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 2.5D, 2.5D));
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, VeloEntity.class, 10.0F, 2.5D, 2.5D));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 15.0F, 2.5D, 2.5D));
 
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
@@ -277,7 +278,7 @@ public class SinoEntity extends AbstractDiggingDino {
 
         // if the entity is digging, play the digging animation.
         if (this.digAnimationTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", false));
             return PlayState.CONTINUE;
         }
 

@@ -23,25 +23,20 @@ public class SinoRenderer extends GeoEntityRenderer<SinoEntity> {
     public static final Map<SinoVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(SinoVariant.class), (p_114874_) -> {
                 p_114874_.put(SinoVariant.F1,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/velo/velo_m.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/sino/sino_m.png"));
                 p_114874_.put(SinoVariant.M1,
-                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/velo/velo_f.png"));
+                        new ResourceLocation(RexCraft.MOD_ID, "textures/entity/sino/sino_f.png"));
 
             });
     public SinoRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new SinoModel());
-        this.shadowRadius = 0.5f;
+        this.shadowRadius = 0.2f;
     }
 
 
 
     @Override
     public ResourceLocation getTextureLocation(SinoEntity instance) {
-
-        if (instance.isBaby()){
-            return new ResourceLocation(RexCraft.MOD_ID, "textures/entity/velo/velo_baby.png");
-
-        }
 
         return LOCATION_BY_VARIANT.get(instance.getVariant());
 
@@ -54,9 +49,9 @@ public class SinoRenderer extends GeoEntityRenderer<SinoEntity> {
                                     ResourceLocation textureLocation) {
         //Entity Size!
         if(animatable.isBaby()) {
-            stack.scale(0.05F, 0.05F, 0.50F);
+            stack.scale(0.07F, 0.07F, 0.07F);
         } else {
-            stack.scale(0.1f, 0.1f,0.1f);
+            stack.scale(0.15f, 0.15f,0.15f);
         }
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }

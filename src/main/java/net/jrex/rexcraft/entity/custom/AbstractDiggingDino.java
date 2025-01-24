@@ -194,7 +194,7 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
     }
 
     protected float getSoundVolume() {
-        return 0.8F;
+        return 0.5F;
     }
 
 

@@ -12,13 +12,8 @@ public class SinoModel extends AnimatedGeoModel<SinoEntity> {
     @Override
     public ResourceLocation getModelResource(SinoEntity object) {
 
-        if (object.isBaby()){
-            return new ResourceLocation(RexCraft.MOD_ID, "geo/velo_baby.geo.json");
+        return new ResourceLocation(RexCraft.MOD_ID, "geo/sino.geo.json");
 
-        }
-        else{
-            return new ResourceLocation(RexCraft.MOD_ID, "geo/velo.geo.json");
-        }
     }
 
     @Override
@@ -29,17 +24,17 @@ public class SinoModel extends AnimatedGeoModel<SinoEntity> {
     @Override
     public ResourceLocation getAnimationResource(SinoEntity animatable) {
 
-            if(animatable.isAngry()){
-                return new ResourceLocation(RexCraft.MOD_ID, "animations/velo_angry.animation.json");
+            if(animatable.isDigging()){
+                return new ResourceLocation(RexCraft.MOD_ID, "animations/sino.digging.animation.json");
             }
-            else{return new ResourceLocation(RexCraft.MOD_ID, "animations/velo.animation.json");}
+            else{return new ResourceLocation(RexCraft.MOD_ID, "animations/sino.animation.json");}
     }
     //Look at the player!
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void setLivingAnimations(SinoEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("hhead");
+        IBone head = this.getAnimationProcessor().getBone("head");
 
         //experimental, trying to get the neck to move too
         IBone neck = this.getAnimationProcessor().getBone("neck");

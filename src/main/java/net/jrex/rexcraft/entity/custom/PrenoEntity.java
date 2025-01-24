@@ -204,7 +204,7 @@ public class PrenoEntity extends AbstractDiggingDino{
 
         // if the entity is digging, play the digging animation.
         if (this.digAnimationTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", false));
             return PlayState.CONTINUE;
         }
 

@@ -75,14 +75,14 @@ public class JakaEntity extends AbstractDiggingDino{
         // just get a random value and return an item based on that value
         Random rand = new Random();
         // the different items this entity can find when digging
-        Item item_t1_1 = Blocks.SAND.asItem();
+        Item item_t1_1 = Blocks.RED_SAND.asItem();
         Item item_t1_2 = Items.STICK;
 
         Item item_t2_1 = Items.STICK;
         Item item_t2_2 = Blocks.DEAD_BUSH.asItem();
 
-        Item item_t3_1 = Blocks.SANDSTONE.asItem();
-        Item item_t3_2 = Blocks.SAND.asItem();
+        Item item_t3_1 = Blocks.TERRACOTTA.asItem();
+        Item item_t3_2 = Blocks.RED_SAND.asItem();
 
         Item item_t4_1 = Items.GOLD_NUGGET;
         Item item_t4_2 = Items.RAW_GOLD;
@@ -207,7 +207,7 @@ public class JakaEntity extends AbstractDiggingDino{
 
         // if the entity is digging, play the digging animation.
         if (this.digAnimationTick > 0) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("digging", false));
             return PlayState.CONTINUE;
         }
 
