@@ -258,6 +258,24 @@
        "rexcraft:sino_hurt"
      ]
    },
+   "preno_death": {
+     "subtitle": "sounds.rexcraft.preno_death",
+     "sounds": [
+       "rexcraft:preno_death"
+     ]
+   },
+   "preno_idle": {
+     "subtitle": "sounds.rexcraft.preno_idle",
+     "sounds": [
+       "rexcraft:preno_idle"
+     ]
+   },
+   "preno_hurt": {
+     "subtitle": "sounds.rexcraft.preno_hurt",
+     "sounds": [
+       "rexcraft:preno_hurt"
+     ]
+   },
    "sino_death": {
      "subtitle": "sounds.rexcraft.sino_death",
      "sounds": [

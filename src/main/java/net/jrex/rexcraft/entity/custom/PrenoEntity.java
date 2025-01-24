@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -351,12 +352,17 @@ public class PrenoEntity extends AbstractDiggingDino{
     @Override
     protected SoundEvent getAmbientSound() {
 
-        if(this.isAngry()){
-            return ModSounds.VELO_ANGRY1.get();
-        }
-        else {
-            return ModSounds.VELO_IDLE.get();
-        }
+        return ModSounds.PRENO_IDLE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return ModSounds.PRENO_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSounds.PRENO_DEATH.get();
     }
 
     @Override
