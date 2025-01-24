@@ -194,15 +194,15 @@ import net.minecraftforge.registries.RegistryObject;
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> JAKA_SPAWN_EGG = ITEMS.register("jaka_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.JAKA, 0x61462e, 0x444444,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.JAKA, 0x764933, 0x30241d,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> SINO_SPAWN_EGG = ITEMS.register("sino_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.SINO, 0xfa9c2c, 0xfff9f2,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.SINO, 0xe27c21, 0xe7e2db,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> PRENO_SPAWN_EGG = ITEMS.register("preno_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.PRENO, 0xfa9c2c, 0xfff9f2,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.PRENO, 0x41532b, 0x6d4e3c,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> PROTO_SPAWN_EGG = ITEMS.register("proto_spawn_egg",

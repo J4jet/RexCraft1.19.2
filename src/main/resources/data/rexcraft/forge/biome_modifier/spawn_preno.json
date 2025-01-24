@@ -8,8 +8,8 @@
   ],
   "spawners": {
     "type": "rexcraft:preno",
-    "weight": 150,
-    "minCount": 3,
-    "maxCount": 6
+    "weight": 100,
+    "minCount": 2,
+    "maxCount": 4
   }
 }
