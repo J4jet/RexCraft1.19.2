@@ -214,7 +214,7 @@ import net.minecraftforge.registries.RegistryObject;
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> STYRACO_SPAWN_EGG = ITEMS.register("styraco_spawn_egg",
-                () -> new ForgeSpawnEggItem(ModEntityTypes.STYRACO, 0x55a09e, 0xedb508,
+                () -> new ForgeSpawnEggItem(ModEntityTypes.STYRACO, 0x365f74, 0xedb508,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
         public static final RegistryObject<Item> BERNIS_SPAWN_EGG = ITEMS.register("bernis_spawn_egg",

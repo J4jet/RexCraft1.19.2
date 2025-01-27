@@ -157,7 +157,7 @@ public class PrenoEntity extends AbstractDiggingDino{
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(12.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(10.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(3.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.22f);
