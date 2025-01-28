@@ -6,8 +6,8 @@
   ],
   "spawners": {
     "type": "rexcraft:jaka",
-    "weight": 80,
+    "weight": 75,
     "minCount": 1,
-    "maxCount": 5
+    "maxCount": 3
   }
 }

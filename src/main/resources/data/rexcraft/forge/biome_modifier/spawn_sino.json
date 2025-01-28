@@ -7,7 +7,7 @@
   ],
   "spawners": {
     "type": "rexcraft:sino",
-    "weight": 70,
+    "weight": 65,
     "minCount": 1,
     "maxCount": 3
   }
