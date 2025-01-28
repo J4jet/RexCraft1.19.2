@@ -144,8 +144,8 @@ public class SinoEntity extends AbstractDiggingDino {
     @Override
     //Used as the healing item, in the case of the gecko it's a cricket
     public boolean isHeal(ItemStack pStack){
-        return pStack.getItem() == ModItems.CRICKET_ITEM.get() || pStack.getItem() == ModItems.WORM.get()
-                || pStack.getItem() == ModItems.DUBIA.get() || pStack.getItem() == ModItems.CAT_TREAT.get();
+        Item item = pStack.getItem();
+        return item.isEdible() && pStack.getFoodProperties(this).isMeat();
     }
 
     @Override
