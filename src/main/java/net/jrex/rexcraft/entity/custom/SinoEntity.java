@@ -146,6 +146,7 @@ public class SinoEntity extends AbstractDiggingDino {
     public boolean isHeal(ItemStack pStack){
         Item item = pStack.getItem();
         return item.isEdible() && pStack.getFoodProperties(this).isMeat();
+
     }
 
     @Override
