@@ -369,8 +369,8 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         return false;
     }
 
-    public Item gettameitem(){
-        return ModItems.HERB_BUFF_NETH_IRON.get();
+    public boolean Istameitem(ItemStack pStack){
+        return pStack.getItem() == ModItems.HERB_BUFF_NETH_IRON.get() || pStack.getItem() == ModItems.HERB_BUFF_GOLD.get() || pStack.getItem() == ModItems.HERB_BUFF_DIAMOND.get() || pStack.getItem() == ModItems.HERB_BUFF_NETH.get();
     }
 
     public void aiStep() {
@@ -402,8 +402,6 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
-        Item itemForTaming = this.gettameitem();
-
         //if the item "isFood", just use for taming
         if(isFood(itemstack)){
             return super.mobInteract(player, hand);
@@ -421,7 +419,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
 
         }
 
-        if (item == itemForTaming && !isTame()) {
+        if (Istameitem(itemstack) && !isTame()) {
             if (this.level.isClientSide) {
                 return InteractionResult.CONSUME;
             } else {
@@ -456,7 +454,7 @@ public class OroEntity extends TamableAnimal implements IAnimatable {
             return InteractionResult.SUCCESS;
         }
 
-        if (itemstack.getItem() == itemForTaming) {
+        if (Istameitem(itemstack)) {
             return InteractionResult.PASS;
         }
 

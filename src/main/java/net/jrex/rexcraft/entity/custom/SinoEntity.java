@@ -137,8 +137,8 @@ public class SinoEntity extends AbstractDiggingDino {
 
     }
     @Override
-    public Item gettameitem(){
-        return ModItems.CARNO_BUFF_IRON.get();
+    public boolean Istameitem(ItemStack pStack){
+        return pStack.getItem() == ModItems.CARNO_BUFF_IRON.get() || pStack.getItem() == ModItems.CARNO_BUFF_GOLD.get() || pStack.getItem() == ModItems.CARNO_BUFF_DIAMOND.get() || pStack.getItem() == ModItems.CARNO_BUFF_NETH.get();
     }
 
     @Override

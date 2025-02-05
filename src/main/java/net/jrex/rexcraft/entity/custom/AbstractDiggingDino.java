@@ -87,8 +87,6 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
     public boolean has_placeable_block = this.does_have_placeable_block();
     public Block placeable_block = this.get_placable_block();
 
-    public Item tame_item = this.gettameitem();
-
     private AnimationFactory factory = new AnimationFactory(this);
 
     public AbstractDiggingDino(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
@@ -133,8 +131,8 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
         return Items.APPLE;
     }
 
-    public Item gettameitem(){
-        return ModItems.HERB_BUFF_NETH_IRON.get();
+    public boolean Istameitem(ItemStack pStack){
+        return pStack.getItem() == ModItems.HERB_BUFF_NETH_IRON.get() || pStack.getItem() == ModItems.HERB_BUFF_GOLD.get() || pStack.getItem() == ModItems.HERB_BUFF_DIAMOND.get() || pStack.getItem() == ModItems.HERB_BUFF_NETH.get();
     }
 
     public Block getdiggingblock(){
@@ -280,8 +278,6 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
-        Item itemForTaming = this.tame_item;
-
         //if the item "isFood", just use for taming
         if(isFood(itemstack)){
             return super.mobInteract(player, hand);
@@ -299,7 +295,7 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
 
         }
 
-        if (item == itemForTaming && !isTame()) {
+        if (Istameitem(itemstack) && !isTame()) {
             if (this.level.isClientSide) {
                 return InteractionResult.CONSUME;
             } else {
@@ -334,7 +330,7 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
             return InteractionResult.SUCCESS;
         }
 
-        if (itemstack.getItem() == itemForTaming) {
+        if (Istameitem(itemstack)) {
             return InteractionResult.PASS;
         }
 

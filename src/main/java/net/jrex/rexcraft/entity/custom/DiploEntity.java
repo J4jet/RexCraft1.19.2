@@ -1,6 +1,7 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.goal.LargeDinoBreedGoal;
 import net.jrex.rexcraft.entity.variant.DiploVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
@@ -147,10 +148,10 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         //this.goalSelector.addGoal(1, new FloatGoal(this));
         //this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
         this.goalSelector.addGoal(2, new DiploFollowLeaderGoal(this, 1.5));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(4, new BreedGoal(this, 1.0D, DiploEntity.class));
+        this.goalSelector.addGoal(3, new LargeDinoBreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 1.2D, 1.4D));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
