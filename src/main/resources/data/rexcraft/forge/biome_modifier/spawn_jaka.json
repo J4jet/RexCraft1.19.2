@@ -2,11 +2,12 @@
   "type": "forge:add_spawns",
   "biomes": [
     "minecraft:badlands",
-    "minecraft:wooded_badlands"
+    "minecraft:wooded_badlands",
+    "eroded_badlands"
   ],
   "spawners": {
     "type": "rexcraft:jaka",
-    "weight": 75,
+    "weight": 80,
     "minCount": 1,
     "maxCount": 3
   }

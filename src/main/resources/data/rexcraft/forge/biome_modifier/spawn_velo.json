@@ -7,7 +7,7 @@
   ],
   "spawners": {
     "type": "rexcraft:velo",
-    "weight": 70,
+    "weight": 65,
     "minCount": 1,
     "maxCount": 4
   }
