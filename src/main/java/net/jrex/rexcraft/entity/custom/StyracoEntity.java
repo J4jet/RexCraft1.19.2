@@ -227,7 +227,11 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
 
     @Override
     protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
-        return Mth.ceil((pDistance * 9.0F) * pDamageMultiplier);
+        if (pDistance < 3.5){
+            return 0;
+        }else{
+            return Mth.ceil((pDistance * 9.0F) * pDamageMultiplier);
+        }
     }
 
     private PlayState attackPredicate(AnimationEvent event) {
