@@ -113,6 +113,7 @@ public class RexCraft
             EntityRenderers.register(ModEntityTypes.JAKA.get(), JakaRenderer::new);
             EntityRenderers.register(ModEntityTypes.SINO.get(), SinoRenderer::new);
             EntityRenderers.register(ModEntityTypes.PRENO.get(), PrenoRenderer::new);
+            EntityRenderers.register(ModEntityTypes.REX.get(), RexRenderer::new);
             //ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUEBERRY_CROP.get(), RenderType.cutout());
             //ItemBlockRenderTypes.setRenderLayer(ModBlocks.ZUCC_CROP.get(), RenderType.cutout());
 

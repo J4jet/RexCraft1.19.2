@@ -236,6 +236,10 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> BOREAL_SPAWN_EGG = ITEMS.register("boreal_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.BOREAL, 0xaa0000, 0xffffff,
                         new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
+        public static final RegistryObject<Item> REX_SPAWN_EGG = ITEMS.register("rex_spawn_egg",
+                () -> new ForgeSpawnEggItem(ModEntityTypes.REX, 0xaa0000, 0xffffff,
+                        new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 //faa009
         public static final RegistryObject<Item> VELO_SPAWN_EGG = ITEMS.register("velo_spawn_egg",
                 () -> new ForgeSpawnEggItem(ModEntityTypes.VELO, 0xfbf9ef, 0xfaa009,

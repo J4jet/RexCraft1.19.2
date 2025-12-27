@@ -28,6 +28,7 @@ public class ModEvents {
             event.put(ModEntityTypes.JAKA.get(), JakaEntity.setAttributes());
             event.put(ModEntityTypes.SINO.get(), SinoEntity.setAttributes());
             event.put(ModEntityTypes.PRENO.get(), PrenoEntity.setAttributes());
+            event.put(ModEntityTypes.REX.get(), RexEntity.setAttributes());
         }
 
     }
