@@ -45,6 +45,22 @@ public class BernisEntity extends AbstractUtilDino implements IAnimatable, Neutr
                 .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
     }
 
+    @Override
+    public float get_step_height(){
+        return 2.0F;
+    }
+
+    @Override
+    //speed modifier of the entity when being ridden
+    public float get_speedMod(){
+        return -0.7f;
+    }
+
+    @Override
+    public float get_riderOffset(){
+        return 1.0f;
+    }
+
     //no randomized attributes!
     @Override
     protected void randomizeAttributes(RandomSource p_218803_) {

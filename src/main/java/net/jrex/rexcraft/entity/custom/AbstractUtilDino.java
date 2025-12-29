@@ -57,14 +57,20 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
 
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(40, 60);
 
-    public static float step_height = 2.0F;
+    public float get_step_height(){
+        return 2.0F;
+    }
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = -0.7f;
+    public float get_speedMod(){
+        return -0.7f;
+    }
+
+    public float get_riderOffset(){
+        return 1.0f;
+    }
 
     public static int attacknum = 3;
-
-    public static float riderOffset = 1.0f;
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -185,7 +191,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
             float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
             float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
 
-            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + riderOffset, this.getZ() - (double)(0.3F * f));
+            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + this.get_riderOffset(), this.getZ() - (double)(0.3F * f));
         }
     }
 
@@ -517,7 +523,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
                 this.yHeadRot = this.yBodyRot;
                 float f = livingentity.xxa * 0.5F;
                 float f1 = livingentity.zza;
-                this.maxUpStep = step_height;
+                this.maxUpStep = this.get_step_height();
 
                 if (this.onGround) {
                     Vec3 vec3 = this.getDeltaMovement();
@@ -525,7 +531,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
                 }
 
                 if (this.isControlledByLocalInstance()) {
-                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + speedMod);
+                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + this.get_speedMod());
                     super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
                 } else if (livingentity instanceof Player) {
                     this.setDeltaMovement(Vec3.ZERO);
