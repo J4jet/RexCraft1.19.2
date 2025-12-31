@@ -1,5 +1,6 @@
 package net.jrex.rexcraft.entity.custom;
 import net.jrex.rexcraft.item.ModItems;
+import net.jrex.rexcraft.sound.ModSounds;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -49,6 +50,12 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
 
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
             SynchedEntityData.defineId(AbstractUtilDino.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> CHALLENGED =
+            SynchedEntityData.defineId(AbstractUtilDino.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CHALLENGED_ANIMATION =
+            SynchedEntityData.defineId(AbstractUtilDino.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> WEAK =
+            SynchedEntityData.defineId(AbstractUtilDino.class, EntityDataSerializers.BOOLEAN);
 
     protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(AbstractUtilDino.class, EntityDataSerializers.BYTE);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(AbstractUtilDino.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -70,7 +77,33 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
         return 1.0f;
     }
 
+    // Used to get the base movement speed of the dinosaur
+    public float getBaseSpeed(){
+        return 0.17f;
+    }
+
+    // Time it takes to play the challenge animation
+    public int challenge_time = 0;
+
+    //set length of the challenge animation
+    public void setAnimLen(){
+        this.challenge_time = 130;
+    }
+
     public static int attacknum = 3;
+
+    // Function that just gets 10% of the total health
+    private float getWeakNum(){
+        return (this.getMaxHealth() * 0.10f);
+    }
+
+    public void setWeak(boolean weak) {
+        this.entityData.set(WEAK, weak);
+    }
+
+    public boolean isWeak() {
+        return this.entityData.get(WEAK);
+    }
 
     @Nullable
     private UUID persistentAngerTarget;
@@ -100,6 +133,16 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+
+        if (this.isChallengedAnimation()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("challenge", false));
+            return PlayState.CONTINUE;
+        }
+
+        if (this.isWeak()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("weak", true));
+            return PlayState.CONTINUE;
+        }
 
         //if in water, use swimming anims
 
@@ -185,6 +228,11 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
         return item == ModItems.HERB_BUFF_GOLD.get() || item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
     }
 
+    public boolean challengeItem(ItemStack pStack){
+        Item item = pStack.getItem();
+        return item == ModItems.ALLO.get();
+    }
+
     @Override
     public void positionRider(@NotNull Entity pPassenger) {
         if (this.hasPassenger(pPassenger)) {
@@ -240,6 +288,32 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
     public void aiStep() {
         super.aiStep();
 
+        this.setWeak((this.getHealth() < getWeakNum()) && this.isChallenged());
+        // It shouldn't be moving if it's either weak or in it's challenge animation
+        if ((!this.level.isClientSide && this.isAlive()) && ((this.isWeak()) || (this.isChallenged() && this.isChallengedAnimation()))){
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+
+            // if it's in its challenge anim, it should be invulnerable
+            if (!this.level.isClientSide && this.isAlive() && this.isChallenged() && this.isChallengedAnimation()) {
+                this.challenge_time = this.challenge_time - 1;
+                this.setInvulnerable(true);
+                getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+
+                if (this.challenge_time < 1) {
+                    this.setChallengedAnimation(false);
+                }
+            }
+            else{
+                this.setInvulnerable(false);
+            }
+
+        }
+        else{
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.getBaseSpeed());
+            this.setInvulnerable(false);
+        }
+
+
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
                 this.heal(1.0F);
@@ -293,7 +367,28 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
 
         if (!itemstack.isEmpty()) {
 
-            if (this.tameItem(itemstack) && !isTamed()) {
+            //if this is the item for challenging, set challenge to true
+            if (this.challengeItem(itemstack) && !isTame() && !this.isBaby()) {
+                if (this.level.isClientSide) {
+                    return InteractionResult.CONSUME;
+                } else {
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+
+                    if (!this.level.isClientSide) {
+                        setChallenged(true);
+                        setChallengedAnimation(true);
+                        //start anim counter
+                        this.setAnimLen();
+                        this.playSound(ModSounds.STYRACO_ANGRY.get(),10,10);
+
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
+            if (this.tameItem(itemstack) && !isTame() && this.isWeak()) {
                 if (this.level.isClientSide) {
                     return InteractionResult.CONSUME;
                 } else {
@@ -305,10 +400,14 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
                         if (!this.level.isClientSide) {
                             this.tame(player);
                             this.setTamed(true);
-                            this.spawnTamingParticles(true);
-                            this.navigation.recomputePath();
                             this.setTarget(null);
                             this.level.broadcastEntityEvent(this, (byte)7);
+                            this.spawnTamingParticles(true);
+                            //remove the weak and challenged status, also heal
+                            setChallenged(false);
+                            setWeak(false);
+                            this.heal(this.getMaxHealth());
+                            this.navigation.recomputePath();
                         }
                     }
 
@@ -378,6 +477,10 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
 
+        setChallenged(tag.getBoolean("isChallenged"));
+        setChallengedAnimation(tag.getBoolean("isChallengedAnimation"));
+        setWeak(tag.getBoolean("isWeak"));
+
         UUID uuid;
         if (tag.hasUUID("Owner")) {
             uuid = tag.getUUID("Owner");
@@ -441,6 +544,10 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
 
+        tag.putBoolean("isChallenged", this.isChallenged());
+        tag.putBoolean("isWeak", this.isWeak());
+        tag.putBoolean("isChallengedAnimation", this.isChallengedAnimation());
+
         if (this.getOwnerUUID() != null) {
             tag.putUUID("Owner", this.getOwnerUUID());
         }
@@ -458,6 +565,9 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
         this.entityData.define(DATA_FLAGS_ID, (byte)0);
         this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+        this.entityData.define(CHALLENGED, false);
+        this.entityData.define(CHALLENGED_ANIMATION, false);
+        this.entityData.define(WEAK, false);
     }
 
     @javax.annotation.Nullable
@@ -570,6 +680,22 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
     @Override
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    public void setChallengedAnimation(boolean challenged) {
+        this.entityData.set(CHALLENGED_ANIMATION, challenged);
+    }
+
+    public boolean isChallengedAnimation() {
+        return this.entityData.get(CHALLENGED_ANIMATION);
+    }
+
+    public void setChallenged(boolean challenged) {
+        this.entityData.set(CHALLENGED, challenged);
+    }
+
+    public boolean isChallenged() {
+        return this.entityData.get(CHALLENGED);
     }
 
 }

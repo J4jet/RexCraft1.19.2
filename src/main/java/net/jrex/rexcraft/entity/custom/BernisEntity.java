@@ -61,6 +61,11 @@ public class BernisEntity extends AbstractUtilDino implements IAnimatable, Neutr
         return 1.0f;
     }
 
+    // Used to get the base movement speed of the dinosaur
+    public float getBaseSpeed(){
+        return 0.23f;
+    }
+
     //no randomized attributes!
     @Override
     protected void randomizeAttributes(RandomSource p_218803_) {

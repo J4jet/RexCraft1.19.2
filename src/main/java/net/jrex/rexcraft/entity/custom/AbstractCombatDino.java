@@ -382,6 +382,7 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
         }
     }
 
+    /*  might want         if (!itemstack.isEmpty()) {} */
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
