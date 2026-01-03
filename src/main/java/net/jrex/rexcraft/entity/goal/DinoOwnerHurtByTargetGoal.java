@@ -1,7 +1,6 @@
 package net.jrex.rexcraft.entity.goal;
 
 import net.jrex.rexcraft.entity.custom.AbstractUtilDino;
-import net.jrex.rexcraft.entity.custom.BernisEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
@@ -10,11 +9,11 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import java.util.EnumSet;
 
 public class DinoOwnerHurtByTargetGoal extends TargetGoal {
-    private final BernisEntity tameAnimal;
+    private final AbstractUtilDino tameAnimal;
     private LivingEntity ownerLastHurtBy;
     private int timestamp;
 
-    public DinoOwnerHurtByTargetGoal(BernisEntity dino) {
+    public DinoOwnerHurtByTargetGoal(AbstractUtilDino dino) {
         super(dino, false);
         this.tameAnimal = dino;
         this.setFlags(EnumSet.of(Goal.Flag.TARGET));

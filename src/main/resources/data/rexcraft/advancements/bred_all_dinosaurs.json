@@ -141,6 +141,20 @@
       },
       "trigger": "minecraft:bred_animals"
     },
+    "rexcraft:rex": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:rex"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:bred_animals"
+    },
     "rexcraft:styraco": {
       "conditions": {
         "child": [
@@ -197,6 +211,9 @@
     ],
     [
       "rexcraft:diplo"
+    ],
+    [
+      "rexcraft:rex"
     ],
     [
       "rexcraft:styraco"

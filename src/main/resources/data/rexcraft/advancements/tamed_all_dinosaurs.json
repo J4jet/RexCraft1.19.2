@@ -1,9 +1,9 @@
 {
-  "parent": "rexcraft:kill_rex",
+  "parent": "rexcraft:tamed_all_tyrannos",
   "criteria": {
     "rexcraft:bucklandii": {
       "conditions": {
-        "entity": [
+        "child": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -13,25 +13,11 @@
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
-    },
-    "rexcraft:rex": {
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "type": "rexcraft:rex"
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
     },
     "rexcraft:bernis": {
       "conditions": {
-        "entity": [
+        "child": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -41,53 +27,11 @@
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
-    },
-    "rexcraft:oro": {
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "type": "rexcraft:oro"
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:player_killed_entity"
-    },
-    "rexcraft:preno": {
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "type": "rexcraft:preno"
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:player_killed_entity"
-    },
-    "rexcraft:jaka": {
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "type": "rexcraft:jaka"
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
     },
     "rexcraft:sino": {
       "conditions": {
-        "entity": [
+        "child": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -97,39 +41,25 @@
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
     },
-    "rexcraft:proto": {
+    "rexcraft:preno": {
       "conditions": {
-        "entity": [
+        "child": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
             "predicate": {
-              "type": "rexcraft:proto"
+              "type": "rexcraft:preno"
             }
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
-    },
-    "rexcraft:diplo": {
-      "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "type": "rexcraft:diplo"
-            }
-          }
-        ]
-      },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
     },
     "rexcraft:velo": {
       "conditions": {
-        "entity": [
+        "child": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -139,11 +69,25 @@
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
+    },
+    "rexcraft:diplo": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:diplo"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
     },
     "rexcraft:boreal": {
       "conditions": {
-        "entity": [
+        "child": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -153,11 +97,67 @@
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
+    },
+    "rexcraft:proto": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:proto"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    },
+    "rexcraft:oro": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:oro"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    },
+    "rexcraft:jaka": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:jaka"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    },
+    "rexcraft:rex": {
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:rex"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
     },
     "rexcraft:styraco": {
       "conditions": {
-        "entity": [
+        "child": [
           {
             "condition": "minecraft:entity_properties",
             "entity": "this",
@@ -167,16 +167,15 @@
           }
         ]
       },
-      "trigger": "minecraft:player_killed_entity"
+      "trigger": "minecraft:tame_animal"
     }
   },
-
   "display": {
     "icon": {
-      "item": "rexcraft:meg_jaw"
+      "item": "rexcraft:carno_buff_neth"
     },
-    "title": "Extinction Level Event",
-    "description": "Slay every dinosaur",
+    "title": "Dinosaur King",
+    "description": "It's what you wanna be, yeah. Tame all dinosaurs.",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true
@@ -187,16 +186,16 @@
       "rexcraft:bucklandii"
     ],
     [
-      "rexcraft:oro"
+      "rexcraft:preno"
     ],
     [
-      "rexcraft:preno"
+      "rexcraft:sino"
     ],
     [
       "rexcraft:jaka"
     ],
     [
-      "rexcraft:sino"
+      "rexcraft:oro"
     ],
     [
       "rexcraft:proto"

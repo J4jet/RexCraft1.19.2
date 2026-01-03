@@ -44,6 +44,9 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> BERNIS_HAND = ITEMS.register("bernis_hand",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> REX_TOOTH = ITEMS.register("rex_tooth",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> JAKA_SCUTE = ITEMS.register("jaka_scute",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
