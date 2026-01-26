@@ -1,6 +1,7 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
+import net.jrex.rexcraft.entity.goal.LargeDinoBreedGoal;
 import net.jrex.rexcraft.entity.variant.RexVariant;
 import net.jrex.rexcraft.item.ModItems;
 import net.jrex.rexcraft.sound.ModSounds;
@@ -95,8 +96,9 @@ public class RexEntity extends AbstractCombatDino {
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.0D, 11.0F, 8.0F, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.25D, false));
-        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.44D, true));
+        this.goalSelector.addGoal(3, new LargeDinoBreedGoal(this, 1.0D));
+        //this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
@@ -119,12 +121,17 @@ public class RexEntity extends AbstractCombatDino {
 
     @Override
     public float getBaseSpeed(){
-        return 0.27f;
+        return 0.25f;
+    }
+
+    @Override
+    public float getBaseAttack(){
+        return 40f;
     }
 
     //speed modifier of the entity when being ridden
     public float getSpeedMod(){
-        return 0.0f;
+        return -0.1f;
     }
 
     //taming item
@@ -186,22 +193,25 @@ public class RexEntity extends AbstractCombatDino {
 
     //Not in AT
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.BUCKLANDII_HURT.get();
+        return ModSounds.REX_HURT.get();
     }
 
     //Not in AT
     protected SoundEvent getDeathSound() {
-        return ModSounds.BUCKLANDII_DEATH.get();
+        return ModSounds.REX_DEATH.get();
     }
+
+    @Override
+    public SoundEvent getChallengedSound(){return ModSounds.REX_CHALLENGED.get();}
 
     //Not in AT
     protected SoundEvent getAmbientSound() {
 
         if(this.isAngry()){
-            return ModSounds.BUCKLANDII_ANGRY.get();
+            return ModSounds.REX_ANGRY.get();
         }
         else {
-            return ModSounds.BUCKLANDII_GROWL.get();
+            return ModSounds.REX_IDLE.get();
         }
     }
 
@@ -266,7 +276,7 @@ public class RexEntity extends AbstractCombatDino {
 
     //Breakin blocks
 
-    // I think this is to balnce stuff like the wither a bit, so that it doesn't just plow through everything.
+    // I think this is to balance stuff like the wither a bit, so that it doesn't just plow through everything.
     //private int destroyBlocksTick;
 
     public boolean inWall;
@@ -286,14 +296,15 @@ public class RexEntity extends AbstractCombatDino {
                 for(int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (!blockstate.isAir() && !blockstate.is(BlockTags.DRAGON_IMMUNE)) {
-                        //&& !blockstate.is(BlockTags.DRAGON_IMMUNE)
-                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this)) {
-                            flag1 = this.level.removeBlock(blockpos, false) || flag1;
-                        } else {
-                            flag = true;
+
+                        if (!blockstate.isAir() && !blockstate.is(BlockTags.ANVIL)) {
+                            //&& !blockstate.is(BlockTags.DRAGON_IMMUNE)
+                            if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this)) {
+                                flag1 = this.level.removeBlock(blockpos, false) || flag1;
+                            } else {
+                                flag = true;
+                            }
                         }
-                    }
                 }
             }
         }

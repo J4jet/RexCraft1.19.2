@@ -5,7 +5,7 @@
   ],
   "spawners": {
     "type": "rexcraft:proto",
-    "weight": 75,
+    "weight": 70,
     "minCount": 1,
     "maxCount": 3
   }

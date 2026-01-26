@@ -61,6 +61,11 @@ public class BucklandiiEntity extends AbstractCombatDino {
         return 0.001f;
     }
 
+    @Override
+    public float getBaseAttack(){
+        return 10f;
+    }
+
     //set length of the challenge animation
     public void setAnimLen(){
         this.challenge_time = 69;
@@ -90,7 +95,7 @@ public class BucklandiiEntity extends AbstractCombatDino {
     public static AttributeSupplier setAttributes() {
 
         return TamableAnimal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.MAX_HEALTH, 45.0D)
                 .add(Attributes.ATTACK_DAMAGE, 9.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3)
@@ -110,8 +115,8 @@ public class BucklandiiEntity extends AbstractCombatDino {
 
 
         } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(40.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(9.0D);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(45.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
             getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.1f);
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
@@ -126,7 +131,7 @@ public class BucklandiiEntity extends AbstractCombatDino {
             this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
             this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 4.0F, false));
             this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-            this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 2.1D, false));
+            this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.9D, false));
             this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
             this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
             this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
@@ -211,6 +216,9 @@ public class BucklandiiEntity extends AbstractCombatDino {
     protected float getSoundVolume() {
         return 0.6F;
     }
+
+    @Override
+    public SoundEvent getChallengedSound(){return ModSounds.BUCKLANDII_CHALLENGED.get();}
 
 
     //Not in AT

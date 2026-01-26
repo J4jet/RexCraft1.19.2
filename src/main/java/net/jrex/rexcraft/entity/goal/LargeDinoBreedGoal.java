@@ -16,6 +16,7 @@ public class LargeDinoBreedGoal extends BreedGoal {
     // Diplo is actually just too big to breed lmao
     @Override
     public void tick() {
+        assert this.partner != null;
         this.animal.getLookControl().setLookAt(this.partner, 10.0F, (float)this.animal.getMaxHeadXRot());
         this.animal.getNavigation().moveTo(this.partner, this.speedModifier);
         ++this.loveTime;

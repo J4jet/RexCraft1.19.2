@@ -1,8 +1,6 @@
 package net.jrex.rexcraft.entity.custom;
 
 import net.jrex.rexcraft.entity.ModEntityTypes;
-import net.jrex.rexcraft.entity.goal.DinoFollowLeaderGoal;
-import net.jrex.rexcraft.entity.goal.DinoOwnerHurtByTargetGoal;
 import net.jrex.rexcraft.entity.goal.LargeDinoBreedGoal;
 import net.jrex.rexcraft.entity.variant.DiploVariant;
 import net.jrex.rexcraft.item.ModItems;
@@ -70,42 +68,90 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.*;
 
-public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable, NeutralMob {
+public class DiploEntity extends AbstractChestedHorse implements IAnimatable, NeutralMob {
 
-    @Override
-    public float get_step_height(){
-        return 3.0F;
-    }
+    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.INT);
 
-    @Override
+    private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.INT);
+
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(60, 90);
+
+    protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BYTE);
+    protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+
+    private static final EntityDataAccessor<Boolean> CHALLENGED =
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CHALLENGED_ANIMATION =
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> WEAK =
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BOOLEAN);
+
+    public static float step_height = 3.0F;
+
+    public static float riderOffset = 1.2f;
+
     //speed modifier of the entity when being ridden
-    public float get_speedMod(){
-        if (!this.isAngry()){
-            return -0.5f;
-        }
-        else{
-            return 0;
-        }
-    }
-
-    @Override
-    public float get_riderOffset(){
-        return 1.2f;
-    }
-
-    // Used to get the base movement speed of the dinosaur
-    public float getBaseSpeed(){
-        return 0.23f;
-    }
+    public float speedMod;
 
     public static int attacknum = 3;
+
+    //private float deltaRotation = 0.9F;
+
+    //This diplo's leader, stolen from velo
+    public DiploEntity veloLeader = null;
+
+    //number of followers this diplo has
+    public int followers = 0;
+
+    //if this diplo is a leader
+    public boolean isLeader = false;
+
+    //if this diplo is a follower
+    public boolean isfollower = false;
+
+    public int raptor_num = choose_id();
 
     private int destroyBlocksTick;
 
     public boolean inWall;
 
+    // Time it takes to play the challenge animation
+    public int challenge_time = 0;
+
+    //set length of the challenge animation
+    public void setAnimLen(){
+        this.challenge_time = 130;
+    }
+
+    // Function that just gets 10% of the total health
+    private float getWeakNum(){
+        return (this.getMaxHealth() * 0.10f);
+    }
+
+    // Used to get the base attack dmg of a dinosaur
+    public float getBaseAttack(){
+        return 20f;
+    }
+
+    public void setWeak(boolean weak) {
+        this.entityData.set(WEAK, weak);
+    }
+
+    public boolean isWeak() {
+        return this.entityData.get(WEAK);
+    }
+
+    //Chooses a number for the id
+    public static int choose_id(){
+        Random rand = new Random();
+        return rand.nextInt(100000);
+    }
+
     @Nullable
     private UUID persistentAngerTarget;
+
+    private AnimationFactory factory = new AnimationFactory(this);
 
     public DiploEntity(EntityType<? extends AbstractChestedHorse> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -116,7 +162,6 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 260.0D)
                 .add(Attributes.ATTACK_DAMAGE, 15.0f)
-                .add(Attributes.ATTACK_SPEED, 0.05f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
                 .add(Attributes.ARMOR,5.0)
                 .add(Attributes.ARMOR_TOUGHNESS,5.0)
@@ -137,7 +182,7 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
         //this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 2.0D, 10.0F, 6.0F, false));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-        this.goalSelector.addGoal(2, new DinoFollowLeaderGoal(this, 1.5));
+        this.goalSelector.addGoal(2, new DiploFollowLeaderGoal(this, 1.5));
         this.goalSelector.addGoal(3, new LargeDinoBreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, BucklandiiEntity.class, 10.0F, 1.2D, 1.4D));
@@ -145,13 +190,72 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
         //this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new DinoOwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new DiploEntity.DinoOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
         //this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
-    @Override
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+
+        if (this.isChallengedAnimation()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("challenge", false));
+            return PlayState.CONTINUE;
+        }
+
+        if (this.isWeak()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("weak", true));
+            return PlayState.CONTINUE;
+        }
+
+        //if in water, use swimming anims
+
+        if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
+            if(event.isMoving()){
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
+                return PlayState.CONTINUE;
+            }else{
+                int rand_int = rand_num();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
+                return PlayState.CONTINUE;
+            }
+
+        }
+
+        if (event.isMoving()) {
+            if (this.isVehicle()) {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));
+                return PlayState.CONTINUE;
+            } else {
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
+                return PlayState.CONTINUE;
+            }
+
+        }
+
+        if(!event.isMoving() && event.getController().getCurrentAnimation() != null){
+            String name = event.getController().getCurrentAnimation().animationName;
+
+            //if that animation is anything other than an idle, just override it and set it to idle0
+            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("swimming")){
+                event.getController().markNeedsReload();
+                int rand_int = rand_num();
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
+            }
+            //if it's already idling, then just wait for the current idle anim to be over and choose a random one for the next loop
+            if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
+                event.getController().markNeedsReload();
+
+                //a random number is chosen between 0 and 2, then added to the end of "idle" to get a random idle animation!
+                int rand_int = rand_num();
+
+                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
+                //System.out.print(rand_int);
+            }
+
+        }
+        return PlayState.CONTINUE;
+    }
     protected int rand_num(){
         Random rand = new Random();
         int rand_num = rand.nextInt(10);
@@ -191,6 +295,32 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
         }
     }
 
+    public boolean challengeItem(ItemStack pStack){
+        Item item = pStack.getItem();
+        return item == ModItems.DINO_OFFERING.get();
+    }
+
+    private PlayState attackPredicate(AnimationEvent event) {
+
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped) && !this.isWeak()) {
+            event.getController().markNeedsReload();
+
+            //a random number is chosen between 0 and attacknum, then added to the end of "attack" to get a random attack animation!
+
+            Random rand = new Random();
+
+            int upperbound = attacknum;
+
+            int rand_int = rand.nextInt(upperbound);
+
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
+
+            this.swinging = false;
+        }
+
+        return PlayState.CONTINUE;
+    }
+
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
         DiploEntity baby = ModEntityTypes.DIPLO.get().create(serverLevel);
@@ -200,6 +330,15 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
     }
 
     @Override
+    public boolean isFood(ItemStack pStack) {
+        return pStack.getItem() == ModItems.RAB_STEW.get();
+    }
+
+    public boolean isHeal(ItemStack pStack) {
+        Item item = pStack.getItem();
+        return item.isEdible() && (item == ModItems.ZUCC.get() || item == ModItems.BLUEBERRY.get() || item == Items.WHEAT || item == Items.CARROT) ;
+    }
+
     //taming item
     public boolean tameItem(ItemStack pStack) {
         Item item = pStack.getItem();
@@ -215,14 +354,13 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
         pEntityToUpdate.setYHeadRot(pEntityToUpdate.getYRot());
     }
 
-    /**Keeping this here for now */
-//    @Override
-//    public void positionRider(@NotNull Entity pPassenger) {
-//        if (this.hasPassenger(pPassenger)) {
-//            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
-//            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
-//
-//            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + riderOffset, this.getZ() - (double)(0.3F * f));
+    @Override
+    public void positionRider(@NotNull Entity pPassenger) {
+        if (this.hasPassenger(pPassenger)) {
+            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
+            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
+
+            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + riderOffset, this.getZ() - (double)(0.3F * f));
 //            if (this.getPassengers().size() > 1) {
 //                int i = this.getPassengers().indexOf(pPassenger);
 //                if (i == 0) {
@@ -247,7 +385,7 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
 //            }
 
 
-//        }
+        }
 
         /** Extra riders **/
 
@@ -266,8 +404,19 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
 //                       f += 0.2F;
 //                    }
 //                 }
-//    }
+    }
 
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
+        data.addAnimationController(new AnimationController(this, "attackController", 0, this::attackPredicate));
+
+    }
+
+    @Override
+    public AnimationFactory getFactory() {
+        return factory;
+    }
 
     @Override
     public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
@@ -338,6 +487,16 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
         }
     }
 
+    @Override
+    protected @NotNull SoundEvent getSwimSound() {
+        return SoundEvents.GENERIC_SWIM;
+    }
+
+    @Override
+    protected @NotNull SoundEvent getSwimSplashSound() {
+        return SoundEvents.GENERIC_SPLASH;
+    }
+
     protected float getSoundVolume() {
         return 0.5F;
     }
@@ -357,15 +516,17 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
             this.followMommy();
         }
 
-        if(this.isAngry()){
+        if(this.isAngry() && !this.isChallengedAnimation()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
             getAttribute(Attributes.ARMOR).setBaseValue(17.0f);
             getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(17.0f);
+            this.speedMod = 0;
         }
         else if (!this.isAngry()){
             getAttribute(Attributes.ARMOR).setBaseValue(5.0f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.17f);
             getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(5.0f);
+            this.speedMod = -0.5f;
         }
 
         if (!this.level.isClientSide) {
@@ -374,6 +535,37 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
 
         if (!this.level.isClientSide) {
             this.inWall = this.checkWalls(this.getBoundingBox());
+        }
+
+        this.setWeak((this.getHealth() < getWeakNum()) && this.isChallenged());
+        // It shouldn't be moving if it's either weak or in it's challenge animation
+        if ((!this.level.isClientSide && this.isAlive()) && ((this.isWeak()) || (this.isChallenged() && this.isChallengedAnimation()))){
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0f);
+
+            // if it's in its challenge anim, it should be invulnerable
+            if (!this.level.isClientSide && this.isAlive() && this.isChallenged() && this.isChallengedAnimation()) {
+                this.challenge_time = this.challenge_time - 1;
+                this.setInvulnerable(true);
+                getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+
+                if (this.challenge_time < 1) {
+                    this.setChallengedAnimation(false);
+
+                }
+            }
+            else{
+                this.setInvulnerable(false);
+
+            }
+
+        }
+        else{
+            if (!this.isAngry()){
+                getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.171);
+            }
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.getBaseAttack());
+            this.setInvulnerable(false);
         }
 
     }
@@ -386,9 +578,157 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
     protected void reassessTameGoals() {
     }
 
+    public void setTame(boolean pTamed) {
+        byte b0 = this.entityData.get(DATA_FLAGS_ID);
+        if (pTamed) {
+            this.entityData.set(DATA_FLAGS_ID, (byte)(b0 | 4));
+        } else {
+            this.entityData.set(DATA_FLAGS_ID, (byte)(b0 & -5));
+        }
+
+        this.reassessTameGoals();
+    }
+
+    public void tame(Player pPlayer) {
+        this.setTame(true);
+        this.setOwnerUUID(pPlayer.getUUID());
+        if (pPlayer instanceof ServerPlayer) {
+            CriteriaTriggers.TAME_ANIMAL.trigger((ServerPlayer)pPlayer, this);
+        }
+
+    }
+
+    @Override
+    public @NotNull InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (!this.isBaby()) {
+            if (this.isTamed() && player.isSecondaryUseActive()) {
+                this.openCustomInventoryScreen(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+
+            if (this.isVehicle()) {
+                return super.mobInteract(player, hand);
+            }
+        }
+
+        if (!itemstack.isEmpty()) {
+
+            //if this is the item for challenging, set challenge to true
+            if (this.challengeItem(itemstack) && !isTame() && !this.isBaby()) {
+                if (this.level.isClientSide) {
+                    return InteractionResult.CONSUME;
+                } else {
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+
+                    if (!this.level.isClientSide) {
+                        setChallenged(true);
+                        setChallengedAnimation(true);
+                        //start anim counter
+                        this.setAnimLen();
+                        this.playSound(ModSounds.DIPLO_ANGRY.get(),1,1);
+
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
+            if (this.tameItem(itemstack) && !isTame() && this.isWeak()) {
+                if (this.level.isClientSide) {
+                    return InteractionResult.CONSUME;
+                } else {
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+
+                    if (!ForgeEventFactory.onAnimalTame(this, player)) {
+                        if (!this.level.isClientSide) {
+                            this.tame(player);
+                            this.setTamed(true);
+                            this.setTarget(null);
+                            this.level.broadcastEntityEvent(this, (byte)7);
+                            this.spawnTamingParticles(true);
+                            //remove the weak and challenged status, also heal
+                            setChallenged(false);
+                            setWeak(false);
+                            this.heal(this.getMaxHealth());
+                            this.navigation.recomputePath();
+                        }
+                    }
+
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
+            if (this.isFood(itemstack)) {
+
+                if (!this.level.isClientSide && !this.isBaby() && this.canFallInLove()) {
+                    this.usePlayerItem(player, hand, itemstack);
+                    this.setInLove(player);
+                    return InteractionResult.SUCCESS;
+                }
+
+                else if (this.isBaby()) {
+
+                    this.level.addParticle(ParticleTypes.HAPPY_VILLAGER, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 0.0D, 0.0D, 0.0D);
+                }
+
+                if (this.level.isClientSide) {
+                    return InteractionResult.CONSUME;
+                }
+            }
+
+            if(this.isHeal(itemstack) && this.getHealth() < this.getMaxHealth()){
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.heal(2);
+                this.gameEvent(GameEvent.EAT, this);
+                this.spawnTamingParticles(true);
+                return InteractionResult.SUCCESS;
+
+            }
+
+            if (!this.hasChest() && this.isTamed() && !this.isBaby() && itemstack.is(Blocks.CHEST.asItem())) {
+                this.setChest(true);
+                this.playChestEquipsSound();
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+
+                this.createInventory();
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+
+            if (!this.isBaby() && !this.isSaddled() && itemstack.is(Items.SADDLE)) {
+                this.openCustomInventoryScreen(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+
+            else{return InteractionResult.PASS;}
+        }
+
+        if (this.isBaby()) {
+            return super.mobInteract(player, hand);
+        } else {
+            if (this.isTame() || this.isTamed()){
+                this.doPlayerRide(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }else{
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+        }
+    }
+
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+
+        setChallenged(tag.getBoolean("isChallenged"));
+        setChallengedAnimation(tag.getBoolean("isChallengedAnimation"));
+        setWeak(tag.getBoolean("isWeak"));
         //setSaddled(tag.getBoolean("isSaddled"));
         this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
         this.readPersistentAngerSaveData(this.level, tag);
@@ -416,8 +756,32 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
 //        }
 //    }
 //
-      this.updateContainerEquipment();
+        this.updateContainerEquipment();
 
+    }
+
+    @javax.annotation.Nullable
+    public LivingEntity getOwner() {
+        try {
+            UUID uuid = this.getOwnerUUID();
+            return uuid == null ? null : this.level.getPlayerByUUID(uuid);
+        } catch (IllegalArgumentException illegalargumentexception) {
+            return null;
+        }
+    }
+
+    @Override
+    protected boolean canParent() {
+        return !this.isVehicle() && !this.isPassenger() && !this.isBaby() && this.isInLove();
+    }
+
+    @Override
+    public boolean canMate(Animal pOtherAnimal) {
+        return pOtherAnimal != this && pOtherAnimal instanceof DiploEntity && this.canParent() && ((DiploEntity)pOtherAnimal).canParent();
+    }
+
+    public boolean canWearArmor() {
+        return false;
     }
 
 //    @Override
@@ -429,6 +793,10 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
 
+        tag.putBoolean("isChallenged", this.isChallenged());
+        tag.putBoolean("isWeak", this.isWeak());
+        tag.putBoolean("isChallengedAnimation", this.isChallengedAnimation());
+
         //Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
         tag.putInt("Variant",this.getTypeVariant());
 
@@ -438,6 +806,40 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
         }
 
         this.addPersistentAngerSaveData(tag);
+    }
+
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ID_TYPE_VARIANT,0);
+        this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
+        this.entityData.define(DATA_FLAGS_ID, (byte)0);
+        this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+        this.entityData.define(CHALLENGED, false);
+        this.entityData.define(CHALLENGED_ANIMATION, false);
+        this.entityData.define(WEAK, false);
+    }
+
+    @javax.annotation.Nullable
+    public UUID getOwnerUUID() {
+        return this.entityData.get(DATA_OWNERUUID_ID).orElse((UUID)null);
+    }
+
+    public void setOwnerUUID(@javax.annotation.Nullable UUID pUuid) {
+        this.entityData.set(DATA_OWNERUUID_ID, Optional.ofNullable(pUuid));
+    }
+
+    public boolean isOwnedBy(LivingEntity pEntity) {
+        return pEntity == this.getOwner();
+    }
+
+    public boolean canAttack(LivingEntity pTarget) {
+        return this.isOwnedBy(pTarget) ? false : super.canAttack(pTarget);
+    }
+
+    public boolean isTame() {
+        return (this.entityData.get(DATA_FLAGS_ID) & 4) != 0;
     }
 
     /**
@@ -459,6 +861,11 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
     }
 
     @Override
+    public boolean canJump() {
+        return false;
+    }
+
+    @Override
     public Team getTeam() {
         return super.getTeam();
     }
@@ -471,6 +878,43 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
     @Override
     protected float getWaterSlowDown() {
         return 0.91F;
+    }
+
+    @Override
+    public void travel(@NotNull Vec3 pTravelVector) {
+
+        if (this.isAlive()) {
+            LivingEntity livingentity = this.getControllingPassenger();
+            if (this.isVehicle() && livingentity != null) {
+                this.setYRot(livingentity.getYRot());
+                this.yRotO = this.getYRot();
+                this.setXRot(livingentity.getXRot() * 0.5F);
+                this.setRot(this.getYRot(), this.getXRot());
+                this.yBodyRot = this.getYRot();
+                this.yHeadRot = this.yBodyRot;
+                float f = livingentity.xxa * 0.5F;
+                float f1 = livingentity.zza;
+                this.maxUpStep = step_height;
+
+                if (this.onGround) {
+                    Vec3 vec3 = this.getDeltaMovement();
+                    this.setDeltaMovement(vec3.x, 0, vec3.z);
+                }
+
+                if (this.isControlledByLocalInstance()) {
+                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + speedMod);
+                    super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
+                } else if (livingentity instanceof Player) {
+                    this.setDeltaMovement(Vec3.ZERO);
+                }
+
+
+                this.tryCheckInsideBlocks();
+            } else {
+                this.flyingSpeed = 0.02F;
+                super.travel(pTravelVector);
+            }
+        }
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_,
@@ -492,6 +936,52 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
     private void setVariant(DiploVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
+
+    @Override
+    public int getRemainingPersistentAngerTime() {
+        return this.entityData.get(DATA_REMAINING_ANGER_TIME);
+    }
+    @Override
+    public void setRemainingPersistentAngerTime(int pRemainingPersistentAngerTime) {
+        this.entityData.set(DATA_REMAINING_ANGER_TIME, pRemainingPersistentAngerTime);
+    }
+
+    @Nullable
+    @Override
+    public UUID getPersistentAngerTarget() {
+        return this.persistentAngerTarget;
+    }
+
+    @Override
+    public void setPersistentAngerTarget(@Nullable UUID pPersistentAngerTarget) {
+        this.persistentAngerTarget = pPersistentAngerTarget;
+    }
+
+    @Override
+    public void startPersistentAngerTimer() {
+        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    public void setChallengedAnimation(boolean challenged) {
+        this.entityData.set(CHALLENGED_ANIMATION, challenged);
+    }
+
+    public boolean isChallengedAnimation() {
+        return this.entityData.get(CHALLENGED_ANIMATION);
+    }
+
+    public void setChallenged(boolean challenged) {
+        this.entityData.set(CHALLENGED, challenged);
+    }
+
+    public boolean isChallenged() {
+        return this.entityData.get(CHALLENGED);
+    }
+
+    public boolean wantsToAttack(LivingEntity pTarget, LivingEntity pOwner) {
+        return true;
+    }
+
 
     protected boolean canAddPassenger(Entity pPassenger) {
         return this.getPassengers().size() < this.getMaxPassengers();
@@ -549,36 +1039,227 @@ public class DiploEntity extends AbstractGroupingUtilDino implements IAnimatable
     }
     @Override
     protected void customServerAiStep() {
-            super.customServerAiStep();
+        super.customServerAiStep();
 
-        if (ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-            int j1 = Mth.floor(this.getY());
-            int i2 = Mth.floor(this.getX());
-            int j2 = Mth.floor(this.getZ());
-            boolean flag = false;
+        if (this.destroyBlocksTick > 0) {
+            --this.destroyBlocksTick;
+            if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                int j1 = Mth.floor(this.getY());
+                int i2 = Mth.floor(this.getX());
+                int j2 = Mth.floor(this.getZ());
+                boolean flag = false;
 
-            for(int j = -1; j <= 1; ++j) {
-                for(int k2 = -1; k2 <= 1; ++k2) {
-                    for(int k = 0; k <= 3; ++k) {
-                        int l2 = i2 + j;
-                        int l = j1 + k;
-                        int i1 = j2 + k2;
-                        BlockPos blockpos = new BlockPos(l2, l, i1);
-                        BlockState blockstate = this.level.getBlockState(blockpos);
-                        if (blockstate.canEntityDestroy(this.level, blockpos, this) && ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
-                            flag = this.level.destroyBlock(blockpos, true, this) || flag;
+                for(int j = -1; j <= 1; ++j) {
+                    for(int k2 = -1; k2 <= 1; ++k2) {
+                        for(int k = 0; k <= 3; ++k) {
+                            int l2 = i2 + j;
+                            int l = j1 + k;
+                            int i1 = j2 + k2;
+                            BlockPos blockpos = new BlockPos(l2, l, i1);
+                            BlockState blockstate = this.level.getBlockState(blockpos);
+                            if (blockstate.canEntityDestroy(this.level, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                                flag = this.level.destroyBlock(blockpos, true, this) || flag;
+                            }
                         }
                     }
                 }
-            }
 
-            if (flag) {
-                this.level.levelEvent((Player)null, 1022, this.blockPosition(), 0);
+                if (flag) {
+                    this.level.levelEvent((Player)null, 1022, this.blockPosition(), 0);
+                }
             }
         }
 
         if (this.tickCount % 20 == 0) {
-                this.heal(1.0F);
+            this.heal(1.0F);
+        }
+    }
+
+
+    public void becomeFollower(){
+        this.isLeader = false;
+        this.isfollower = true;
+    }
+
+    public void unfollow(){
+        this.isfollower = false;
+    }
+
+    /** OWNER HURT BY TARGET GOAL**/
+
+    public class DinoOwnerHurtByTargetGoal extends TargetGoal {
+        private final DiploEntity tameAnimal;
+        private LivingEntity ownerLastHurtBy;
+        private int timestamp;
+
+        public DinoOwnerHurtByTargetGoal(DiploEntity dino) {
+            super(dino, false);
+            this.tameAnimal = dino;
+            this.setFlags(EnumSet.of(Flag.TARGET));
+        }
+
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+            if (this.tameAnimal.isTamed()) {
+                LivingEntity livingentity = this.tameAnimal.getOwner();
+                if (livingentity == null) {
+                    return false;
+                } else {
+                    this.ownerLastHurtBy = livingentity.getLastHurtByMob();
+                    int i = livingentity.getLastHurtByMobTimestamp();
+                    return i != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT) && this.tameAnimal.wantsToAttack(this.ownerLastHurtBy, livingentity);
+                }
+            } else {
+                return false;
             }
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.mob.setTarget(this.ownerLastHurtBy);
+            LivingEntity livingentity = this.tameAnimal.getOwner();
+            if (livingentity != null) {
+                this.timestamp = livingentity.getLastHurtByMobTimestamp();
+            }
+
+            super.start();
+        }
+    }
+
+    public class DiploFollowLeaderGoal extends Goal {
+        private final DiploEntity animal;
+        @javax.annotation.Nullable
+        private DiploEntity leader;
+        private final double speedModifier;
+        private int timeToRecalcPath;
+
+        public DiploFollowLeaderGoal(DiploEntity pAnimal, double pSpeedModifier) {
+            this.animal = pAnimal;
+            this.speedModifier = pSpeedModifier;
+        }
+
+        /**
+         * Returns whether execution should begin. You can also read and cache any state necessary for execution in this
+         * method as well.
+         */
+        public boolean canUse() {
+
+            //If this is a leader, or it is tame, return false
+            if (this.animal.isLeader || this.animal.isTame()) {
+                return false;
+            } else {
+                List<? extends DiploEntity> list = this.animal.level.getEntitiesOfClass(this.animal.getClass(), this.animal.getBoundingBox().inflate(8.0D, 4.0D, 8.0D));
+                DiploEntity animal = null;
+                double d0 = Double.MAX_VALUE;
+
+                for(DiploEntity animal1 : list) {
+                    if (animal1.getAge() >= 0) {
+                        double d1 = this.animal.distanceToSqr(animal1);
+                        //if this raptor's number is smaller than the other raptor, set it as the leader
+                        // && animal1.followers < animal1.follower_cap
+                        if (!(d1 > d0) && this.animal.raptor_num < animal1.raptor_num) {
+                            d0 = d1;
+                            animal = animal1;
+                        }
+                    }
+                }
+
+                if (animal == null) {
+                    return false;
+                } else if (d0 < 250.0D) {
+                    return false;
+                    //if this raptor's number is smaller than the other raptor, set it as the leader
+                } //else if (animal.isfollower) {
+                //return false;
+                //animal.followers < animal.follower_cap
+                else if (this.animal.raptor_num < animal.raptor_num){
+                    if (animal.isfollower){
+                        this.leader = animal.veloLeader;
+                        this.animal.veloLeader = animal.veloLeader;
+                        this.animal.becomeFollower();
+                        return true;
+                    }
+//                    //check to see if it has a leader, if that leader has a higher number, don't switch leaders!
+//                    if (this.leader != null){
+//                        if (this.leader.raptor_num > animal.raptor_num){
+//                            //Don't set new leader, but return true
+//                            System.out.println("already following");
+//                            System.out.println(this.leader.raptor_num);
+//                            return true;
+//                        }else{
+//                            if (!animal.isLeader){
+//                                animal.becomeLeader();
+//                            }
+//                            animal.unfollow();
+//                            animal.addFollower();
+//                            this.leader = animal;
+//                            this.animal.becomeFollower();
+//                            return true;
+//                        }
+//                    }
+//                    if (!animal.isLeader){
+//                        animal.becomeLeader();
+//                    }
+                    //animal.unfollow();
+                    //animal.addFollower();
+                    this.leader = animal;
+                    this.animal.becomeFollower();
+                    this.animal.veloLeader = animal;
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+
+        /**
+         * Returns whether an in-progress EntityAIBase should continue executing
+         */
+        public boolean canContinueToUse() {
+            if (!this.leader.isAlive()) {
+                this.leader = null;
+                this.animal.veloLeader = null;
+                this.animal.unfollow();
+                return false;
+            } else if (this.animal.isTame()) {
+                return false;
+            } else {
+                double d0 = this.animal.distanceToSqr(this.leader);
+                return !(d0 < 300.0D) && !(d0 > 1000.0D);
+            }
+        }
+
+        /**
+         * Execute a one shot task or start executing a continuous task
+         */
+        public void start() {
+            this.timeToRecalcPath = 0;
+        }
+
+        /**
+         * Reset the task's internal state. Called when this task is interrupted by another one
+         */
+        public void stop() {
+            this.leader = null;
+        }
+
+        /**
+         * Keep ticking a continuous task that has already been started
+         */
+        public void tick() {
+
+            if (--this.timeToRecalcPath <= 0) {
+                this.timeToRecalcPath = this.adjustedTickDelay(10);
+                if (this.leader != null){
+                    this.animal.getNavigation().moveTo(this.leader, this.speedModifier);
+                }
+            }
+        }
     }
 }

@@ -62,13 +62,14 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> PROTO_FRILL = ITEMS.register("proto_frill",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
 
+        public static final RegistryObject<Item> DINO_OFFERING = ITEMS.register("dino_offering",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));
+
         public static final RegistryObject<Item> RAB_STEW = ITEMS.register("rab_stew",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(5).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 700, 0), 0.65F).meat().build())));
 
         public static final RegistryObject<Item> CARNO_BUFF_IRON = ITEMS.register("carno_buff_iron",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(5).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
-
-        //(new FoodProperties.Builder()).nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.8F).meat().build();
 
         public static final RegistryObject<Item> CARNO_BUFF_GOLD = ITEMS.register("carno_buff_gold",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(6).saturationMod(0.2F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.5F).meat().build())));
@@ -149,9 +150,16 @@ import net.minecraftforge.registries.RegistryObject;
         public static final RegistryObject<Item> ZUCC_DOUGH = ITEMS.register("zucc_dough",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.4F).build())));
 
+        public static final RegistryObject<Item> DINO_BEEF = ITEMS.register("dino_beef",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS).food(new FoodProperties.Builder().nutrition(2).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.4F).build())));
+
         public static final RegistryObject<Item> ZUCC_BREAD = ITEMS.register("zucc_bread",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
                         .food(new FoodProperties.Builder().nutrition(8).saturationMod(0.6f).build())));
+
+        public static final RegistryObject<Item> COOKED_DINO_BEEF = ITEMS.register("cooked_dino_beef",
+                () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_FOODS)
+                        .food(new FoodProperties.Builder().nutrition(5).saturationMod(0.6f).build())));
 
         public static final RegistryObject<Item> IRON_BOWL = ITEMS.register("iron_bowl",
                 () -> new Item(new Item.Properties().tab(ModCreativeModeTab.REXCRAFT_DINOSAURS)));

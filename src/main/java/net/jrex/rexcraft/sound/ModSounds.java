@@ -40,6 +40,27 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> BUCKLANDII_ANGRY =
             registerSoundEvent("bucklandii_angry");
 
+    public static final RegistryObject<SoundEvent> BUCKLANDII_CHALLENGED =
+            registerSoundEvent("bucklandii_challenged");
+
+    public static final RegistryObject<SoundEvent> REX_DEATH =
+            registerSoundEvent("rex_death");
+
+    public static final RegistryObject<SoundEvent> REX_HURT =
+            registerSoundEvent("rex_hurt");
+
+    public static final RegistryObject<SoundEvent> REX_IDLE =
+            registerSoundEvent("rex_idle");
+
+    public static final RegistryObject<SoundEvent> REX_ANGRY =
+            registerSoundEvent("rex_angry");
+
+    public static final RegistryObject<SoundEvent> REX_CHALLENGED =
+            registerSoundEvent("rex_challenged");
+
+    public static final RegistryObject<SoundEvent> BERNIS_CHALLENGED =
+            registerSoundEvent("bernis_challenged");
+
     public static final RegistryObject<SoundEvent> BERNIS_DEATH =
             registerSoundEvent("bernis_death");
 
@@ -66,6 +87,9 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> BOREAL_ANGRY =
             registerSoundEvent("boreal_angry");
+
+    public static final RegistryObject<SoundEvent> STYRACO_CHALLENGED =
+            registerSoundEvent("styraco_challenged");
 
     public static final RegistryObject<SoundEvent> STYRACO_DEATH =
             registerSoundEvent("styraco_death");

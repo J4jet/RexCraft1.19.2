@@ -62,6 +62,11 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
         return 0.17f;
     }
 
+    // Used to get the base attack dmg of a dinosaur
+    public float getBaseAttack(){
+        return 20f;
+    }
+
     // Time it takes to play the challenge animation
     public int challenge_time = 0;
 
@@ -181,7 +186,7 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
 
     private PlayState attackPredicate(AnimationEvent event) {
 
-        if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
+        if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped) && !this.isWeak()){
             event.getController().markNeedsReload();
 
             //a random number is chosen between 0 and attacknum, then added to the end of "attack" to get a random attack animation!
@@ -222,7 +227,7 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
 
     public boolean challengeItem(ItemStack pStack){
         Item item = pStack.getItem();
-        return item == ModItems.ALLO.get();
+        return item == ModItems.DINO_OFFERING.get();
     }
 
     @Override
@@ -244,6 +249,8 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
     protected SoundEvent getSwimSplashSound() {
         return SoundEvents.GENERIC_SPLASH;
     }
+
+    public SoundEvent getChallengedSound(){return ModSounds.STYRACO_ANGRY.get();}
 
     protected boolean isImmobile() {
         return super.isImmobile() && this.isVehicle() && this.isSaddled();
@@ -269,6 +276,7 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
         // It shouldn't be moving if it's either weak or in it's challenge animation
         if ((!this.level.isClientSide && this.isAlive()) && ((this.isWeak()) || (this.isChallenged() && this.isChallengedAnimation()))){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0f);
 
             // if it's in its challenge anim, it should be invulnerable
             if (!this.level.isClientSide && this.isAlive() && this.isChallenged() && this.isChallengedAnimation()) {
@@ -287,6 +295,7 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
         }
         else{
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.getBaseSpeed());
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.getBaseAttack());
             this.setInvulnerable(false);
         }
 
@@ -420,7 +429,7 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
                     setChallengedAnimation(true);
                     //start anim counter
                     this.setAnimLen();
-                    this.playSound(ModSounds.STYRACO_ANGRY.get(),10,10);
+                    this.playSound(this.getChallengedSound(),10,1);
 
                 }
                 return InteractionResult.SUCCESS;

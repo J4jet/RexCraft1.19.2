@@ -38,9 +38,9 @@ public class BernisEntity extends AbstractUtilDino implements IAnimatable, Neutr
     public static AttributeSupplier setAttributes() {
 
         return AbstractChestedHorse.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.MAX_HEALTH, 60.0D)
                 .add(Attributes.ATTACK_DAMAGE, 14.0f)
-                .add(Attributes.ATTACK_SPEED, 1.0f)
+                .add(Attributes.ATTACK_SPEED, 0.8f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 5)
                 .add(Attributes.MOVEMENT_SPEED, 0.23f).build();
     }
@@ -57,6 +57,11 @@ public class BernisEntity extends AbstractUtilDino implements IAnimatable, Neutr
     }
 
     @Override
+    public float getBaseAttack(){
+        return 14f;
+    }
+
+    @Override
     public float get_riderOffset(){
         return 1.0f;
     }
@@ -65,6 +70,9 @@ public class BernisEntity extends AbstractUtilDino implements IAnimatable, Neutr
     public float getBaseSpeed(){
         return 0.23f;
     }
+
+    @Override
+    public SoundEvent getChallengedSound(){return ModSounds.BERNIS_CHALLENGED.get();}
 
     //no randomized attributes!
     @Override

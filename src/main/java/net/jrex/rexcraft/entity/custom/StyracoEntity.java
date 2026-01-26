@@ -78,10 +78,18 @@ public class StyracoEntity extends AbstractCombatDino {
         return 0.0f;
     }
 
+    @Override
+    public float getBaseAttack(){
+        return 10f;
+    }
+
     //set length of the challenge animation
     public void setAnimLen(){
         this.challenge_time = 67;
     }
+
+    @Override
+    public SoundEvent getChallengedSound(){return ModSounds.STYRACO_CHALLENGED.get();}
 
     public static int attacknum = 3;
 
@@ -119,8 +127,8 @@ public class StyracoEntity extends AbstractCombatDino {
         super.setTame(tamed);
         if (tamed) {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(11.5D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.5f);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.5D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(0.8f);
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
 
@@ -128,7 +136,7 @@ public class StyracoEntity extends AbstractCombatDino {
         } else {
             getAttribute(Attributes.MAX_HEALTH).setBaseValue(46.0D);
             getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.7f);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(0.8f);
             getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
         }

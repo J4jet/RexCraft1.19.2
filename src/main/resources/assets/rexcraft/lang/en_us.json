@@ -70,6 +70,8 @@
   "item.rexcraft.diamond_bowl": "Diamond Bowl",
   "item.rexcraft.neth_bowl": "Netherite Bowl",
 
+  "item.rexcraft.dino_offering": "Dinosaur Offering",
+
   "item.rexcraft.carno_buff_iron": "Iron Tier Carnivore Buffet",
   "item.rexcraft.carno_buff_gold": "Gold Tier Carnivore Buffet",
   "item.rexcraft.carno_buff_diamond": "Diamond Tier Carnivore Buffet",
@@ -98,13 +100,15 @@
   "item.rexcraft.zucc_bread": "Zucchini Bread Loaf",
   "item.rexcraft.zucc_seeds": "Zucchini Seeds",
   "block.rexcraft.zucc_bush": "Wild Zucchini Bush",
+  "item.rexcraft.dino_beef": "Dinosaur Meat",
+  "item.rexcraft.cooked_dino_beef": "Cooked Dinosaur Meat",
 
 
   "item.rexcraft.gecko_tail": "Gecko Tail",
   "item.rexcraft.oro_foot": "Orodromeus Foot",
   "item.rexcraft.proto_frill": "Protoceratops Frill",
   "item.rexcraft.preno_dome": "Prenocephale Dome",
-  "item.rexcraft.rex_tooth": "Tyrannosaurus rex tooth",
+  "item.rexcraft.rex_tooth": "Tyrannosaurus tooth",
   "item.rexcraft.sino_tail": "Sinosauropteryx Tail",
   "item.rexcraft.hedgehog_quill": "Hedgehog Quill",
 
@@ -150,10 +154,19 @@
   "sounds.rexcraft.bucklandii_death": "Megalosaurus dying",
   "sounds.rexcraft.bucklandii_growl": "Megalosaurus hissing",
   "sounds.rexcraft.bucklandii_angry": "Megalosaurus roaring",
+  "sounds.rexcraft.bucklandii_challenged": "Megalosaurus roaring",
+
+  "sounds.rexcraft.rex_hurt": "Tyrannosaurus in pain",
+  "sounds.rexcraft.rex_death": "Tyrannosaurus dying",
+  "sounds.rexcraft.rex_idle": "Tyrannosaurus making a spooky noise",
+  "sounds.rexcraft.rex_angry": "Tyrannosaurus roaring",
+  "sounds.rexcraft.rex_challenged": "Tyrannosaurus roaring",
+
   "sounds.rexcraft.bernis_hurt": "Iguanodon in pain",
   "sounds.rexcraft.bernis_death": "Iguanodon dying",
   "sounds.rexcraft.bernis_idle": "Iguanodon snorting",
   "sounds.rexcraft.bernis_angry": "Iguanodon roaring",
+  "sounds.rexcraft.bernis_challenged": "Iguanodon roaring",
   "sounds.rexcraft.gecko_hurt": "Leopard Gecko chirping",
 
   "sounds.rexcraft.boreal_hurt": "Borealopelta in pain",
@@ -171,6 +184,7 @@
   "sounds.rexcraft.styraco_death": "Styracosaurus dying",
   "sounds.rexcraft.styraco_idle": "Styracosaurus bellowing",
   "sounds.rexcraft.styraco_angry": "Styracosaurus roaring",
+  "sounds.rexcraft.styraco_challenged": "Styracosaurus roaring",
 
   "sounds.rexcraft.diplo_hurt": "Diplodocus in pain",
   "sounds.rexcraft.diplo_death": "Diplodocus dying",

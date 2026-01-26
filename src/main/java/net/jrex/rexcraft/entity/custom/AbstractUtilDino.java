@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.OldUsersConverter;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
@@ -81,6 +82,13 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
     public float getBaseSpeed(){
         return 0.17f;
     }
+
+    // Used to get the base attack dmg of a dinosaur
+    public float getBaseAttack(){
+        return 20f;
+    }
+
+    public SoundEvent getChallengedSound(){return ModSounds.REX_CHALLENGED.get();}
 
     // Time it takes to play the challenge animation
     public int challenge_time = 0;
@@ -192,7 +200,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
 
     private PlayState attackPredicate(AnimationEvent event) {
 
-        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped) && !this.isWeak()) {
             event.getController().markNeedsReload();
 
             //a random number is chosen between 0 and attacknum, then added to the end of "attack" to get a random attack animation!
@@ -230,7 +238,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
 
     public boolean challengeItem(ItemStack pStack){
         Item item = pStack.getItem();
-        return item == ModItems.ALLO.get();
+        return item == ModItems.DINO_OFFERING.get();
     }
 
     @Override
@@ -292,6 +300,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
         // It shouldn't be moving if it's either weak or in it's challenge animation
         if ((!this.level.isClientSide && this.isAlive()) && ((this.isWeak()) || (this.isChallenged() && this.isChallengedAnimation()))){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0f);
 
             // if it's in its challenge anim, it should be invulnerable
             if (!this.level.isClientSide && this.isAlive() && this.isChallenged() && this.isChallengedAnimation()) {
@@ -305,11 +314,13 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
             }
             else{
                 this.setInvulnerable(false);
+
             }
 
         }
         else{
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.getBaseSpeed());
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.getBaseAttack());
             this.setInvulnerable(false);
         }
 
@@ -381,7 +392,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
                         setChallengedAnimation(true);
                         //start anim counter
                         this.setAnimLen();
-                        this.playSound(ModSounds.STYRACO_ANGRY.get(),10,10);
+                        this.playSound(this.getChallengedSound(),1,1);
 
                     }
                     return InteractionResult.SUCCESS;
@@ -459,6 +470,8 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
                 this.openCustomInventoryScreen(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
+
+            else{return InteractionResult.PASS;}
         }
 
         if (this.isBaby()) {

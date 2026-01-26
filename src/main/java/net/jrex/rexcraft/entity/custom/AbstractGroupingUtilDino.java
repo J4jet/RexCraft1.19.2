@@ -28,7 +28,7 @@ public class AbstractGroupingUtilDino extends AbstractUtilDino{
         return rand.nextInt(100000);
     }
 
-    protected AbstractGroupingUtilDino(EntityType<? extends AbstractChestedHorse> pEntityType, Level pLevel) {
+    protected AbstractGroupingUtilDino(EntityType<? extends AbstractUtilDino> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 

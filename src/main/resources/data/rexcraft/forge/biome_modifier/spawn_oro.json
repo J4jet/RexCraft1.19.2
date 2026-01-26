@@ -7,7 +7,7 @@
   ],
   "spawners": {
     "type": "rexcraft:oro",
-    "weight": 150,
+    "weight": 120,
     "minCount": 2,
     "maxCount": 3
   }

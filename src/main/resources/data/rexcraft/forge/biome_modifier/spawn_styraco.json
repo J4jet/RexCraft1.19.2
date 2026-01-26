@@ -6,7 +6,7 @@
   ],
   "spawners": {
     "type": "rexcraft:styraco",
-    "weight": 80,
+    "weight": 70,
     "minCount": 1,
     "maxCount": 3
   }

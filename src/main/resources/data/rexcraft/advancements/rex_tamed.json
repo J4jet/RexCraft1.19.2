@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "rexcraft:rex_spawn_egg"
+    },
+    "title": "Tamer of Tyrants",
+    "description": "Tame a Tyrannosaurus rex.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+
+  },
+  "parent": "rexcraft:gecko_tamed",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:tame_animal",
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:rex"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1847,7 +1847,7 @@
 				}
 			}
 		},
-		"swimming2": {
+		"swimming": {
 			"animation_length": 2.5,
 			"bones": {
 				"leg4": {
@@ -2790,7 +2790,7 @@
 				}
 			}
 		},
-		"swimming": {
+		"swimming2": {
 			"animation_length": 2.5,
 			"bones": {
 				"leg4": {
