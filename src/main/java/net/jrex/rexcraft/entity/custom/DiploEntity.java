@@ -1018,7 +1018,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 for(int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (!blockstate.isAir() && !blockstate.is(BlockTags.DRAGON_TRANSPARENT)) {
+                    if (!blockstate.isAir() && !blockstate.is(BlockTags.ANVIL) && !this.isBaby() && !blockstate.is(BlockTags.BASE_STONE_OVERWORLD) && !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
                         //&& !blockstate.is(BlockTags.DRAGON_IMMUNE)
                         if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this)) {
                             flag1 = this.level.removeBlock(blockpos, false) || flag1;

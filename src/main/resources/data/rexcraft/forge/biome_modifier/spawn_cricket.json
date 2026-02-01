@@ -22,7 +22,7 @@
   ],
   "spawners": {
     "type": "rexcraft:cricket",
-    "weight": 100,
+    "weight": 80,
     "minCount": 5,
     "maxCount": 7
   }
