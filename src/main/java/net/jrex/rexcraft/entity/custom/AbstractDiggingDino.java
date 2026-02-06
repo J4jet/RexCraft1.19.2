@@ -263,7 +263,7 @@ public abstract class AbstractDiggingDino extends TamableAnimal implements IAnim
 
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
-                this.heal(1.0F);
+                this.heal(0.5F);
             }
         }
 

@@ -327,7 +327,7 @@ public abstract class AbstractUtilDino extends AbstractChestedHorse implements I
 
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
-                this.heal(1.0F);
+                this.heal(0.5F);
             }
             this.followMommy();
         }

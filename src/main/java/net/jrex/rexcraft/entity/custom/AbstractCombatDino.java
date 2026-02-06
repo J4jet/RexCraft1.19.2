@@ -302,7 +302,7 @@ public abstract class AbstractCombatDino extends TamableAnimal implements IAnima
         if (!this.level.isClientSide && this.isAlive()) {
             //System.out.println(this.getHealth());
             if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
-                this.heal(1.0F);
+                this.heal(0.5F);
             }
         }
 

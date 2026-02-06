@@ -511,7 +511,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         //System.out.println(this.getHealth());
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0 && this.getHealth() < 200) {
-                this.heal(5.0F);
+                this.heal(1.0F);
             }
             this.followMommy();
         }
