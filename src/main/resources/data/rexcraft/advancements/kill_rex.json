@@ -1,0 +1,39 @@
+{
+  "parent": "rexcraft:rexcraft",
+  "criteria": {
+    "rexcraft:rex": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:rex"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+
+  "display": {
+    "icon": {
+      "item": "rexcraft:rex_tooth"
+    },
+    "title": "Tyrant's Bane",
+    "description": "Slay a Tyrannosaurus rex",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+
+  },
+  "requirements": [
+    [
+      "rexcraft:rex"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  }
+}

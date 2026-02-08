@@ -1,5 +1,5 @@
 {
-  "parent": "rexcraft:rexcraft",
+  "parent": "rexcraft:kill_rex",
   "criteria": {
     "rexcraft:bucklandii": {
       "conditions": {
@@ -9,6 +9,20 @@
             "entity": "this",
             "predicate": {
               "type": "rexcraft:bucklandii"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "rexcraft:rex": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "rexcraft:rex"
             }
           }
         ]
@@ -198,6 +212,9 @@
     ],
     [
       "rexcraft:diplo"
+    ],
+    [
+      "rexcraft:rex"
     ],
     [
       "rexcraft:styraco"

@@ -62,16 +62,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class StyracoEntity extends TamableAnimal implements IAnimatable, NeutralMob, PlayerRideableJumping, Saddleable {
-
-    private static final EntityDataAccessor<Boolean> SITTING =
-            SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.BOOLEAN);
-
-    private static final EntityDataAccessor<Boolean> SADDLED =
-            SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.BOOLEAN);
-
-    private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
-            SynchedEntityData.defineId(StyracoEntity.class, EntityDataSerializers.INT);
+public class StyracoEntity extends AbstractCombatDino {
 
     public static final Predicate<LivingEntity> PREY_SELECTOR = (p_30437_) -> {
         EntityType<?> entitytype = p_30437_.getType();
@@ -83,37 +74,38 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(30, 50);
 
     //speed modifier of the entity when being ridden
-    public static float speedMod = 0.0f;
+    public float getSpeedMod(){
+        return 0.0f;
+    }
+
+    @Override
+    public float getBaseAttack(){
+        return 10f;
+    }
+
+    //set length of the challenge animation
+    public void setAnimLen(){
+        this.challenge_time = 67;
+    }
+
+    @Override
+    public SoundEvent getChallengedSound(){return ModSounds.STYRACO_CHALLENGED.get();}
 
     public static int attacknum = 3;
 
-    public static float riderOffset = 0.45f;
+    @Override
+    public float getRiderOffset(){
+        return 0.45f;
+    }
 
-    public static float step_height = 1.5F;
+    public float getStepHeight(){
+        return 1.5F;
+    }
 
-//    protected int rand_bin(){
-//        Random rand = new Random();
-//        int rand_int = rand.nextInt(2);
-//        if(rand_int == 0){
-//            System.out.println(0);
-//            return 0;
-//        }
-//        else{
-//            System.out.println(1);
-//            return 1;
-//        }
-//    }
-
-
-
-    @Nullable
-    private UUID persistentAngerTarget;
-
-    //private int destroyBlocksTick;
-
-    private AnimationFactory factory = new AnimationFactory(this);
-
-
+    @Override
+    public float getBaseSpeed(){
+        return 0.2f;
+    }
 
     public StyracoEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -128,6 +120,26 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
                 .add(Attributes.FOLLOW_RANGE, 5)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 3)
                 .add(Attributes.MOVEMENT_SPEED, 0.17f).build();
+    }
+
+    @Override
+    public void setTame(boolean tamed) {
+        super.setTame(tamed);
+        if (tamed) {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.5D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(0.8f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
+
+
+        } else {
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(46.0D);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
+            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(0.8f);
+            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
+        }
     }
 
     @Override
@@ -154,77 +166,6 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, true));
     }
 
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-
-        //if in water, use swimming anims
-
-        if (this.isSwimming() || this.isVisuallySwimming() || this.isInWater()){
-            if (this.isVehicle()){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming", true));
-                return PlayState.CONTINUE;
-            }else{
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("swimming2", true));
-                return PlayState.CONTINUE;
-            }
-        }
-
-        if (event.isMoving()) {
-            if(this.isVehicle()){
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("vehicle_walk", true));
-                return PlayState.CONTINUE;
-            }
-            else{
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("walk", true));
-                return PlayState.CONTINUE;
-            }
-
-        }
-        if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
-            return PlayState.CONTINUE;
-        }
-
-        //if the entity is not moving or sitting, and has a current animation:
-
-        if(!event.isMoving() && !this.isSitting() && event.getController().getCurrentAnimation() != null){
-            String name = event.getController().getCurrentAnimation().animationName;
-
-            //if that animation is anything other than an idle, just override it and set it to idle0
-            if(name.equals("walk") || name.equals("vehicle_walk") || name.equals("sitting") || name.equals("swimming") || name.equals("swimming2")){
-                event.getController().markNeedsReload();
-                int rand_int = rand_num();
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
-            }
-            //if it's already idling, then just wait for the current idle anim to be over and choose a random one for the next loop
-            if(event.getController().getAnimationState().equals(AnimationState.Stopped)){
-                event.getController().markNeedsReload();
-
-                //a random number is chosen between 0 and 2, then added to the end of "idle" to get a random idle animation!
-                int rand_int = rand_num();
-
-                event.getController().setAnimation(new AnimationBuilder().addAnimation("idle" + rand_int, false));
-                //System.out.print(rand_int);
-            }
-
-        }
-
-        return PlayState.CONTINUE;
-    }
-
-    /** Chooses a random number between 0 and 9, then returns 0 or 1 based on that. **/
-    protected int rand_num(){
-        Random rand = new Random();
-        int rand_num = rand.nextInt(10);
-
-        if(rand_num > 6){
-            return 1;
-        }
-        else{
-            return 0;
-        }
-    }
-
     @Override
     protected int calculateFallDamage(float pDistance, float pDamageMultiplier) {
         if (pDistance < 3.5){
@@ -233,33 +174,6 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
             return Mth.ceil((pDistance * 9.0F) * pDamageMultiplier);
         }
     }
-
-    private PlayState attackPredicate(AnimationEvent event) {
-
-        if(this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)){
-            event.getController().markNeedsReload();
-
-            //a random number is chosen between 0 and attacknum, then added to the end of "attack" to get a random attack animation!
-
-            Random rand = new Random();
-
-            int upperbound = attacknum;
-
-            int rand_int = rand.nextInt(upperbound);
-
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("attack" + rand_int, false));
-            //System.out.print(rand_int);
-
-            this.swinging = false;
-        }
-
-        return PlayState.CONTINUE;
-    }
-
-//    @Deprecated //Forge: DO NOT USE use BlockState.canEntityDestroy
-//    public static boolean canDestroy(BlockState pState) {
-//        return !pState.isAir() && !pState.is(BlockTags.WITHER_IMMUNE);
-//    }
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob mob) {
@@ -299,17 +213,6 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
     public boolean tameItem(ItemStack pStack){
         Item item = pStack.getItem();
         return item == ModItems.HERB_BUFF_GOLD.get() || item == ModItems.HERB_BUFF_DIAMOND.get() || item == ModItems.HERB_BUFF_NETH.get();
-    }
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this,"controller",0,this::predicate));
-        data.addAnimationController(new AnimationController(this,"attackController",0,this::attackPredicate));
-
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override
@@ -354,208 +257,15 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
         }
     }
 
-    protected SoundEvent getSwimSound() {
-        return SoundEvents.GENERIC_SWIM;
-    }
-
-    protected SoundEvent getSwimSplashSound() {
-        return SoundEvents.GENERIC_SPLASH;
-    }
-
     protected float getSoundVolume() {
         return 1.2F;
     }
 
-    protected boolean isImmobile() {
-        return super.isImmobile() && this.isVehicle() && this.isSaddled();
-    }
-
-    public void aiStep() {
-        super.aiStep();
-
-//        if(this.isAngry()){
-//            getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(32.0f);
-//        }
-//        else if (!this.isAngry()){
-//            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f);
-//        }
-
-        if (!this.level.isClientSide && this.isAlive()) {
-            if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
-                this.heal(1.0F);
-            }
-        }
-
-        if (!this.level.isClientSide) {
-            this.updatePersistentAnger((ServerLevel)this.level, true);
-        }
-
-    }
-
-    protected void doPlayerRide(Player pPlayer) {
-        if (!this.level.isClientSide) {
-            pPlayer.setYRot(this.getYRot());
-            pPlayer.setXRot(this.getXRot());
-            pPlayer.startRiding(this);
-        }
-
-    }
-
-    public void positionRider(@NotNull Entity pPassenger) {
-        if (this.hasPassenger(pPassenger)) {
-            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
-            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
-
-            pPassenger.setPos(this.getX() + (double)(0.3F * f1), this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset() + riderOffset, this.getZ() - (double)(0.3F * f));
-        }
-    }
-
-    @javax.annotation.Nullable
-    public LivingEntity getControllingPassenger() {
-        if (this.isSaddled()) {
-            Entity entity = this.getFirstPassenger();
-            if (entity instanceof LivingEntity) {
-                return (LivingEntity)entity;
-            }
-        }
-
-        return null;
-    }
-
-    @javax.annotation.Nullable
-    private Vec3 getDismountLocationInDirection(Vec3 pDirection, LivingEntity pPassenger) {
-        double d0 = this.getX() + pDirection.x;
-        double d1 = this.getBoundingBox().minY;
-        double d2 = this.getZ() + pDirection.z;
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-
-        for(Pose pose : pPassenger.getDismountPoses()) {
-            blockpos$mutableblockpos.set(d0, d1, d2);
-            double d3 = this.getBoundingBox().maxY + 0.75D;
-
-            while(true) {
-                double d4 = this.level.getBlockFloorHeight(blockpos$mutableblockpos);
-                if ((double)blockpos$mutableblockpos.getY() + d4 > d3) {
-                    break;
-                }
-
-                if (DismountHelper.isBlockFloorValid(d4)) {
-                    AABB aabb = pPassenger.getLocalBoundsForPose(pose);
-                    Vec3 vec3 = new Vec3(d0, (double)blockpos$mutableblockpos.getY() + d4, d2);
-                    if (DismountHelper.canDismountTo(this.level, pPassenger, aabb.move(vec3))) {
-                        pPassenger.setPose(pose);
-                        return vec3;
-                    }
-                }
-
-                blockpos$mutableblockpos.move(Direction.UP);
-                if (!((double)blockpos$mutableblockpos.getY() < d3)) {
-                    break;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
-        Vec3 vec3 = getCollisionHorizontalEscapeVector((double)this.getBbWidth(), (double)pLivingEntity.getBbWidth(), this.getYRot() + (pLivingEntity.getMainArm() == HumanoidArm.RIGHT ? 90.0F : -90.0F));
-        Vec3 vec31 = this.getDismountLocationInDirection(vec3, pLivingEntity);
-        if (vec31 != null) {
-            return vec31;
-        } else {
-            Vec3 vec32 = getCollisionHorizontalEscapeVector((double)this.getBbWidth(), (double)pLivingEntity.getBbWidth(), this.getYRot() + (pLivingEntity.getMainArm() == HumanoidArm.LEFT ? 90.0F : -90.0F));
-            Vec3 vec33 = this.getDismountLocationInDirection(vec32, pLivingEntity);
-            return vec33 != null ? vec33 : this.position();
-        }
-    }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        Item item = itemstack.getItem();
-
-        //if the item "isFood", just use for taming
-        if(isFood(itemstack)){
-            return super.mobInteract(player, hand);
-        }
-
-        //if the item "isHeal" and the current health is less than the max health of the mob, eat the food and heal
-        if(this.isHeal(itemstack) && this.getHealth() < this.getMaxHealth()){
-            if (!player.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
-            this.heal(2);
-            this.gameEvent(GameEvent.EAT, this);
-            this.spawnTamingParticles(true);
-            return InteractionResult.SUCCESS;
-
-        }
-
-        //if this is the item for taming, tame and set to sit
-        if (this.tameItem(itemstack) && !isTame()) {
-            if (this.level.isClientSide) {
-                return InteractionResult.CONSUME;
-            } else {
-                if (!player.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-
-                if (!ForgeEventFactory.onAnimalTame(this, player)) {
-                    if (!this.level.isClientSide) {
-                        super.tame(player);
-                        this.navigation.recomputePath();
-                        this.setTarget(null);
-                        this.level.broadcastEntityEvent(this, (byte)7);
-                        setSitting(true);
-                    }
-                }
-
-                return InteractionResult.SUCCESS;
-            }
-        }
-
-        //this is for controlling it
-        if (this.isVehicle()) {
-            return super.mobInteract(player, hand);
-        }
-
-        //if item is a saddle, and this is saddleable, equip saddle
-        if(item == Items.SADDLE && this.isTame() && !this.level.isClientSide && this.isSaddleable() && !this.isSaddled()){
-            itemstack.shrink(1);
-            this.equipSaddle(SoundSource.NEUTRAL);
-            return InteractionResult.SUCCESS;
-        }
-
-        //sit and unsit by crouching and right clicking
-        if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND && player.isCrouching()) {
-            setSitting(!isSitting());
-            return InteractionResult.SUCCESS;
-        }
-
-        //ride by right clicking with an empty hand
-        if(isTame() && !this.level.isClientSide && hand == InteractionHand.MAIN_HAND && !this.isSitting()) {
-            this.doPlayerRide(player);
-            return InteractionResult.SUCCESS;
-        }
-
-        if (this.tameItem(itemstack)) {
-            return InteractionResult.PASS;
-        }
-
-        return super.mobInteract(player, hand);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        setSitting(tag.getBoolean("isSitting"));
-        setSaddled(tag.getBoolean("isSaddled"));
-        this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
-
-        //I think this saves if it's angry?
-        this.readPersistentAngerSaveData(this.level, tag);
-
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
     }
 
     @Override
@@ -563,93 +273,12 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
         super.addAdditionalSaveData(tag);
         tag.putBoolean("isSitting", this.isSitting());
         tag.putBoolean("isSaddled", this.isSaddled());
-        tag.putInt("Variant",this.getTypeVariant());
-        this.addPersistentAngerSaveData(tag);
-    }
-
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SITTING, false);
-        this.entityData.define(SADDLED, false);
-        this.entityData.define(DATA_ID_TYPE_VARIANT,0);
-        this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
     }
 
     @Override
-    public Team getTeam() {
-        return super.getTeam();
-    }
-
-    public boolean canBeLeashed(Player player) {
-        return true;
-    }
-
-    @Override
-    public void setTame(boolean tamed) {
-        super.setTame(tamed);
-        if (tamed) {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(50.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(11.5D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.5f);
-            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
-
-
-        } else {
-            getAttribute(Attributes.MAX_HEALTH).setBaseValue(46.0D);
-            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
-            getAttribute(Attributes.ATTACK_SPEED).setBaseValue(1.7f);
-            getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(3f);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.18f);
-        }
-    }
-
-    public void travel(@NotNull Vec3 pTravelVector) {
-
-        if (this.isAlive()) {
-            LivingEntity livingentity = this.getControllingPassenger();
-            if (this.isVehicle() && livingentity != null) {
-                //maxstepup is deped so try using this?
-                // Forge - see IForgeEntity#getStepHeight
-                //this.getStepHeight();
-                this.maxUpStep = step_height;
-                this.setYRot(livingentity.getYRot());
-                this.yRotO = this.getYRot();
-                this.setXRot(livingentity.getXRot() * 0.5F);
-                this.setRot(this.getYRot(), this.getXRot());
-                this.yBodyRot = this.getYRot();
-                this.yHeadRot = this.yBodyRot;
-                float f = livingentity.xxa * 0.5F;
-                float f1 = livingentity.zza;
-
-                if (this.onGround) {
-                    Vec3 vec3 = this.getDeltaMovement();
-                    this.setDeltaMovement(vec3.x, 0, vec3.z);
-                }
-
-//                if (this.onGround) {
-//                    f = 0.0F;
-//                    f1 = 0.0F;
-//                }
-
-                this.flyingSpeed = this.getSpeed() * 0.1F;
-                if (this.isControlledByLocalInstance()) {
-                    this.setSpeed((float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) + speedMod);
-                    super.travel(new Vec3((double)f, pTravelVector.y, (double)f1));
-                } else if (livingentity instanceof Player) {
-                    this.setDeltaMovement(Vec3.ZERO);
-                }
-
-
-                this.tryCheckInsideBlocks();
-            } else {
-                this.flyingSpeed = 0.02F;
-                super.travel(pTravelVector);
-            }
-        }
-
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.readPersistentAngerSaveData(this.level, tag);
     }
 
     /* VARIANTS */
@@ -684,70 +313,8 @@ public class StyracoEntity extends TamableAnimal implements IAnimatable, Neutral
         this.entityData.set(DATA_REMAINING_ANGER_TIME, pTime);
     }
 
-    @Nullable
-    @Override
-    public UUID getPersistentAngerTarget() {
-        return this.persistentAngerTarget;
-    }
-
-    @Override
-    public void setPersistentAngerTarget(@javax.annotation.Nullable UUID pTarget) {
-        this.persistentAngerTarget = pTarget;
-    }
-
     @Override
     public void startPersistentAngerTimer() {
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
-
-    @Override
-    public void onPlayerJump(int pJumpPower) {
-
-    }
-
-    @Override
-    public boolean canJump() {
-        return false;
-    }
-
-    @Override
-    public void handleStartJump(int pJumpPower) {}
-
-    @Override
-    public void handleStopJump() {}
-
-    public void setSitting(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
-        this.setOrderedToSit(sitting);
-    }
-
-    public void setSaddled(boolean saddled) {
-        this.entityData.set(SADDLED, saddled);
-
-    }
-
-    public boolean isSitting() {
-        return this.entityData.get(SITTING);
-    }
-
-    @Override
-    public boolean isSaddleable() {
-        return this.isAlive() && !this.isBaby() && this.isTame();
-    }
-
-    @Override
-    public void equipSaddle(@Nullable SoundSource pSource) {
-        this.entityData.set(SADDLED,true);
-        if (pSource != null) {
-            this.level.playSound(null, this, SoundEvents.HORSE_SADDLE, pSource, 0.5F, 1.0F);
-        }
-
-    }
-
-    @Override
-    public boolean isSaddled() {
-        return this.entityData.get(SADDLED);
-    }
-
-
 }

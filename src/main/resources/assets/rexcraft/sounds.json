@@ -61,6 +61,12 @@
       "rexcraft:bucklandii_angry"
     ]
   },
+   "bucklandii_challenged": {
+     "subtitle": "sounds.rexcraft.bucklandii_challenged",
+     "sounds": [
+       "rexcraft:bucklandii_challenged"
+     ]
+   },
   "bernis_hurt": {
     "subtitle": "sounds.rexcraft.bernis_hurt",
     "sounds": [
@@ -79,7 +85,12 @@
       "rexcraft:bernis_idle"
     ]
   },
-
+   "bernis_challenged": {
+     "subtitle": "sounds.rexcraft.bernis_challenged",
+     "sounds": [
+       "rexcraft:bernis_challenged"
+     ]
+   },
   "bernis_angry": {
     "subtitle": "sounds.rexcraft.bernis_angry",
     "sounds": [
@@ -136,6 +147,12 @@
       "rexcraft:styraco_angry"
     ]
   },
+   "styraco_challenged": {
+     "subtitle": "sounds.rexcraft.styraco_challenged",
+     "sounds": [
+       "rexcraft:styraco_challenged"
+     ]
+   },
    "diplo_hurt": {
      "subtitle": "sounds.rexcraft.diplo_hurt",
      "sounds": [
@@ -286,6 +303,37 @@
      "subtitle": "sounds.rexcraft.oro_idle",
      "sounds": [
        "rexcraft:oro_idle"
+     ]
+   },
+   "rex_hurt": {
+     "subtitle": "sounds.rexcraft.rex_hurt",
+     "sounds": [
+       "rexcraft:rex_hurt"
+     ]
+   },
+   "rex_death": {
+     "subtitle": "sounds.rexcraft.rex_death",
+     "sounds": [
+       "rexcraft:rex_death"
+     ]
+   },
+   "rex_idle": {
+     "subtitle": "sounds.rexcraft.rex_idle",
+     "sounds": [
+       "rexcraft:rex_idle"
+     ]
+   },
+
+   "rex_angry": {
+     "subtitle": "sounds.rexcraft.rex_angry",
+     "sounds": [
+       "rexcraft:rex_angry"
+     ]
+   },
+   "rex_challenged": {
+     "subtitle": "sounds.rexcraft.rex_challenged",
+     "sounds": [
+       "rexcraft:rex_challenged"
      ]
    }
  }

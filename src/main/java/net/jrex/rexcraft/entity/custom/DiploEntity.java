@@ -80,6 +80,13 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     protected static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BYTE);
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNERUUID_ID = SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
+    private static final EntityDataAccessor<Boolean> CHALLENGED =
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CHALLENGED_ANIMATION =
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> WEAK =
+            SynchedEntityData.defineId(DiploEntity.class, EntityDataSerializers.BOOLEAN);
+
     public static float step_height = 3.0F;
 
     public static float riderOffset = 1.2f;
@@ -109,6 +116,32 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
     public boolean inWall;
 
+    // Time it takes to play the challenge animation
+    public int challenge_time = 0;
+
+    //set length of the challenge animation
+    public void setAnimLen(){
+        this.challenge_time = 130;
+    }
+
+    // Function that just gets 10% of the total health
+    private float getWeakNum(){
+        return (this.getMaxHealth() * 0.10f);
+    }
+
+    // Used to get the base attack dmg of a dinosaur
+    public float getBaseAttack(){
+        return 20f;
+    }
+
+    public void setWeak(boolean weak) {
+        this.entityData.set(WEAK, weak);
+    }
+
+    public boolean isWeak() {
+        return this.entityData.get(WEAK);
+    }
+
     //Chooses a number for the id
     public static int choose_id(){
         Random rand = new Random();
@@ -129,7 +162,6 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         return AbstractChestedHorse.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 260.0D)
                 .add(Attributes.ATTACK_DAMAGE, 15.0f)
-                .add(Attributes.ATTACK_SPEED, 0.05f)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 100)
                 .add(Attributes.ARMOR,5.0)
                 .add(Attributes.ARMOR_TOUGHNESS,5.0)
@@ -165,6 +197,16 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+
+        if (this.isChallengedAnimation()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("challenge", false));
+            return PlayState.CONTINUE;
+        }
+
+        if (this.isWeak()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("weak", true));
+            return PlayState.CONTINUE;
+        }
 
         //if in water, use swimming anims
 
@@ -253,9 +295,14 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         }
     }
 
+    public boolean challengeItem(ItemStack pStack){
+        Item item = pStack.getItem();
+        return item == ModItems.DINO_OFFERING.get();
+    }
+
     private PlayState attackPredicate(AnimationEvent event) {
 
-        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped)) {
+        if (this.swinging && event.getController().getAnimationState().equals(AnimationState.Stopped) && !this.isWeak()) {
             event.getController().markNeedsReload();
 
             //a random number is chosen between 0 and attacknum, then added to the end of "attack" to get a random attack animation!
@@ -464,12 +511,12 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         //System.out.println(this.getHealth());
         if (!this.level.isClientSide && this.isAlive()) {
             if (this.random.nextInt(900) == 0 && this.deathTime == 0 && this.getHealth() < 200) {
-                this.heal(5.0F);
+                this.heal(1.0F);
             }
             this.followMommy();
         }
 
-        if(this.isAngry()){
+        if(this.isAngry() && !this.isChallengedAnimation()){
             getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
             getAttribute(Attributes.ARMOR).setBaseValue(17.0f);
             getAttribute(Attributes.ARMOR_TOUGHNESS).setBaseValue(17.0f);
@@ -488,6 +535,37 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
         if (!this.level.isClientSide) {
             this.inWall = this.checkWalls(this.getBoundingBox());
+        }
+
+        this.setWeak((this.getHealth() < getWeakNum()) && this.isChallenged());
+        // It shouldn't be moving if it's either weak or in it's challenge animation
+        if ((!this.level.isClientSide && this.isAlive()) && ((this.isWeak()) || (this.isChallenged() && this.isChallengedAnimation()))){
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(0.0f);
+
+            // if it's in its challenge anim, it should be invulnerable
+            if (!this.level.isClientSide && this.isAlive() && this.isChallenged() && this.isChallengedAnimation()) {
+                this.challenge_time = this.challenge_time - 1;
+                this.setInvulnerable(true);
+                getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.0f);
+
+                if (this.challenge_time < 1) {
+                    this.setChallengedAnimation(false);
+
+                }
+            }
+            else{
+                this.setInvulnerable(false);
+
+            }
+
+        }
+        else{
+            if (!this.isAngry()){
+                getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.171);
+            }
+            getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(this.getBaseAttack());
+            this.setInvulnerable(false);
         }
 
     }
@@ -536,7 +614,28 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 
         if (!itemstack.isEmpty()) {
 
-            if (this.tameItem(itemstack) && !isTamed()) {
+            //if this is the item for challenging, set challenge to true
+            if (this.challengeItem(itemstack) && !isTame() && !this.isBaby()) {
+                if (this.level.isClientSide) {
+                    return InteractionResult.CONSUME;
+                } else {
+                    if (!player.getAbilities().instabuild) {
+                        itemstack.shrink(1);
+                    }
+
+                    if (!this.level.isClientSide) {
+                        setChallenged(true);
+                        setChallengedAnimation(true);
+                        //start anim counter
+                        this.setAnimLen();
+                        this.playSound(ModSounds.DIPLO_ANGRY.get(),1,1);
+
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
+            if (this.tameItem(itemstack) && !isTame() && this.isWeak()) {
                 if (this.level.isClientSide) {
                     return InteractionResult.CONSUME;
                 } else {
@@ -548,10 +647,14 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                         if (!this.level.isClientSide) {
                             this.tame(player);
                             this.setTamed(true);
-                            this.spawnTamingParticles(true);
-                            this.navigation.recomputePath();
                             this.setTarget(null);
                             this.level.broadcastEntityEvent(this, (byte)7);
+                            this.spawnTamingParticles(true);
+                            //remove the weak and challenged status, also heal
+                            setChallenged(false);
+                            setWeak(false);
+                            this.heal(this.getMaxHealth());
+                            this.navigation.recomputePath();
                         }
                     }
 
@@ -603,6 +706,8 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 this.openCustomInventoryScreen(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
+
+            else{return InteractionResult.PASS;}
         }
 
         if (this.isBaby()) {
@@ -620,6 +725,10 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+
+        setChallenged(tag.getBoolean("isChallenged"));
+        setChallengedAnimation(tag.getBoolean("isChallengedAnimation"));
+        setWeak(tag.getBoolean("isWeak"));
         //setSaddled(tag.getBoolean("isSaddled"));
         this.entityData.set(DATA_ID_TYPE_VARIANT,tag.getInt("Variant"));
         this.readPersistentAngerSaveData(this.level, tag);
@@ -647,7 +756,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
 //        }
 //    }
 //
-      this.updateContainerEquipment();
+        this.updateContainerEquipment();
 
     }
 
@@ -684,6 +793,10 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
 
+        tag.putBoolean("isChallenged", this.isChallenged());
+        tag.putBoolean("isWeak", this.isWeak());
+        tag.putBoolean("isChallengedAnimation", this.isChallengedAnimation());
+
         //Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 2 out of bounds for length 2
         tag.putInt("Variant",this.getTypeVariant());
 
@@ -703,6 +816,9 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         this.entityData.define(DATA_REMAINING_ANGER_TIME, 0);
         this.entityData.define(DATA_FLAGS_ID, (byte)0);
         this.entityData.define(DATA_OWNERUUID_ID, Optional.empty());
+        this.entityData.define(CHALLENGED, false);
+        this.entityData.define(CHALLENGED_ANIMATION, false);
+        this.entityData.define(WEAK, false);
     }
 
     @javax.annotation.Nullable
@@ -846,6 +962,22 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
         this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
     }
 
+    public void setChallengedAnimation(boolean challenged) {
+        this.entityData.set(CHALLENGED_ANIMATION, challenged);
+    }
+
+    public boolean isChallengedAnimation() {
+        return this.entityData.get(CHALLENGED_ANIMATION);
+    }
+
+    public void setChallenged(boolean challenged) {
+        this.entityData.set(CHALLENGED, challenged);
+    }
+
+    public boolean isChallenged() {
+        return this.entityData.get(CHALLENGED);
+    }
+
     public boolean wantsToAttack(LivingEntity pTarget, LivingEntity pOwner) {
         return true;
     }
@@ -886,7 +1018,7 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
                 for(int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (!blockstate.isAir() && !blockstate.is(BlockTags.DRAGON_TRANSPARENT)) {
+                    if (!blockstate.isAir() && !blockstate.is(BlockTags.ANVIL) && !this.isBaby() && !blockstate.is(BlockTags.BASE_STONE_OVERWORLD) && !blockstate.is(BlockTags.NEEDS_IRON_TOOL) && !blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
                         //&& !blockstate.is(BlockTags.DRAGON_IMMUNE)
                         if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this)) {
                             flag1 = this.level.removeBlock(blockpos, false) || flag1;
@@ -907,40 +1039,40 @@ public class DiploEntity extends AbstractChestedHorse implements IAnimatable, Ne
     }
     @Override
     protected void customServerAiStep() {
-            super.customServerAiStep();
+        super.customServerAiStep();
 
-            if (this.destroyBlocksTick > 0) {
-                --this.destroyBlocksTick;
-                if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-                    int j1 = Mth.floor(this.getY());
-                    int i2 = Mth.floor(this.getX());
-                    int j2 = Mth.floor(this.getZ());
-                    boolean flag = false;
+        if (this.destroyBlocksTick > 0) {
+            --this.destroyBlocksTick;
+            if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                int j1 = Mth.floor(this.getY());
+                int i2 = Mth.floor(this.getX());
+                int j2 = Mth.floor(this.getZ());
+                boolean flag = false;
 
-                    for(int j = -1; j <= 1; ++j) {
-                        for(int k2 = -1; k2 <= 1; ++k2) {
-                            for(int k = 0; k <= 3; ++k) {
-                                int l2 = i2 + j;
-                                int l = j1 + k;
-                                int i1 = j2 + k2;
-                                BlockPos blockpos = new BlockPos(l2, l, i1);
-                                BlockState blockstate = this.level.getBlockState(blockpos);
-                                if (blockstate.canEntityDestroy(this.level, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
-                                    flag = this.level.destroyBlock(blockpos, true, this) || flag;
-                                }
+                for(int j = -1; j <= 1; ++j) {
+                    for(int k2 = -1; k2 <= 1; ++k2) {
+                        for(int k = 0; k <= 3; ++k) {
+                            int l2 = i2 + j;
+                            int l = j1 + k;
+                            int i1 = j2 + k2;
+                            BlockPos blockpos = new BlockPos(l2, l, i1);
+                            BlockState blockstate = this.level.getBlockState(blockpos);
+                            if (blockstate.canEntityDestroy(this.level, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                                flag = this.level.destroyBlock(blockpos, true, this) || flag;
                             }
                         }
                     }
+                }
 
-                    if (flag) {
-                        this.level.levelEvent((Player)null, 1022, this.blockPosition(), 0);
-                    }
+                if (flag) {
+                    this.level.levelEvent((Player)null, 1022, this.blockPosition(), 0);
                 }
             }
+        }
 
-            if (this.tickCount % 20 == 0) {
-                this.heal(1.0F);
-            }
+        if (this.tickCount % 20 == 0) {
+            this.heal(1.0F);
+        }
     }
 
 

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "*": {
+      "item": "minecraft:copper_ingot"
+    },
+    "%": {
+      "item": "minecraft:iron_ingot"
+    },
+    "!": {
+      "item": "minecraft:string"
+    },
+    "^": {
+      "item": "minecraft:feather"
+    },
+    "@": {
+      "item": "rexcraft:bonestack"
+    }
+  },
+  "pattern": [
+    "^ ^",
+    "%@%",
+    "*!*"
+  ],
+  "result": {
+    "item": "rexcraft:dino_offering",
+    "count": 1
+  }
+}

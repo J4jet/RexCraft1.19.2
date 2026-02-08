@@ -209,6 +209,7 @@ public class GeckoEntity extends TamableAnimal implements IAnimatable {
         assert s != null;
         if (s.equals("Nova")) {
             //this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0D);
+            //For future reference: this does not protect the entity from a creative mode player
             this.setInvulnerable(true);
         }
 

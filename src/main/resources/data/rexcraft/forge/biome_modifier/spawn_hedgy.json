@@ -14,7 +14,7 @@
   ],
   "spawners": {
     "type": "rexcraft:hedgy",
-    "weight": 100,
+    "weight": 80,
     "minCount": 1,
     "maxCount": 3
   }
